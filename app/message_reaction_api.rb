@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/message_reactions" do
       status 200
-      [{"id"=>1, "emoji"=>"👍"}]
+      [ { "id" => 1, "emoji" => "👍" } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/message_reactions/:id" do
       status 200
-      {"id"=>1, "emoji"=>"👍"}
+      { "id" => 1, "emoji" => "👍" }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/message_reactions" do
       status 201
-      {"id"=>1, "emoji"=>"👍"}
+      { "id" => 1, "emoji" => "👍" }
     end
 
     params do

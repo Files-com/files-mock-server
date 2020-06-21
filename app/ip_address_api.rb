@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/ip_addresses" do
       status 200
-      [{"id"=>"Site", "associated_with"=>"Site", "group_id"=>1, "ip_addresses"=>[]}]
+      [ { "id" => "Site", "associated_with" => "Site", "group_id" => 1, "ip_addresses" => [] } ]
     end
   end
 end

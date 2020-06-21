@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/message_comments" do
       status 200
-      [{"id"=>1, "body"=>"What a great idea, thank you!", "reactions"=>[]}]
+      [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/message_comments/:id" do
       status 200
-      {"id"=>1, "body"=>"What a great idea, thank you!", "reactions"=>[]}
+      { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/message_comments" do
       status 201
-      {"id"=>1, "body"=>"What a great idea, thank you!", "reactions"=>[]}
+      { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
 
     params do
@@ -37,7 +37,7 @@ module FilesMockServer
     end
     patch "/message_comments/:id" do
       status 200
-      {"id"=>1, "body"=>"What a great idea, thank you!", "reactions"=>[]}
+      { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
 
     params do

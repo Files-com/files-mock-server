@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/projects" do
       status 200
-      [{"id"=>1, "global_access"=>"none"}]
+      [ { "id" => 1, "global_access" => "none" } ]
     end
 
     params do
@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/projects/:id" do
       status 200
-      {"id"=>1, "global_access"=>"none"}
+      { "id" => 1, "global_access" => "none" }
     end
 
     params do
@@ -25,7 +25,7 @@ module FilesMockServer
     end
     post "/projects" do
       status 201
-      {"id"=>1, "global_access"=>"none"}
+      { "id" => 1, "global_access" => "none" }
     end
 
     params do
@@ -34,7 +34,7 @@ module FilesMockServer
     end
     patch "/projects/:id" do
       status 200
-      {"id"=>1, "global_access"=>"none"}
+      { "id" => 1, "global_access" => "none" }
     end
 
     params do

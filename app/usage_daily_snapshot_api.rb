@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/usage_daily_snapshots" do
       status 200
-      [{"id"=>1, "date"=>"2020-11-21", "current_storage"=>"65536", "usage_by_top_level_dir"=>[]}]
+      [ { "id" => 1, "date" => "2020-11-21", "current_storage" => "65536", "usage_by_top_level_dir" => [] } ]
     end
   end
 end

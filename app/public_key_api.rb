@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/public_keys" do
       status 200
-      [{"id"=>1, "title"=>"My public key", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"}]
+      [ { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/public_keys/:id" do
       status 200
-      {"id"=>1, "title"=>"My public key", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"}
+      { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/public_keys" do
       status 201
-      {"id"=>1, "title"=>"My public key", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"}
+      { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
 
     params do
@@ -37,7 +37,7 @@ module FilesMockServer
     end
     patch "/public_keys/:id" do
       status 200
-      {"id"=>1, "title"=>"My public key", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8"}
+      { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
 
     params do

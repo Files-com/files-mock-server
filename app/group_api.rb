@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/groups" do
       status 200
-      [{"id"=>1, "name"=>"owners", "admin_ids"=>[], "notes"=>"", "user_ids"=>[], "usernames"=>[]}]
+      [ { "id" => 1, "name" => "owners", "admin_ids" => [], "notes" => "", "user_ids" => [], "usernames" => [] } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/groups/:id" do
       status 200
-      {"id"=>1, "name"=>"owners", "admin_ids"=>[], "notes"=>"", "user_ids"=>[], "usernames"=>[]}
+      { "id" => 1, "name" => "owners", "admin_ids" => [], "notes" => "", "user_ids" => [], "usernames" => [] }
     end
 
     params do
@@ -29,7 +29,7 @@ module FilesMockServer
     end
     post "/groups" do
       status 201
-      {"id"=>1, "name"=>"owners", "admin_ids"=>[], "notes"=>"", "user_ids"=>[], "usernames"=>[]}
+      { "id" => 1, "name" => "owners", "admin_ids" => [], "notes" => "", "user_ids" => [], "usernames" => [] }
     end
 
     params do
@@ -41,7 +41,7 @@ module FilesMockServer
     end
     patch "/groups/:id" do
       status 200
-      {"id"=>1, "name"=>"owners", "admin_ids"=>[], "notes"=>"", "user_ids"=>[], "usernames"=>[]}
+      { "id" => 1, "name" => "owners", "admin_ids" => [], "notes" => "", "user_ids" => [], "usernames" => [] }
     end
 
     params do

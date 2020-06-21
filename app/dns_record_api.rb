@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/dns_records" do
       status 200
-      [{"id"=>"customdomain.com-CNAME-site.files.com", "domain"=>"my-custom-domain.com", "rrtype"=>"CNAME", "value"=>"mysite.files.com"}]
+      [ { "id" => "customdomain.com-CNAME-site.files.com", "domain" => "my-custom-domain.com", "rrtype" => "CNAME", "value" => "mysite.files.com" } ]
     end
   end
 end

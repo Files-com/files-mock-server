@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/bundles" do
       status 200
-      [{"code"=>"abc123", "url"=>"https://subdomain.files.com/f/12345678", "description"=>"The public description of the bundle.", "password_protected"=>true, "require_registration"=>true, "id"=>1, "created_at"=>"2000-01-01T01:00:00Z", "expires_at"=>"2000-01-01T01:00:00Z", "note"=>"The internal note on the bundle.", "user_id"=>1, "username"=>"user", "paths"=>[]}]
+      [ { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "paths" => [] } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/bundles/:id" do
       status 200
-      {"code"=>"abc123", "url"=>"https://subdomain.files.com/f/12345678", "description"=>"The public description of the bundle.", "password_protected"=>true, "require_registration"=>true, "id"=>1, "created_at"=>"2000-01-01T01:00:00Z", "expires_at"=>"2000-01-01T01:00:00Z", "note"=>"The internal note on the bundle.", "user_id"=>1, "username"=>"user", "paths"=>[]}
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "paths" => [] }
     end
 
     params do
@@ -33,7 +33,7 @@ module FilesMockServer
     end
     post "/bundles" do
       status 201
-      {"code"=>"abc123", "url"=>"https://subdomain.files.com/f/12345678", "description"=>"The public description of the bundle.", "password_protected"=>true, "require_registration"=>true, "id"=>1, "created_at"=>"2000-01-01T01:00:00Z", "expires_at"=>"2000-01-01T01:00:00Z", "note"=>"The internal note on the bundle.", "user_id"=>1, "username"=>"user", "paths"=>[]}
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "paths" => [] }
     end
 
     params do
@@ -57,7 +57,7 @@ module FilesMockServer
     end
     patch "/bundles/:id" do
       status 200
-      {"code"=>"abc123", "url"=>"https://subdomain.files.com/f/12345678", "description"=>"The public description of the bundle.", "password_protected"=>true, "require_registration"=>true, "id"=>1, "created_at"=>"2000-01-01T01:00:00Z", "expires_at"=>"2000-01-01T01:00:00Z", "note"=>"The internal note on the bundle.", "user_id"=>1, "username"=>"user", "paths"=>[]}
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "paths" => [] }
     end
 
     params do

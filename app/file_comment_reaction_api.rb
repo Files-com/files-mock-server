@@ -9,7 +9,7 @@ module FilesMockServer
     end
     post "/file_comment_reactions" do
       status 201
-      {"id"=>1, "emoji"=>"👍"}
+      { "id" => 1, "emoji" => "👍" }
     end
 
     params do

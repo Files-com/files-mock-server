@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/messages" do
       status 200
-      [{"id"=>1, "subject"=>"Files.com Account Upgrade", "body"=>"We should upgrade our Files.com account!", "comments"=>[]}]
+      [ { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/messages/:id" do
       status 200
-      {"id"=>1, "subject"=>"Files.com Account Upgrade", "body"=>"We should upgrade our Files.com account!", "comments"=>[]}
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
 
     params do
@@ -30,7 +30,7 @@ module FilesMockServer
     end
     post "/messages" do
       status 201
-      {"id"=>1, "subject"=>"Files.com Account Upgrade", "body"=>"We should upgrade our Files.com account!", "comments"=>[]}
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
 
     params do
@@ -41,7 +41,7 @@ module FilesMockServer
     end
     patch "/messages/:id" do
       status 200
-      {"id"=>1, "subject"=>"Files.com Account Upgrade", "body"=>"We should upgrade our Files.com account!", "comments"=>[]}
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
 
     params do

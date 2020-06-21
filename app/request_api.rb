@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/requests" do
       status 200
-      [{"id"=>1, "path"=>"", "source"=>"", "destination"=>"", "automation_id"=>"", "user_display_name"=>""}]
+      [ { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/requests/folders/*path" do
       status 200
-      [{"id"=>1, "path"=>"", "source"=>"", "destination"=>"", "automation_id"=>"", "user_display_name"=>""}]
+      [ { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" } ]
     end
 
     params do
@@ -34,7 +34,7 @@ module FilesMockServer
     end
     post "/requests" do
       status 201
-      {"id"=>1, "path"=>"", "source"=>"", "destination"=>"", "automation_id"=>"", "user_display_name"=>""}
+      { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" }
     end
 
     params do

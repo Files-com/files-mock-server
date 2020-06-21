@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/behaviors" do
       status 200
-      [{"id"=>1, "path"=>"", "attachment_url"=>"", "behavior"=>"webhook", "value"=>{"method"=>"GET"}}]
+      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/behaviors/folders/*path" do
       status 200
-      [{"id"=>1, "path"=>"", "attachment_url"=>"", "behavior"=>"webhook", "value"=>{"method"=>"GET"}}]
+      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
     end
 
     params do
@@ -31,7 +31,7 @@ module FilesMockServer
     end
     get "/behaviors/:id" do
       status 200
-      {"id"=>1, "path"=>"", "attachment_url"=>"", "behavior"=>"webhook", "value"=>{"method"=>"GET"}}
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
 
     params do
@@ -42,7 +42,7 @@ module FilesMockServer
     end
     post "/behaviors" do
       status 201
-      {"id"=>1, "path"=>"", "attachment_url"=>"", "behavior"=>"webhook", "value"=>{"method"=>"GET"}}
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
 
     params do
@@ -58,13 +58,13 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: [String, Integer, Hash]
+      requires :id, type: [ String, Integer, Hash ]
       optional :value, type: String
-      optional :attachment_file, type: [String, Integer, Hash]
+      optional :attachment_file, type: [ String, Integer, Hash ]
     end
     patch "/behaviors/:id" do
       status 200
-      {"id"=>1, "path"=>"", "attachment_url"=>"", "behavior"=>"webhook", "value"=>{"method"=>"GET"}}
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
 
     params do

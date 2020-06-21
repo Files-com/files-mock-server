@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/automations" do
       status 200
-      [{"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[]}]
+      [ { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/automations/:id" do
       status 200
-      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[]}
+      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
     end
 
     params do
@@ -34,7 +34,7 @@ module FilesMockServer
     end
     post "/automations" do
       status 201
-      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[]}
+      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
     end
 
     params do
@@ -51,7 +51,7 @@ module FilesMockServer
     end
     patch "/automations/:id" do
       status 200
-      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[]}
+      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
     end
 
     params do

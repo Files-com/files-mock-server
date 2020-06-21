@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/file_comments/files/*path" do
       status 200
-      [{"id"=>1, "body"=>"What a great file!", "reactions"=>[]}]
+      [ { "id" => 1, "body" => "What a great file!", "reactions" => [] } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     post "/file_comments" do
       status 201
-      {"id"=>1, "body"=>"What a great file!", "reactions"=>[]}
+      { "id" => 1, "body" => "What a great file!", "reactions" => [] }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     patch "/file_comments/:id" do
       status 200
-      {"id"=>1, "body"=>"What a great file!", "reactions"=>[]}
+      { "id" => 1, "body" => "What a great file!", "reactions" => [] }
     end
 
     params do

@@ -13,7 +13,7 @@ module FilesMockServer
     end
     get "/permissions" do
       status 200
-      [{"id"=>1, "path"=>"", "user_id"=>1, "username"=>"Sser", "group_id"=>1, "group_name"=>"", "permission"=>"full", "recursive"=>true}]
+      [ { "id" => 1, "path" => "", "user_id" => 1, "username" => "Sser", "group_id" => 1, "group_name" => "", "permission" => "full", "recursive" => true } ]
     end
 
     params do
@@ -26,7 +26,7 @@ module FilesMockServer
     end
     post "/permissions" do
       status 201
-      {"id"=>1, "path"=>"", "user_id"=>1, "username"=>"Sser", "group_id"=>1, "group_name"=>"", "permission"=>"full", "recursive"=>true}
+      { "id" => 1, "path" => "", "user_id" => 1, "username" => "Sser", "group_id" => 1, "group_name" => "", "permission" => "full", "recursive" => true }
     end
 
     params do

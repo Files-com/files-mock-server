@@ -7,7 +7,7 @@ module FilesMockServer
     end
     get "/styles/*path" do
       status 200
-      {"id"=>1, "path"=>"", "logo"=>"", "thumbnail"=>""}
+      { "id" => 1, "path" => "", "logo" => "", "thumbnail" => "" }
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     patch "/styles/*path" do
       status 200
-      {"id"=>1, "path"=>"", "logo"=>"", "thumbnail"=>""}
+      { "id" => 1, "path" => "", "logo" => "", "thumbnail" => "" }
     end
 
     params do

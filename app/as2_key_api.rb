@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/as2_keys" do
       status 200
-      [{"id"=>1, "as2_partnership_name"=>"Test", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0"}]
+      [ { "id" => 1, "as2_partnership_name" => "Test", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0" } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/as2_keys/:id" do
       status 200
-      {"id"=>1, "as2_partnership_name"=>"Test", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0"}
+      { "id" => 1, "as2_partnership_name" => "Test", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0" }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/as2_keys" do
       status 201
-      {"id"=>1, "as2_partnership_name"=>"Test", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0"}
+      { "id" => 1, "as2_partnership_name" => "Test", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0" }
     end
 
     params do
@@ -37,7 +37,7 @@ module FilesMockServer
     end
     patch "/as2_keys/:id" do
       status 200
-      {"id"=>1, "as2_partnership_name"=>"Test", "created_at"=>"2000-01-01T01:00:00Z", "fingerprint"=>"cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0"}
+      { "id" => 1, "as2_partnership_name" => "Test", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "cf:cb:d3:26:52:6c:55:88:83:17:13:cf:e7:70:eb:1b:32:37:38:c0" }
     end
 
     params do

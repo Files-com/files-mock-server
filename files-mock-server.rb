@@ -23,6 +23,7 @@ require "app/as2_key_api"
 require "app/automation_api"
 require "app/behavior_api"
 require "app/bundle_api"
+require "app/clickwrap_api"
 require "app/dns_record_api"
 require "app/file_api"
 require "app/file_action_api"
@@ -62,6 +63,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::AutomationAPI
   mount FilesMockServer::BehaviorAPI
   mount FilesMockServer::BundleAPI
+  mount FilesMockServer::ClickwrapAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::FileAPI
   mount FilesMockServer::FileActionAPI

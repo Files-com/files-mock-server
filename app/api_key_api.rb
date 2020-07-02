@@ -29,8 +29,8 @@ module FilesMockServer
     params do
       optional :user_id, type: Integer
       optional :name, type: String
-      optional :permission_set, type: String
       optional :expires_at, type: String
+      optional :permission_set, type: String
     end
     post "/api_keys" do
       status 201
@@ -38,9 +38,9 @@ module FilesMockServer
     end
 
     params do
+      optional :expires_at, type: String
       optional :name, type: String
       optional :permission_set, type: String
-      optional :expires_at, type: String
     end
     patch "/api_key" do
       status 200
@@ -50,8 +50,8 @@ module FilesMockServer
     params do
       requires :id, type: Integer
       optional :name, type: String
-      optional :permission_set, type: String
       optional :expires_at, type: String
+      optional :permission_set, type: String
     end
     patch "/api_keys/:id" do
       status 200

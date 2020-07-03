@@ -57,6 +57,7 @@ require "app/usage_daily_snapshot_api"
 require "app/usage_snapshot_api"
 require "app/user_api"
 require "app/user_cipher_use_api"
+require "app/user_request_api"
 
 class FilesMockServer::API < Grape::API
   mount FilesMockServer::ApiKeyAPI
@@ -98,4 +99,5 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UsageSnapshotAPI
   mount FilesMockServer::UserAPI
   mount FilesMockServer::UserCipherUseAPI
+  mount FilesMockServer::UserRequestAPI
 end

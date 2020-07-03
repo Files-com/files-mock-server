@@ -1,0 +1,41 @@
+module FilesMockServer
+  class UserRequestAPI < Grape::API
+    format :json
+
+    params do
+      optional :page, type: Integer
+      optional :per_page, type: Integer
+      optional :action, type: String
+    end
+    get "/user_requests" do
+      status 200
+      [ { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" } ]
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/user_requests/:id" do
+      status 200
+      { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
+    end
+
+    params do
+      requires :name, type: String
+      requires :email, type: String
+      requires :details, type: String
+    end
+    post "/user_requests" do
+      status 201
+      { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    delete "/user_requests/:id" do
+      status 204
+      body false
+    end
+  end
+end

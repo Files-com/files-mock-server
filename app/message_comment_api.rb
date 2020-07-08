@@ -9,7 +9,7 @@ module FilesMockServer
       optional :action, type: String
       requires :message_id, type: Integer
     end
-    get "/message_comments" do
+    get "/api/rest/v1/message_comments" do
       status 200
       [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] } ]
     end
@@ -17,7 +17,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/message_comments/:id" do
+    get "/api/rest/v1/message_comments/:id" do
       status 200
       { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
@@ -26,7 +26,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       requires :body, type: String
     end
-    post "/message_comments" do
+    post "/api/rest/v1/message_comments" do
       status 201
       { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
@@ -35,7 +35,7 @@ module FilesMockServer
       requires :id, type: Integer
       requires :body, type: String
     end
-    patch "/message_comments/:id" do
+    patch "/api/rest/v1/message_comments/:id" do
       status 200
       { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [] }
     end
@@ -43,7 +43,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/message_comments/:id" do
+    delete "/api/rest/v1/message_comments/:id" do
       status 204
       body false
     end

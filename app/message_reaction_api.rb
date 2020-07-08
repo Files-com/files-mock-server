@@ -9,7 +9,7 @@ module FilesMockServer
       optional :action, type: String
       requires :message_id, type: Integer
     end
-    get "/message_reactions" do
+    get "/api/rest/v1/message_reactions" do
       status 200
       [ { "id" => 1, "emoji" => "👍" } ]
     end
@@ -17,7 +17,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/message_reactions/:id" do
+    get "/api/rest/v1/message_reactions/:id" do
       status 200
       { "id" => 1, "emoji" => "👍" }
     end
@@ -26,7 +26,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       requires :emoji, type: String
     end
-    post "/message_reactions" do
+    post "/api/rest/v1/message_reactions" do
       status 201
       { "id" => 1, "emoji" => "👍" }
     end
@@ -34,7 +34,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/message_reactions/:id" do
+    delete "/api/rest/v1/message_reactions/:id" do
       status 204
       body false
     end

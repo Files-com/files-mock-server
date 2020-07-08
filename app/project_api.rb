@@ -7,7 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/projects" do
+    get "/api/rest/v1/projects" do
       status 200
       [ { "id" => 1, "global_access" => "none" } ]
     end
@@ -15,7 +15,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/projects/:id" do
+    get "/api/rest/v1/projects/:id" do
       status 200
       { "id" => 1, "global_access" => "none" }
     end
@@ -23,7 +23,7 @@ module FilesMockServer
     params do
       requires :global_access, type: String
     end
-    post "/projects" do
+    post "/api/rest/v1/projects" do
       status 201
       { "id" => 1, "global_access" => "none" }
     end
@@ -32,7 +32,7 @@ module FilesMockServer
       requires :id, type: Integer
       requires :global_access, type: String
     end
-    patch "/projects/:id" do
+    patch "/api/rest/v1/projects/:id" do
       status 200
       { "id" => 1, "global_access" => "none" }
     end
@@ -40,7 +40,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/projects/:id" do
+    delete "/api/rest/v1/projects/:id" do
       status 204
       body false
     end

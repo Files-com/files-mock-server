@@ -9,7 +9,7 @@ module FilesMockServer
       optional :action, type: String
       optional :group_id, type: Integer
     end
-    get "/group_users" do
+    get "/api/rest/v1/group_users" do
       status 200
       [ { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [] } ]
     end
@@ -20,7 +20,7 @@ module FilesMockServer
       requires :user_id, type: Integer
       optional :admin, type: Boolean
     end
-    patch "/group_users/:id" do
+    patch "/api/rest/v1/group_users/:id" do
       status 200
       { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [] }
     end
@@ -28,7 +28,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/group_users/:id" do
+    delete "/api/rest/v1/group_users/:id" do
       status 204
       body false
     end

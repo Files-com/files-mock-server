@@ -9,7 +9,7 @@ module FilesMockServer
       optional :action, type: String
       requires :project_id, type: Integer
     end
-    get "/messages" do
+    get "/api/rest/v1/messages" do
       status 200
       [ { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] } ]
     end
@@ -17,7 +17,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/messages/:id" do
+    get "/api/rest/v1/messages/:id" do
       status 200
       { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
@@ -28,7 +28,7 @@ module FilesMockServer
       requires :subject, type: String
       requires :body, type: String
     end
-    post "/messages" do
+    post "/api/rest/v1/messages" do
       status 201
       { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
@@ -39,7 +39,7 @@ module FilesMockServer
       requires :subject, type: String
       requires :body, type: String
     end
-    patch "/messages/:id" do
+    patch "/api/rest/v1/messages/:id" do
       status 200
       { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [] }
     end
@@ -47,7 +47,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/messages/:id" do
+    delete "/api/rest/v1/messages/:id" do
       status 204
       body false
     end

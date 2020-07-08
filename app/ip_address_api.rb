@@ -7,7 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/ip_addresses" do
+    get "/api/rest/v1/ip_addresses" do
       status 200
       [ { "id" => "Site", "associated_with" => "Site", "group_id" => 1, "ip_addresses" => [] } ]
     end

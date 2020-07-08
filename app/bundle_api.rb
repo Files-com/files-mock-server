@@ -8,7 +8,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/bundles" do
+    get "/api/rest/v1/bundles" do
       status 200
       [ { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "clickwrap_body" => "[Legal text]", "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "paths" => [] } ]
     end
@@ -16,7 +16,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/bundles/:id" do
+    get "/api/rest/v1/bundles/:id" do
       status 200
       { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "clickwrap_body" => "[Legal text]", "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "paths" => [] }
     end
@@ -34,7 +34,7 @@ module FilesMockServer
       optional :clickwrap_id, type: Integer
       optional :inbox_id, type: Integer
     end
-    post "/bundles" do
+    post "/api/rest/v1/bundles" do
       status 201
       { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "clickwrap_body" => "[Legal text]", "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "paths" => [] }
     end
@@ -44,7 +44,7 @@ module FilesMockServer
       requires :to, type: Array[String]
       optional :note, type: String
     end
-    post "/bundles/:id/share" do
+    post "/api/rest/v1/bundles/:id/share" do
       status 204
       body false
     end
@@ -61,7 +61,7 @@ module FilesMockServer
       optional :clickwrap_id, type: Integer
       optional :inbox_id, type: Integer
     end
-    patch "/bundles/:id" do
+    patch "/api/rest/v1/bundles/:id" do
       status 200
       { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "require_registration" => true, "clickwrap_body" => "[Legal text]", "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "paths" => [] }
     end
@@ -69,7 +69,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/bundles/:id" do
+    delete "/api/rest/v1/bundles/:id" do
       status 204
       body false
     end

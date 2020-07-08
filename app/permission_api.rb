@@ -11,7 +11,7 @@ module FilesMockServer
       optional :user_id, type: String
       optional :include_groups, type: Boolean
     end
-    get "/permissions" do
+    get "/api/rest/v1/permissions" do
       status 200
       [ { "id" => 1, "path" => "", "user_id" => 1, "username" => "Sser", "group_id" => 1, "group_name" => "", "permission" => "full", "recursive" => true } ]
     end
@@ -24,7 +24,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :username, type: String
     end
-    post "/permissions" do
+    post "/api/rest/v1/permissions" do
       status 201
       { "id" => 1, "path" => "", "user_id" => 1, "username" => "Sser", "group_id" => 1, "group_name" => "", "permission" => "full", "recursive" => true }
     end
@@ -32,7 +32,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/permissions/:id" do
+    delete "/api/rest/v1/permissions/:id" do
       status 204
       body false
     end

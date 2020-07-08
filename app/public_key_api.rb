@@ -8,7 +8,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/public_keys" do
+    get "/api/rest/v1/public_keys" do
       status 200
       [ { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" } ]
     end
@@ -16,7 +16,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/public_keys/:id" do
+    get "/api/rest/v1/public_keys/:id" do
       status 200
       { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
@@ -26,7 +26,7 @@ module FilesMockServer
       requires :title, type: String
       requires :public_key, type: String
     end
-    post "/public_keys" do
+    post "/api/rest/v1/public_keys" do
       status 201
       { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
@@ -35,7 +35,7 @@ module FilesMockServer
       requires :id, type: Integer
       requires :title, type: String
     end
-    patch "/public_keys/:id" do
+    patch "/api/rest/v1/public_keys/:id" do
       status 200
       { "id" => 1, "title" => "My public key", "created_at" => "2000-01-01T01:00:00Z", "fingerprint" => "43:51:43:a1:b5:fc:8b:b7:0a:3a:a9:b1:0f:66:73:a8" }
     end
@@ -43,7 +43,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/public_keys/:id" do
+    delete "/api/rest/v1/public_keys/:id" do
       status 204
       body false
     end

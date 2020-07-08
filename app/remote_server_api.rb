@@ -7,7 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/remote_servers" do
+    get "/api/rest/v1/remote_servers" do
       status 200
       [ { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "[certificate]", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "always", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal" } ]
     end
@@ -15,7 +15,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/remote_servers/:id" do
+    get "/api/rest/v1/remote_servers/:id" do
       status 200
       { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "[certificate]", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "always", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal" }
     end
@@ -54,7 +54,7 @@ module FilesMockServer
       optional :rackspace_container, type: String
       optional :one_drive_account_type, type: String
     end
-    post "/remote_servers" do
+    post "/api/rest/v1/remote_servers" do
       status 201
       { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "[certificate]", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "always", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal" }
     end
@@ -94,7 +94,7 @@ module FilesMockServer
       optional :rackspace_container, type: String
       optional :one_drive_account_type, type: String
     end
-    patch "/remote_servers/:id" do
+    patch "/api/rest/v1/remote_servers/:id" do
       status 200
       { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "[certificate]", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "always", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal" }
     end
@@ -102,7 +102,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/remote_servers/:id" do
+    delete "/api/rest/v1/remote_servers/:id" do
       status 204
       body false
     end

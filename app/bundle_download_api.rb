@@ -8,7 +8,7 @@ module FilesMockServer
       optional :action, type: String
       requires :bundle_registration_id, type: Integer
     end
-    get "/bundle_downloads" do
+    get "/api/rest/v1/bundle_downloads" do
       status 200
       [ { "download_method" => "file", "path" => "a/b/test.txt", "created_at" => "2020-01-01 00:00:00" } ]
     end

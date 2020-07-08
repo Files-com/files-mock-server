@@ -7,7 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/clickwraps" do
+    get "/api/rest/v1/clickwraps" do
       status 200
       [ { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" } ]
     end
@@ -15,7 +15,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/clickwraps/:id" do
+    get "/api/rest/v1/clickwraps/:id" do
       status 200
       { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
@@ -27,7 +27,7 @@ module FilesMockServer
       optional :use_with_inboxes, type: String
       optional :use_with_users, type: String
     end
-    post "/clickwraps" do
+    post "/api/rest/v1/clickwraps" do
       status 201
       { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
@@ -40,7 +40,7 @@ module FilesMockServer
       optional :use_with_inboxes, type: String
       optional :use_with_users, type: String
     end
-    patch "/clickwraps/:id" do
+    patch "/api/rest/v1/clickwraps/:id" do
       status 200
       { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
@@ -48,7 +48,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/clickwraps/:id" do
+    delete "/api/rest/v1/clickwraps/:id" do
       status 204
       body false
     end

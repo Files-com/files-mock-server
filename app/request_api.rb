@@ -9,7 +9,7 @@ module FilesMockServer
       optional :mine, type: Boolean
       optional :path, type: String
     end
-    get "/requests" do
+    get "/api/rest/v1/requests" do
       status 200
       [ { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" } ]
     end
@@ -21,7 +21,7 @@ module FilesMockServer
       optional :mine, type: Boolean
       optional :path, type: String
     end
-    get "/requests/folders/*path" do
+    get "/api/rest/v1/requests/folders/*path" do
       status 200
       [ { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" } ]
     end
@@ -32,7 +32,7 @@ module FilesMockServer
       optional :user_ids, type: String
       optional :group_ids, type: String
     end
-    post "/requests" do
+    post "/api/rest/v1/requests" do
       status 201
       { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" }
     end
@@ -40,7 +40,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/requests/:id" do
+    delete "/api/rest/v1/requests/:id" do
       status 204
       body false
     end

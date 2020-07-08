@@ -8,7 +8,7 @@ module FilesMockServer
       optional :action, type: String
       optional :behavior, type: String
     end
-    get "/behaviors" do
+    get "/api/rest/v1/behaviors" do
       status 200
       [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
     end
@@ -21,7 +21,7 @@ module FilesMockServer
       optional :recursive, type: String
       optional :behavior, type: String
     end
-    get "/behaviors/folders/*path" do
+    get "/api/rest/v1/behaviors/folders/*path" do
       status 200
       [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
     end
@@ -29,7 +29,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/behaviors/:id" do
+    get "/api/rest/v1/behaviors/:id" do
       status 200
       { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
@@ -40,7 +40,7 @@ module FilesMockServer
       requires :path, type: String
       requires :behavior, type: String
     end
-    post "/behaviors" do
+    post "/api/rest/v1/behaviors" do
       status 201
       { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
@@ -52,7 +52,7 @@ module FilesMockServer
       optional :headers, type: Hash
       optional :body, type: Hash
     end
-    post "/behaviors/webhook/test" do
+    post "/api/rest/v1/behaviors/webhook/test" do
       status 200
       body false
     end
@@ -62,7 +62,7 @@ module FilesMockServer
       optional :value, type: String
       optional :attachment_file, type: [ String, Integer, Hash ]
     end
-    patch "/behaviors/:id" do
+    patch "/api/rest/v1/behaviors/:id" do
       status 200
       { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
     end
@@ -70,7 +70,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/behaviors/:id" do
+    delete "/api/rest/v1/behaviors/:id" do
       status 204
       body false
     end

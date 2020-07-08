@@ -7,7 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
     end
-    get "/user_requests" do
+    get "/api/rest/v1/user_requests" do
       status 200
       [ { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" } ]
     end
@@ -15,7 +15,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/user_requests/:id" do
+    get "/api/rest/v1/user_requests/:id" do
       status 200
       { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
     end
@@ -25,7 +25,7 @@ module FilesMockServer
       requires :email, type: String
       requires :details, type: String
     end
-    post "/user_requests" do
+    post "/api/rest/v1/user_requests" do
       status 201
       { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
     end
@@ -33,7 +33,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/user_requests/:id" do
+    delete "/api/rest/v1/user_requests/:id" do
       status 204
       body false
     end

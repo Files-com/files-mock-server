@@ -17,7 +17,7 @@ module FilesMockServer
       optional "sort_by[last_login_at]", type: String
       optional "sort_by[authenticate_until]", type: String
     end
-    get "/users" do
+    get "/api/rest/v1/users" do
       status 200
       [ { "id" => 1, "username" => "user", "admin_group_ids" => [], "allowed_ips" => "127.0.0.1", "attachments_permission" => true, "api_keys_count" => 1, "authenticate_until" => "2000-01-01T01:00:00Z", "authentication_method" => "password", "avatar_url" => "", "billing_permission" => true, "bypass_site_allowed_ips" => true, "bypass_inactive_disable" => true, "created_at" => "2000-01-01T01:00:00Z", "dav_permission" => true, "disabled" => true, "email" => "john.doe@files.com", "ftp_permission" => true, "group_ids" => "", "header_text" => "User-specific message.", "language" => "en", "last_login_at" => "2000-01-01T01:00:00Z", "last_protocol_cipher" => "", "lockout_expires" => "2000-01-01T01:00:00Z", "name" => "John Doe", "notes" => "Internal notes on this user.", "notification_daily_send_time" => 18, "password_set_at" => "2000-01-01T01:00:00Z", "password_validity_days" => 1, "public_keys_count" => 1, "receive_admin_alerts" => true, "require_2fa" => true, "require_password_change" => true, "restapi_permission" => true, "self_managed" => true, "sftp_permission" => true, "site_admin" => true, "skip_welcome_screen" => true, "ssl_required" => "always_require", "sso_strategy_id" => 1, "subscribe_to_newsletter" => true, "externally_managed" => true, "time_zone" => "Pacific Time (US & Canada)", "type_of_2fa" => "", "user_root" => "" } ]
     end
@@ -25,7 +25,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    get "/users/:id" do
+    get "/api/rest/v1/users/:id" do
       status 200
       { "id" => 1, "username" => "user", "admin_group_ids" => [], "allowed_ips" => "127.0.0.1", "attachments_permission" => true, "api_keys_count" => 1, "authenticate_until" => "2000-01-01T01:00:00Z", "authentication_method" => "password", "avatar_url" => "", "billing_permission" => true, "bypass_site_allowed_ips" => true, "bypass_inactive_disable" => true, "created_at" => "2000-01-01T01:00:00Z", "dav_permission" => true, "disabled" => true, "email" => "john.doe@files.com", "ftp_permission" => true, "group_ids" => "", "header_text" => "User-specific message.", "language" => "en", "last_login_at" => "2000-01-01T01:00:00Z", "last_protocol_cipher" => "", "lockout_expires" => "2000-01-01T01:00:00Z", "name" => "John Doe", "notes" => "Internal notes on this user.", "notification_daily_send_time" => 18, "password_set_at" => "2000-01-01T01:00:00Z", "password_validity_days" => 1, "public_keys_count" => 1, "receive_admin_alerts" => true, "require_2fa" => true, "require_password_change" => true, "restapi_permission" => true, "self_managed" => true, "sftp_permission" => true, "site_admin" => true, "skip_welcome_screen" => true, "ssl_required" => "always_require", "sso_strategy_id" => 1, "subscribe_to_newsletter" => true, "externally_managed" => true, "time_zone" => "Pacific Time (US & Canada)", "type_of_2fa" => "", "user_root" => "" }
     end
@@ -72,7 +72,7 @@ module FilesMockServer
       optional :user_root, type: String
       optional :username, type: String
     end
-    post "/users" do
+    post "/api/rest/v1/users" do
       status 201
       { "id" => 1, "username" => "user", "admin_group_ids" => [], "allowed_ips" => "127.0.0.1", "attachments_permission" => true, "api_keys_count" => 1, "authenticate_until" => "2000-01-01T01:00:00Z", "authentication_method" => "password", "avatar_url" => "", "billing_permission" => true, "bypass_site_allowed_ips" => true, "bypass_inactive_disable" => true, "created_at" => "2000-01-01T01:00:00Z", "dav_permission" => true, "disabled" => true, "email" => "john.doe@files.com", "ftp_permission" => true, "group_ids" => "", "header_text" => "User-specific message.", "language" => "en", "last_login_at" => "2000-01-01T01:00:00Z", "last_protocol_cipher" => "", "lockout_expires" => "2000-01-01T01:00:00Z", "name" => "John Doe", "notes" => "Internal notes on this user.", "notification_daily_send_time" => 18, "password_set_at" => "2000-01-01T01:00:00Z", "password_validity_days" => 1, "public_keys_count" => 1, "receive_admin_alerts" => true, "require_2fa" => true, "require_password_change" => true, "restapi_permission" => true, "self_managed" => true, "sftp_permission" => true, "site_admin" => true, "skip_welcome_screen" => true, "ssl_required" => "always_require", "sso_strategy_id" => 1, "subscribe_to_newsletter" => true, "externally_managed" => true, "time_zone" => "Pacific Time (US & Canada)", "type_of_2fa" => "", "user_root" => "" }
     end
@@ -80,7 +80,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/users/:id/unlock" do
+    post "/api/rest/v1/users/:id/unlock" do
       status 204
       body false
     end
@@ -88,7 +88,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/users/:id/resend_welcome_email" do
+    post "/api/rest/v1/users/:id/resend_welcome_email" do
       status 204
       body false
     end
@@ -96,7 +96,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/users/:id/2fa/reset" do
+    post "/api/rest/v1/users/:id/2fa/reset" do
       status 204
       body false
     end
@@ -144,7 +144,7 @@ module FilesMockServer
       optional :user_root, type: String
       optional :username, type: String
     end
-    patch "/users/:id" do
+    patch "/api/rest/v1/users/:id" do
       status 200
       { "id" => 1, "username" => "user", "admin_group_ids" => [], "allowed_ips" => "127.0.0.1", "attachments_permission" => true, "api_keys_count" => 1, "authenticate_until" => "2000-01-01T01:00:00Z", "authentication_method" => "password", "avatar_url" => "", "billing_permission" => true, "bypass_site_allowed_ips" => true, "bypass_inactive_disable" => true, "created_at" => "2000-01-01T01:00:00Z", "dav_permission" => true, "disabled" => true, "email" => "john.doe@files.com", "ftp_permission" => true, "group_ids" => "", "header_text" => "User-specific message.", "language" => "en", "last_login_at" => "2000-01-01T01:00:00Z", "last_protocol_cipher" => "", "lockout_expires" => "2000-01-01T01:00:00Z", "name" => "John Doe", "notes" => "Internal notes on this user.", "notification_daily_send_time" => 18, "password_set_at" => "2000-01-01T01:00:00Z", "password_validity_days" => 1, "public_keys_count" => 1, "receive_admin_alerts" => true, "require_2fa" => true, "require_password_change" => true, "restapi_permission" => true, "self_managed" => true, "sftp_permission" => true, "site_admin" => true, "skip_welcome_screen" => true, "ssl_required" => "always_require", "sso_strategy_id" => 1, "subscribe_to_newsletter" => true, "externally_managed" => true, "time_zone" => "Pacific Time (US & Canada)", "type_of_2fa" => "", "user_root" => "" }
     end
@@ -152,7 +152,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    delete "/users/:id" do
+    delete "/api/rest/v1/users/:id" do
       status 204
       body false
     end

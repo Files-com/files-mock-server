@@ -6,6 +6,7 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :ids, type: String
       optional "q[username]", type: String
       optional "q[email]", type: String
       optional "q[notes]", type: String

@@ -27,6 +27,8 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+      requires :group_id, type: Integer
+      requires :user_id, type: Integer
     end
     delete "/api/rest/v1/group_users/:id" do
       status 204

@@ -5,6 +5,7 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
+      optional :structure, type: Boolean
     end
     post "/api/rest/v1/file_actions/copy/*path" do
       status 204

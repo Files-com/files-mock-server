@@ -12,6 +12,7 @@ module FilesMockServer
       optional :preview_size, type: String
       optional :search, type: String
       optional :search_all, type: Boolean
+      optional :with_previews, type: Boolean
       optional :with_priority_color, type: Boolean
     end
     get "/api/rest/v1/folders/*path" do

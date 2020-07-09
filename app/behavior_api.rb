@@ -51,6 +51,7 @@ module FilesMockServer
       optional :encoding, type: String
       optional :headers, type: Hash
       optional :body, type: Hash
+      optional :action, type: String
     end
     post "/api/rest/v1/behaviors/webhook/test" do
       status 200
@@ -60,7 +61,9 @@ module FilesMockServer
     params do
       requires :id, type: [ String, Integer, Hash ]
       optional :value, type: String
-      optional :attachment_file, type: [ String, Integer, Hash ]
+      optional :attachment_file, type: File
+      optional :behavior, type: String
+      optional :path, type: [ String, Integer, Hash ]
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200

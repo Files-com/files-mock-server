@@ -6,6 +6,7 @@ module FilesMockServer
       requires :path, type: String
       optional :action, type: String
       optional :id, type: Integer
+      optional :preview_size, type: String
       optional :with_previews, type: Boolean
       optional :with_priority_color, type: Boolean
     end

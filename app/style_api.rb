@@ -5,7 +5,7 @@ module FilesMockServer
     params do
       requires :path, type: String
     end
-    get "/api/rest/v1/styles/*path" do
+    get "/api/rest/v1/styles/:path" do
       status 200
       { "id" => 1, "path" => "", "logo" => "", "thumbnail" => "" }
     end
@@ -14,7 +14,7 @@ module FilesMockServer
       requires :path, type: String
       requires :file, type: File
     end
-    patch "/api/rest/v1/styles/*path" do
+    patch "/api/rest/v1/styles/:path" do
       status 200
       { "id" => 1, "path" => "", "logo" => "", "thumbnail" => "" }
     end
@@ -22,7 +22,7 @@ module FilesMockServer
     params do
       requires :path, type: String
     end
-    delete "/api/rest/v1/styles/*path" do
+    delete "/api/rest/v1/styles/:path" do
       status 204
       body false
     end

@@ -6,6 +6,8 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :cursor, type: String
+      optional :sort_by, type: Hash
       optional :mine, type: Boolean
       optional :path, type: String
     end
@@ -18,10 +20,12 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :cursor, type: String
+      optional :sort_by, type: Hash
       optional :mine, type: Boolean
-      optional :path, type: String
+      requires :path, type: String
     end
-    get "/api/rest/v1/requests/folders/*path" do
+    get "/api/rest/v1/requests/folders/:path" do
       status 200
       [ { "id" => 1, "path" => "", "source" => "", "destination" => "", "automation_id" => "", "user_display_name" => "" } ]
     end

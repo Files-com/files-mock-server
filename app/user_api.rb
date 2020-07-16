@@ -6,6 +6,14 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :cursor, type: String
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      optional :filter_gt, type: Hash
+      optional :filter_gteq, type: Hash
+      optional :filter_like, type: Hash
+      optional :filter_lt, type: Hash
+      optional :filter_lteq, type: Hash
       optional :ids, type: String
       optional "q[username]", type: String
       optional "q[email]", type: String
@@ -15,8 +23,6 @@ module FilesMockServer
       optional "q[password_validity_days]", type: String
       optional "q[ssl_required]", type: String
       optional :search, type: String
-      optional "sort_by[last_login_at]", type: String
-      optional "sort_by[authenticate_until]", type: String
     end
     get "/api/rest/v1/users" do
       status 200

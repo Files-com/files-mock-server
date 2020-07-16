@@ -8,7 +8,7 @@ module FilesMockServer
       optional :action, type: String
       requires :path, type: String
     end
-    get "/api/rest/v1/file_comments/files/*path" do
+    get "/api/rest/v1/file_comments/files/:path" do
       status 200
       [ { "id" => 1, "body" => "What a great file!", "reactions" => [] } ]
     end

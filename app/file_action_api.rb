@@ -7,7 +7,7 @@ module FilesMockServer
       requires :destination, type: String
       optional :structure, type: Boolean
     end
-    post "/api/rest/v1/file_actions/copy/*path" do
+    post "/api/rest/v1/file_actions/copy/:path" do
       status 204
       body false
     end
@@ -16,7 +16,7 @@ module FilesMockServer
       requires :path, type: String
       requires :destination, type: String
     end
-    post "/api/rest/v1/file_actions/move/*path" do
+    post "/api/rest/v1/file_actions/move/:path" do
       status 204
       body false
     end
@@ -30,7 +30,7 @@ module FilesMockServer
       optional :restart, type: Integer
       optional :with_rename, type: Boolean
     end
-    post "/api/rest/v1/file_actions/begin_upload/*path" do
+    post "/api/rest/v1/file_actions/begin_upload/:path" do
       status 200
       [ { "send" => "", "action" => "upload/direct", "ask_about_overwrites" => true, "available_parts" => "", "expires" => "", "headers" => "", "http_method" => "POST", "next_partsize" => "", "parameters" => "", "part_number" => "", "partsize" => "", "path" => "path", "ref" => "upload-1", "upload_uri" => "" } ]
     end

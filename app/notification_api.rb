@@ -21,7 +21,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/notifications" do
       status 200
-      [ { "id" => 1, "path" => "path", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => "suppressed_email" } ]
+      [ { "id" => 1, "path" => "", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => true } ]
     end
 
     params do
@@ -29,7 +29,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/notifications/:id" do
       status 200
-      { "id" => 1, "path" => "path", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => "suppressed_email" }
+      { "id" => 1, "path" => "", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => true }
     end
 
     params do
@@ -43,7 +43,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/notifications" do
       status 201
-      { "id" => 1, "path" => "path", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => "suppressed_email" }
+      { "id" => 1, "path" => "", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => true }
     end
 
     params do
@@ -54,7 +54,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/notifications/:id" do
       status 200
-      { "id" => 1, "path" => "path", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => "suppressed_email" }
+      { "id" => 1, "path" => "", "group_id" => 1, "group_name" => "", "notify_user_actions" => true, "notify_on_copy" => true, "send_interval" => "fifteen_minutes", "unsubscribed" => true, "unsubscribed_reason" => "", "user_id" => 1, "username" => "User", "suppressed_email" => true }
     end
 
     params do

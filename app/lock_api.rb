@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/locks/:path" do
       status 200
-      [ { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "owner" => "user", "scope" => "shared", "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "user_id" => 1, "username" => "username" } ]
+      [ { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "owner" => "user", "scope" => "shared", "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "user_id" => 1, "username" => "" } ]
     end
 
     params do
@@ -20,7 +20,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/locks/:path" do
       status 201
-      { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "owner" => "user", "scope" => "shared", "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "user_id" => 1, "username" => "username" }
+      { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "owner" => "user", "scope" => "shared", "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "user_id" => 1, "username" => "" }
     end
 
     params do

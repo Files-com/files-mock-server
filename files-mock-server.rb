@@ -25,6 +25,7 @@ require "app/automation_api"
 require "app/behavior_api"
 require "app/bundle_api"
 require "app/bundle_download_api"
+require "app/bundle_recipient_api"
 require "app/clickwrap_api"
 require "app/dns_record_api"
 require "app/file_api"
@@ -51,6 +52,7 @@ require "app/public_key_api"
 require "app/remote_server_api"
 require "app/request_api"
 require "app/session_api"
+require "app/settings_change_api"
 require "app/site_api"
 require "app/sso_strategy_api"
 require "app/style_api"
@@ -68,6 +70,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::BehaviorAPI
   mount FilesMockServer::BundleAPI
   mount FilesMockServer::BundleDownloadAPI
+  mount FilesMockServer::BundleRecipientAPI
   mount FilesMockServer::ClickwrapAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::FileAPI
@@ -94,6 +97,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::RemoteServerAPI
   mount FilesMockServer::RequestAPI
   mount FilesMockServer::SessionAPI
+  mount FilesMockServer::SettingsChangeAPI
   mount FilesMockServer::SiteAPI
   mount FilesMockServer::SsoStrategyAPI
   mount FilesMockServer::StyleAPI

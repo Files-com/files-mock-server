@@ -38,6 +38,7 @@ require "app/group_api"
 require "app/group_user_api"
 require "app/history_api"
 require "app/history_export_api"
+require "app/history_export_result_api"
 require "app/invoice_api"
 require "app/ip_address_api"
 require "app/lock_api"
@@ -84,6 +85,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::GroupUserAPI
   mount FilesMockServer::HistoryAPI
   mount FilesMockServer::HistoryExportAPI
+  mount FilesMockServer::HistoryExportResultAPI
   mount FilesMockServer::InvoiceAPI
   mount FilesMockServer::IpAddressAPI
   mount FilesMockServer::LockAPI

@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/user_requests" do
       status 200
-      [ { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" } ]
+      [ { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" } ]
     end
 
     params do
@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/user_requests/:id" do
       status 200
-      { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
+      { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
     end
 
     params do
@@ -27,7 +27,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/user_requests" do
       status 201
-      { "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
+      { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments" }
     end
 
     params do

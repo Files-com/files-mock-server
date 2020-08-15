@@ -7,6 +7,7 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :cursor, type: String
       requires :message_id, type: Integer
     end
     get "/api/rest/v1/message_comments" do

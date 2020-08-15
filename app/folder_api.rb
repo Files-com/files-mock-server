@@ -6,8 +6,8 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
-      requires :path, type: String
       optional :cursor, type: String
+      requires :path, type: String
       optional :filter, type: String
       optional :preview_size, type: String
       optional :search, type: String

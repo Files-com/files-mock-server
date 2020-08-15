@@ -8,7 +8,6 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :action, type: String
       optional :cursor, type: String
-      optional :sort_by, type: Hash
       requires :history_export_id, type: Integer
     end
     get "/api/rest/v1/history_export_results" do

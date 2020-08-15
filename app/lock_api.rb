@@ -6,6 +6,7 @@ module FilesMockServer
       optional :page, type: Integer
       optional :per_page, type: Integer
       optional :action, type: String
+      optional :cursor, type: String
       requires :path, type: String
       optional :include_children, type: Boolean
     end

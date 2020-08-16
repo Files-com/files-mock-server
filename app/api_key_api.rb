@@ -21,6 +21,10 @@ module FilesMockServer
       [ { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "user_id" => 1 } ]
     end
 
+    params do
+      optional :format, type: String
+      optional :api_key, type: Hash
+    end
     get "/api/rest/v1/api_key" do
       status 200
       { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "user_id" => 1 }
@@ -67,6 +71,10 @@ module FilesMockServer
       { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "user_id" => 1 }
     end
 
+    params do
+      optional :format, type: String
+      optional :api_key, type: Hash
+    end
     delete "/api/rest/v1/api_key" do
       status 204
       body false

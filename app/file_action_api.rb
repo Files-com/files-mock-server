@@ -32,7 +32,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/file_actions/begin_upload/:path" do
       status 200
-      [ { "send" => "", "action" => "upload/direct", "ask_about_overwrites" => true, "available_parts" => 1, "expires" => "", "headers" => "", "http_method" => "POST", "next_partsize" => 1, "parallel_parts" => true, "parameters" => "{}", "part_number" => 1, "partsize" => 1, "path" => "", "ref" => "upload-1", "upload_uri" => "" } ]
+      [ { "send" => "", "action" => "multipart", "ask_about_overwrites" => true, "available_parts" => 1, "expires" => "", "headers" => "", "http_method" => "PUT", "next_partsize" => 1, "parallel_parts" => true, "parameters" => "{}", "part_number" => 1, "partsize" => 1, "path" => "", "ref" => "upload-1", "upload_uri" => "" } ]
     end
   end
 end

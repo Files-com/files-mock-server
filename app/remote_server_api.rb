@@ -26,6 +26,7 @@ module FilesMockServer
       optional :aws_secret_key, type: String
       optional :password, type: String
       optional :private_key, type: String
+      optional :ssl_certificate, type: String
       optional :google_cloud_storage_credentials_json, type: String
       optional :wasabi_access_key, type: String
       optional :wasabi_secret_key, type: String
@@ -69,6 +70,7 @@ module FilesMockServer
       optional :aws_secret_key, type: String
       optional :password, type: String
       optional :private_key, type: String
+      optional :ssl_certificate, type: String
       optional :google_cloud_storage_credentials_json, type: String
       optional :wasabi_access_key, type: String
       optional :wasabi_secret_key, type: String

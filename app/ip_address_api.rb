@@ -3,10 +3,8 @@ module FilesMockServer
     format :json
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
     end
     get "/api/rest/v1/ip_addresses" do
       status 200
@@ -14,10 +12,8 @@ module FilesMockServer
     end
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
     end
     get "/api/rest/v1/ip_addresses/reserved" do
       status 200

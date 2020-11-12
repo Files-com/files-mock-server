@@ -6,10 +6,8 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       requires :path, type: String
     end
@@ -22,10 +20,8 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       requires :path, type: String
     end
@@ -38,10 +34,8 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       requires :user_id, type: Integer
     end
@@ -54,10 +48,8 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
     end
     get "/api/rest/v1/history/login" do
@@ -69,10 +61,8 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash

@@ -3,10 +3,8 @@ module FilesMockServer
     format :json
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :mine, type: Boolean
       optional :path, type: String
@@ -17,10 +15,8 @@ module FilesMockServer
     end
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :mine, type: Boolean
       requires :path, type: String

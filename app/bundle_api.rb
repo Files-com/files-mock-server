@@ -4,10 +4,8 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash
@@ -52,6 +50,7 @@ module FilesMockServer
       requires :id, type: Integer
       requires :to, type: Array[String]
       optional :note, type: String
+      optional :recipients, type: Array[Hash]
     end
     post "/api/rest/v1/bundles/:id/share" do
       status 204

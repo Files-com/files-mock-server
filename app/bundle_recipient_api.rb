@@ -4,10 +4,8 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
       requires :bundle_id, type: Integer
     end
     get "/api/rest/v1/bundle_recipients" do

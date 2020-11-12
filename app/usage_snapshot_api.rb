@@ -3,10 +3,8 @@ module FilesMockServer
     format :json
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
     end
     get "/api/rest/v1/usage_snapshots" do
       status 200

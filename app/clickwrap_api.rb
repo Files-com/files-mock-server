@@ -3,14 +3,12 @@ module FilesMockServer
     format :json
 
     params do
-      optional :page, type: Integer
-      optional :per_page, type: Integer
-      optional :action, type: String
       optional :cursor, type: String
+      optional :per_page, type: Integer
     end
     get "/api/rest/v1/clickwraps" do
       status 200
-      [ { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" } ]
+      [ { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" } ]
     end
 
     params do
@@ -18,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/clickwraps/:id" do
       status 200
-      { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
 
     params do
@@ -30,7 +28,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/clickwraps" do
       status 201
-      { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
 
     params do
@@ -43,7 +41,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/clickwraps/:id" do
       status 200
-      { "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
     end
 
     params do

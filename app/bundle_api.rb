@@ -59,6 +59,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+      optional :paths, type: Array[String]
       optional :password, type: String
       optional :clickwrap_id, type: Integer
       optional :code, type: String

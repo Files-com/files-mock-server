@@ -20,6 +20,51 @@ module FilesMockServer
     end
 
     params do
+      optional :remote_server_id, type: Integer
+      optional :root, type: String
+      optional :aws_access_key, type: String
+      optional :aws_secret_key, type: String
+      optional :password, type: String
+      optional :private_key, type: String
+      optional :ssl_certificate, type: String
+      optional :google_cloud_storage_credentials_json, type: String
+      optional :wasabi_access_key, type: String
+      optional :wasabi_secret_key, type: String
+      optional :backblaze_b2_key_id, type: String
+      optional :backblaze_b2_application_key, type: String
+      optional :rackspace_api_key, type: String
+      optional :reset_authentication, type: Boolean
+      optional :azure_blob_storage_access_key, type: String
+      optional :hostname, type: String
+      optional :name, type: String
+      optional :max_connections, type: Integer
+      optional :port, type: Integer
+      optional :s3_bucket, type: String
+      optional :s3_region, type: String
+      optional :server_certificate, type: String
+      optional :server_host_key, type: String
+      optional :server_type, type: String
+      optional :ssl, type: String
+      optional :username, type: String
+      optional :google_cloud_storage_bucket, type: String
+      optional :google_cloud_storage_project_id, type: String
+      optional :backblaze_b2_bucket, type: String
+      optional :backblaze_b2_s3_endpoint, type: String
+      optional :wasabi_bucket, type: String
+      optional :wasabi_region, type: String
+      optional :rackspace_username, type: String
+      optional :rackspace_region, type: String
+      optional :rackspace_container, type: String
+      optional :one_drive_account_type, type: String
+      optional :azure_blob_storage_account, type: String
+      optional :azure_blob_storage_container, type: String
+    end
+    get "/api/rest/v1/remote_servers/list_for_testing" do
+      status 200
+      { "path" => "path/file.txt", "display_name" => "file.txt", "type" => "file", "size" => 1024, "mtime" => "2000-01-01T01:00:00Z", "provided_mtime" => "2000-01-01T01:00:00Z", "crc32" => "70976923", "md5" => "17c54824e9931a4688ca032d03f6663c", "mime_type" => "application/octet-stream", "region" => "us-east-1", "permissions" => "rpw", "subfolders_locked?" => true, "download_uri" => "https://mysite.files.com/...", "priority_color" => "red", "preview_id" => 1, "preview" => "" }
+    end
+
+    params do
       optional :aws_access_key, type: String
       optional :aws_secret_key, type: String
       optional :password, type: String

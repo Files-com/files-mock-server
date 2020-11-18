@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] } ]
+      [{"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[], "trigger"=>"realtime", "schedule"=>#<Swagger::Schema days_of_week=[0, 2, 4] time_zone="Eastern Time (US & Canada)" times_of_day=["6:30", "14:30"]>}]
     end
 
     params do
@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[], "trigger"=>"realtime", "schedule"=>#<Swagger::Schema days_of_week=[0, 2, 4] time_zone="Eastern Time (US & Canada)" times_of_day=["6:30", "14:30"]>}
     end
 
     params do
@@ -37,10 +37,12 @@ module FilesMockServer
       optional :path, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
+      optional :schedule, type: Hash
+      optional :trigger, type: String
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[], "trigger"=>"realtime", "schedule"=>#<Swagger::Schema days_of_week=[0, 2, 4] time_zone="Eastern Time (US & Canada)" times_of_day=["6:30", "14:30"]>}
     end
 
     params do
@@ -54,10 +56,12 @@ module FilesMockServer
       optional :path, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
+      optional :schedule, type: Hash
+      optional :trigger, type: String
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "interval" => "week", "next_process_on" => "2020-01-01", "path" => "", "realtime" => true, "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      {"id"=>1, "automation"=>"create_folder", "source"=>"", "destination"=>"", "destination_replace_from"=>"", "destination_replace_to"=>"", "interval"=>"week", "next_process_on"=>"2020-01-01", "path"=>"", "realtime"=>true, "user_id"=>1, "user_ids"=>[], "group_ids"=>[], "trigger"=>"realtime", "schedule"=>#<Swagger::Schema days_of_week=[0, 2, 4] time_zone="Eastern Time (US & Canada)" times_of_day=["6:30", "14:30"]>}
     end
 
     params do

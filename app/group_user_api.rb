@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/group_users" do
       status 200
-      [ { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [] } ]
+      [ { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [ "user" ] } ]
     end
 
     params do
@@ -21,7 +21,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/group_users/:id" do
       status 200
-      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [] }
+      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [ "user" ] }
     end
 
     params do

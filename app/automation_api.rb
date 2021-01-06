@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [], "group_ids" => [] } ]
+      [ { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123" } ]
     end
 
     params do
@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -42,7 +42,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -61,7 +61,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [], "group_ids" => [] }
+      { "id" => 1, "automation" => "create_folder", "trigger" => "realtime", "interval" => "week", "next_process_on" => "2020-01-01", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destination" => "", "destination_replace_from" => "", "destination_replace_to" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do

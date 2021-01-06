@@ -8,8 +8,8 @@ module FilesMockServer
       optional :structure, type: Boolean
     end
     post "/api/rest/v1/file_actions/copy/:path" do
-      status 204
-      body false
+      status 201
+      { "status" => "enqueued", "file_migration_id" => "123" }
     end
 
     params do
@@ -17,8 +17,8 @@ module FilesMockServer
       requires :destination, type: String
     end
     post "/api/rest/v1/file_actions/move/:path" do
-      status 204
-      body false
+      status 201
+      { "status" => "enqueued", "file_migration_id" => "123" }
     end
 
     params do

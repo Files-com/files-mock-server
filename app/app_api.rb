@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/apps" do
       status 200
-      [ { "name" => "", "extended_description" => "", "documentation_links" => "Important Info => http://files.test/learn-more", "icon_url" => "", "logo_url" => "", "screenshot_list_urls" => "", "logo_thumbnail_url" => "", "sso_strategy_type" => "", "remote_server_type" => "", "folder_behavior_type" => "", "external_homepage_url" => "", "app_type" => "", "featured" => true } ]
+      [ { "name" => "", "extended_description" => "", "documentation_links" => "Important Info => http://files.test/learn-more", "icon_url" => "", "logo_url" => "", "screenshot_list_urls" => [ "" ], "logo_thumbnail_url" => "", "sso_strategy_type" => "", "remote_server_type" => "", "folder_behavior_type" => "", "external_homepage_url" => "", "app_type" => "", "featured" => true } ]
     end
   end
 end

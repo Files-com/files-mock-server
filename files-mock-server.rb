@@ -35,11 +35,13 @@ require "app/file_action_api"
 require "app/file_comment_api"
 require "app/file_comment_reaction_api"
 require "app/folder_api"
+require "app/form_field_set_api"
 require "app/group_api"
 require "app/group_user_api"
 require "app/history_api"
 require "app/history_export_api"
 require "app/history_export_result_api"
+require "app/inbox_upload_api"
 require "app/invoice_api"
 require "app/ip_address_api"
 require "app/lock_api"
@@ -83,11 +85,13 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::FileCommentAPI
   mount FilesMockServer::FileCommentReactionAPI
   mount FilesMockServer::FolderAPI
+  mount FilesMockServer::FormFieldSetAPI
   mount FilesMockServer::GroupAPI
   mount FilesMockServer::GroupUserAPI
   mount FilesMockServer::HistoryAPI
   mount FilesMockServer::HistoryExportAPI
   mount FilesMockServer::HistoryExportResultAPI
+  mount FilesMockServer::InboxUploadAPI
   mount FilesMockServer::InvoiceAPI
   mount FilesMockServer::IpAddressAPI
   mount FilesMockServer::LockAPI

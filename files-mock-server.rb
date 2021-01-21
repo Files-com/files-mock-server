@@ -41,6 +41,7 @@ require "app/group_user_api"
 require "app/history_api"
 require "app/history_export_api"
 require "app/history_export_result_api"
+require "app/inbox_recipient_api"
 require "app/inbox_upload_api"
 require "app/invoice_api"
 require "app/ip_address_api"
@@ -91,6 +92,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::HistoryAPI
   mount FilesMockServer::HistoryExportAPI
   mount FilesMockServer::HistoryExportResultAPI
+  mount FilesMockServer::InboxRecipientAPI
   mount FilesMockServer::InboxUploadAPI
   mount FilesMockServer::InvoiceAPI
   mount FilesMockServer::IpAddressAPI

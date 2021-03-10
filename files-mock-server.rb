@@ -27,6 +27,7 @@ require "app/behavior_api"
 require "app/bundle_api"
 require "app/bundle_download_api"
 require "app/bundle_recipient_api"
+require "app/bundle_registration_api"
 require "app/clickwrap_api"
 require "app/dns_record_api"
 require "app/external_event_api"
@@ -42,6 +43,7 @@ require "app/history_api"
 require "app/history_export_api"
 require "app/history_export_result_api"
 require "app/inbox_recipient_api"
+require "app/inbox_registration_api"
 require "app/inbox_upload_api"
 require "app/invoice_api"
 require "app/ip_address_api"
@@ -78,6 +80,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::BundleAPI
   mount FilesMockServer::BundleDownloadAPI
   mount FilesMockServer::BundleRecipientAPI
+  mount FilesMockServer::BundleRegistrationAPI
   mount FilesMockServer::ClickwrapAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::ExternalEventAPI
@@ -93,6 +96,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::HistoryExportAPI
   mount FilesMockServer::HistoryExportResultAPI
   mount FilesMockServer::InboxRecipientAPI
+  mount FilesMockServer::InboxRegistrationAPI
   mount FilesMockServer::InboxUploadAPI
   mount FilesMockServer::InvoiceAPI
   mount FilesMockServer::IpAddressAPI

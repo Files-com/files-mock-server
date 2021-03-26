@@ -14,6 +14,16 @@ module FilesMockServer
     end
 
     params do
+      requires :group_id, type: Integer
+      requires :user_id, type: Integer
+      optional :admin, type: Boolean
+    end
+    post "/api/rest/v1/group_users" do
+      status 201
+      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "usernames" => [ "user" ] }
+    end
+
+    params do
       requires :id, type: Integer
       requires :group_id, type: Integer
       requires :user_id, type: Integer

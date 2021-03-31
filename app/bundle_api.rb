@@ -49,7 +49,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      requires :to, type: Array[String]
+      optional :to, type: Array[String]
       optional :note, type: String
       optional :recipients, type: Array[Hash]
     end

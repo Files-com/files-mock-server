@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/messages" do
       status 200
-      [ { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ] } ]
+      [ { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => { "id" => 1, "emoji" => "👍" } } } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/messages/:id" do
       status 200
-      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ] }
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => { "id" => 1, "emoji" => "👍" } } }
     end
 
     params do
@@ -29,7 +29,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/messages" do
       status 201
-      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ] }
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => { "id" => 1, "emoji" => "👍" } } }
     end
 
     params do
@@ -40,7 +40,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/messages/:id" do
       status 200
-      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => [ { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ] }
+      { "id" => 1, "subject" => "Files.com Account Upgrade", "body" => "We should upgrade our Files.com account!", "comments" => { "id" => 1, "body" => "What a great idea, thank you!", "reactions" => { "id" => 1, "emoji" => "👍" } } }
     end
 
     params do

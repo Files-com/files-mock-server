@@ -18,6 +18,8 @@ $LOAD_PATH.push __dir__
 require 'lib/base64_upload'
 require 'lib/grape_extensions'
 
+require "app/action_notification_export_api"
+require "app/action_notification_export_result_api"
 require "app/api_key_api"
 require "app/app_api"
 require "app/as2_key_api"
@@ -73,6 +75,8 @@ require "app/user_request_api"
 require "app/webhook_test_api"
 
 class FilesMockServer::API < Grape::API
+  mount FilesMockServer::ActionNotificationExportAPI
+  mount FilesMockServer::ActionNotificationExportResultAPI
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::AppAPI
   mount FilesMockServer::As2KeyAPI

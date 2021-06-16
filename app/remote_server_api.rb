@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_servers" do
       status 200
-      [ { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name" } ]
+      [ { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "s3_compatible_bucket" => "my-bucket", "s3_compatible_region" => "us-east-1", "s3_compatible_endpoint" => "mys3platform.com" } ]
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_servers/:id" do
       status 200
-      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name" }
+      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "s3_compatible_bucket" => "my-bucket", "s3_compatible_region" => "us-east-1", "s3_compatible_endpoint" => "mys3platform.com" }
     end
 
     params do
@@ -56,10 +56,15 @@ module FilesMockServer
       optional :one_drive_account_type, type: String
       optional :azure_blob_storage_account, type: String
       optional :azure_blob_storage_container, type: String
+      optional :s3_compatible_bucket, type: String
+      optional :s3_compatible_region, type: String
+      optional :s3_compatible_endpoint, type: String
+      optional :s3_compatible_access_key, type: String
+      optional :s3_compatible_secret_key, type: String
     end
     post "/api/rest/v1/remote_servers" do
       status 201
-      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name" }
+      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "s3_compatible_bucket" => "my-bucket", "s3_compatible_region" => "us-east-1", "s3_compatible_endpoint" => "mys3platform.com" }
     end
 
     params do
@@ -100,10 +105,15 @@ module FilesMockServer
       optional :one_drive_account_type, type: String
       optional :azure_blob_storage_account, type: String
       optional :azure_blob_storage_container, type: String
+      optional :s3_compatible_bucket, type: String
+      optional :s3_compatible_region, type: String
+      optional :s3_compatible_endpoint, type: String
+      optional :s3_compatible_access_key, type: String
+      optional :s3_compatible_secret_key, type: String
     end
     patch "/api/rest/v1/remote_servers/:id" do
       status 200
-      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "us-west-1", "wasabi_region" => "my-bucket", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name" }
+      { "id" => 1, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "name" => "My Remote server", "port" => 1, "max_connections" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_project_id" => "my-project", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "rackspace_username" => "rackspaceuser", "rackspace_region" => "dfw", "rackspace_container" => "my-container", "auth_setup_link" => "auth/:provider", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "s3_compatible_bucket" => "my-bucket", "s3_compatible_region" => "us-east-1", "s3_compatible_endpoint" => "mys3platform.com" }
     end
 
     params do

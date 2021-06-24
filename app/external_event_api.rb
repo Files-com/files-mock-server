@@ -25,5 +25,14 @@ module FilesMockServer
       status 200
       { "id" => 1, "event_type" => "", "status" => "", "body" => "", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "" }
     end
+
+    params do
+      requires :status, type: String
+      requires :body, type: String
+    end
+    post "/api/rest/v1/external_events" do
+      status 201
+      { "id" => 1, "event_type" => "", "status" => "", "body" => "", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "" }
+    end
   end
 end

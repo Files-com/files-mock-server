@@ -38,6 +38,7 @@ require "app/file_api"
 require "app/file_action_api"
 require "app/file_comment_api"
 require "app/file_comment_reaction_api"
+require "app/file_migration_api"
 require "app/folder_api"
 require "app/form_field_set_api"
 require "app/group_api"
@@ -96,6 +97,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::FileActionAPI
   mount FilesMockServer::FileCommentAPI
   mount FilesMockServer::FileCommentReactionAPI
+  mount FilesMockServer::FileMigrationAPI
   mount FilesMockServer::FolderAPI
   mount FilesMockServer::FormFieldSetAPI
   mount FilesMockServer::GroupAPI

@@ -6,7 +6,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
-      requires :bundle_id, type: Integer
+      optional :bundle_id, type: Integer
     end
     get "/api/rest/v1/bundle_registrations" do
       status 200

@@ -9,6 +9,8 @@ module FilesMockServer
       optional :headers, type: Hash
       optional :body, type: Hash
       optional :raw_body, type: String
+      optional :file_as_body, type: Boolean
+      optional :file_form_field, type: String
       optional :action, type: String
     end
     post "/api/rest/v1/webhook_tests" do

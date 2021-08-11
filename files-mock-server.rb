@@ -35,7 +35,6 @@ require "app/clickwrap_api"
 require "app/dns_record_api"
 require "app/external_event_api"
 require "app/file_api"
-require "app/file_action_api"
 require "app/file_comment_api"
 require "app/file_comment_reaction_api"
 require "app/file_migration_api"
@@ -94,7 +93,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::ExternalEventAPI
   mount FilesMockServer::FileAPI
-  mount FilesMockServer::FileActionAPI
   mount FilesMockServer::FileCommentAPI
   mount FilesMockServer::FileCommentReactionAPI
   mount FilesMockServer::FileMigrationAPI

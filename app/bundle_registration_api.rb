@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/bundle_registrations" do
       status 200
-      [ { "code" => "abc123", "name" => "account", "company" => "Action Verb", "email" => "john.doe@files.com", "inbox_code" => "abc123", "clickwrap_body" => "", "form_field_set_id" => 1, "form_field_data" => "" } ]
+      [ { "code" => "abc123", "name" => "account", "company" => "Action Verb", "email" => "john.doe@files.com", "ip" => "10.1.1.1", "inbox_code" => "abc123", "clickwrap_body" => "", "form_field_set_id" => 1, "form_field_data" => "" } ]
     end
   end
 end

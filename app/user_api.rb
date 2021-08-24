@@ -44,6 +44,7 @@ module FilesMockServer
       optional :grant_permission, type: String
       optional :group_id, type: Integer
       optional :group_ids, type: String
+      optional :imported_password_hash, type: String
       optional :password, type: String
       optional :password_confirmation, type: String
       optional :announcements_read, type: Boolean
@@ -119,6 +120,7 @@ module FilesMockServer
       optional :grant_permission, type: String
       optional :group_id, type: Integer
       optional :group_ids, type: String
+      optional :imported_password_hash, type: String
       optional :password, type: String
       optional :password_confirmation, type: String
       optional :announcements_read, type: Boolean

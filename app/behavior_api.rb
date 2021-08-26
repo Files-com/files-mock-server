@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors" do
       status 200
-      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
+      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "name" => "", "description" => "", "value" => { "method" => "GET" } } ]
     end
 
     params do
@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "name" => "", "description" => "", "value" => { "method" => "GET" } }
     end
 
     params do
@@ -43,18 +43,20 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors/folders/:path" do
       status 200
-      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } } ]
+      [ { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "name" => "", "description" => "", "value" => { "method" => "GET" } } ]
     end
 
     params do
       optional :value, type: String
       optional :attachment_file, type: File
+      optional :name, type: String
+      optional :description, type: String
       requires :path, type: String
       requires :behavior, type: String
     end
     post "/api/rest/v1/behaviors" do
       status 201
-      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "name" => "", "description" => "", "value" => { "method" => "GET" } }
     end
 
     params do
@@ -74,12 +76,14 @@ module FilesMockServer
       requires :id, type: [ String, Integer, Hash ]
       optional :value, type: String
       optional :attachment_file, type: File
+      optional :name, type: String
+      optional :description, type: String
       optional :behavior, type: String
       optional :path, type: [ String, Integer, Hash ]
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "value" => { "method" => "GET" } }
+      { "id" => 1, "path" => "", "attachment_url" => "", "behavior" => "webhook", "name" => "", "description" => "", "value" => { "method" => "GET" } }
     end
 
     params do

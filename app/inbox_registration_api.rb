@@ -5,7 +5,7 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
-      requires :folder_behavior_id, type: Integer
+      optional :folder_behavior_id, type: Integer
     end
     get "/api/rest/v1/inbox_registrations" do
       status 200

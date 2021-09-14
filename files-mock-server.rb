@@ -58,6 +58,7 @@ require "app/message_reaction_api"
 require "app/notification_api"
 require "app/payment_api"
 require "app/permission_api"
+require "app/priority_api"
 require "app/project_api"
 require "app/public_key_api"
 require "app/remote_server_api"
@@ -116,6 +117,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::NotificationAPI
   mount FilesMockServer::PaymentAPI
   mount FilesMockServer::PermissionAPI
+  mount FilesMockServer::PriorityAPI
   mount FilesMockServer::ProjectAPI
   mount FilesMockServer::PublicKeyAPI
   mount FilesMockServer::RemoteServerAPI

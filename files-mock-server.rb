@@ -25,6 +25,7 @@ require "app/api_key_api"
 require "app/app_api"
 require "app/as2_key_api"
 require "app/automation_api"
+require "app/automation_run_api"
 require "app/bandwidth_snapshot_api"
 require "app/behavior_api"
 require "app/bundle_api"
@@ -84,6 +85,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::AppAPI
   mount FilesMockServer::As2KeyAPI
   mount FilesMockServer::AutomationAPI
+  mount FilesMockServer::AutomationRunAPI
   mount FilesMockServer::BandwidthSnapshotAPI
   mount FilesMockServer::BehaviorAPI
   mount FilesMockServer::BundleAPI

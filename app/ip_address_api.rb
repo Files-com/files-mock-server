@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/ip_addresses/reserved" do
       status 200
-      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1" } ]
+      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => "", "sftp_enabled" => "" } ]
     end
   end
 end

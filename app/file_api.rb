@@ -91,6 +91,7 @@ module FilesMockServer
       optional :parts, type: Integer
       optional :ref, type: String
       optional :restart, type: Integer
+      optional :size, type: Integer
       optional :with_rename, type: Boolean
     end
     post "/api/rest/v1/file_actions/begin_upload/:path" do

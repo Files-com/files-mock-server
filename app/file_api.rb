@@ -72,7 +72,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/file_actions/copy/:path" do
       status 201
-      { "status" => "enqueued", "file_migration_id" => "123" }
+      { "status" => "pending", "file_migration_id" => "123" }
     end
 
     params do
@@ -81,7 +81,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/file_actions/move/:path" do
       status 201
-      { "status" => "enqueued", "file_migration_id" => "123" }
+      { "status" => "pending", "file_migration_id" => "123" }
     end
 
     params do

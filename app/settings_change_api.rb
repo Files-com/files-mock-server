@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/settings_changes" do
       status 200
-      [ { "change_details" => "{ domain: [\"olddomain.com', \"newdomain.com\"] }", "created_at" => "2000-01-01T01:00:00Z", "user_id" => 1 } ]
+      [ { "change_details" => "{ domain: [\"olddomain.com', \"newdomain.com\"] }", "changes" => [ "" ], "created_at" => "2000-01-01T01:00:00Z", "user_id" => 1 } ]
     end
   end
 end

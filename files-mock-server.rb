@@ -23,7 +23,10 @@ require "app/action_notification_export_result_api"
 require "app/action_webhook_failure_api"
 require "app/api_key_api"
 require "app/app_api"
-require "app/as2_key_api"
+require "app/as2_incoming_message_api"
+require "app/as2_outgoing_message_api"
+require "app/as2_partner_api"
+require "app/as2_station_api"
 require "app/automation_api"
 require "app/automation_run_api"
 require "app/bandwidth_snapshot_api"
@@ -83,7 +86,10 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ActionWebhookFailureAPI
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::AppAPI
-  mount FilesMockServer::As2KeyAPI
+  mount FilesMockServer::As2IncomingMessageAPI
+  mount FilesMockServer::As2OutgoingMessageAPI
+  mount FilesMockServer::As2PartnerAPI
+  mount FilesMockServer::As2StationAPI
   mount FilesMockServer::AutomationAPI
   mount FilesMockServer::AutomationRunAPI
   mount FilesMockServer::BandwidthSnapshotAPI

@@ -72,7 +72,6 @@ require "app/settings_change_api"
 require "app/site_api"
 require "app/sso_strategy_api"
 require "app/style_api"
-require "app/sync_job_api"
 require "app/usage_daily_snapshot_api"
 require "app/usage_snapshot_api"
 require "app/user_api"
@@ -135,7 +134,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::SiteAPI
   mount FilesMockServer::SsoStrategyAPI
   mount FilesMockServer::StyleAPI
-  mount FilesMockServer::SyncJobAPI
   mount FilesMockServer::UsageDailySnapshotAPI
   mount FilesMockServer::UsageSnapshotAPI
   mount FilesMockServer::UserAPI

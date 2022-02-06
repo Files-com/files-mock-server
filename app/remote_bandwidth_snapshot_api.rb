@@ -1,5 +1,5 @@
 module FilesMockServer
-  class BandwidthSnapshotAPI < Grape::API
+  class RemoteBandwidthSnapshotAPI < Grape::API
     format :json
 
     params do
@@ -13,9 +13,9 @@ module FilesMockServer
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
     end
-    get "/api/rest/v1/bandwidth_snapshots" do
+    get "/api/rest/v1/remote_bandwidth_snapshots" do
       status 200
-      [ { "id" => 1, "bytes_received" => 1.0, "bytes_sent" => 1.0, "sync_bytes_received" => 1.0, "sync_bytes_sent" => 1.0, "requests_get" => 1.0, "requests_put" => 1.0, "requests_other" => 1.0, "logged_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "sync_bytes_received" => 1.0, "sync_bytes_sent" => 1.0, "logged_at" => "2000-01-01T01:00:00Z", "remote_server_id" => 1 } ]
     end
   end
 end

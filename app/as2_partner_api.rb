@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/as2_partners" do
       status 200
-      [ { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" } ]
+      [ { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" } ]
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/as2_partners/:id" do
       status 200
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do
@@ -24,21 +24,23 @@ module FilesMockServer
       requires :uri, type: String
       requires :public_certificate, type: String
       requires :as2_station_id, type: Integer
+      optional :server_certificate, type: String
     end
     post "/api/rest/v1/as2_partners" do
       status 201
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do
       requires :id, type: Integer
       optional :name, type: String
       optional :uri, type: String
+      optional :server_certificate, type: String
       optional :public_certificate, type: String
     end
     patch "/api/rest/v1/as2_partners/:id" do
       status 200
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do

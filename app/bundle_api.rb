@@ -42,6 +42,9 @@ module FilesMockServer
       optional :clickwrap_id, type: Integer
       optional :inbox_id, type: Integer
       optional :require_share_recipient, type: Boolean
+      optional :skip_email, type: Boolean
+      optional :skip_name, type: Boolean
+      optional :skip_company, type: Boolean
       optional :watermark_attachment_file, type: File
     end
     post "/api/rest/v1/bundles" do
@@ -75,6 +78,9 @@ module FilesMockServer
       optional :preview_only, type: Boolean
       optional :require_registration, type: Boolean
       optional :require_share_recipient, type: Boolean
+      optional :skip_email, type: Boolean
+      optional :skip_name, type: Boolean
+      optional :skip_company, type: Boolean
       optional :watermark_attachment_delete, type: Boolean
       optional :watermark_attachment_file, type: File
     end

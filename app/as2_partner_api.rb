@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/as2_partners" do
       status 200
-      [ { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" } ]
+      [ { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" } ]
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/as2_partners/:id" do
       status 200
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/as2_partners" do
       status 201
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do
@@ -40,7 +40,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/as2_partners/:id" do
       status 200
-      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
+      { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "", "server_certificate" => "require_match", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "", "public_certificate_subject" => "", "public_certificate_issuer" => "", "public_certificate_serial" => "", "public_certificate_not_before" => "", "public_certificate_not_after" => "" }
     end
 
     params do

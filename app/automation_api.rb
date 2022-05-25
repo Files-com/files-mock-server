@@ -12,11 +12,12 @@ module FilesMockServer
       optional :filter_like, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
+      optional :with_deleted, type: Boolean
       optional :automation, type: String
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "disabled" => true, "trigger" => "realtime", "interval" => "week", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" } ]
+      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" } ]
     end
 
     params do
@@ -24,11 +25,10 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "disabled" => true, "trigger" => "realtime", "interval" => "week", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
     end
 
     params do
-      requires :automation, type: String
       optional :source, type: String
       optional :destination, type: String
       optional :destinations, type: Array[String]
@@ -45,15 +45,16 @@ module FilesMockServer
       optional :trigger, type: String
       optional :trigger_actions, type: Array[String]
       optional :value, type: Hash
+      requires :automation, type: String
+      optional :cloned_from, type: Integer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "disabled" => true, "trigger" => "realtime", "interval" => "week", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
     end
 
     params do
       requires :id, type: Integer
-      requires :automation, type: String
       optional :source, type: String
       optional :destination, type: String
       optional :destinations, type: Array[String]
@@ -70,10 +71,11 @@ module FilesMockServer
       optional :trigger, type: String
       optional :trigger_actions, type: Array[String]
       optional :value, type: Hash
+      optional :automation, type: String
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "disabled" => true, "trigger" => "realtime", "interval" => "week", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => "[ \"create\" ]", "value" => "{\"limit\": \"1\"}" }
     end
 
     params do

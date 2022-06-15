@@ -46,7 +46,6 @@ module FilesMockServer
       optional :trigger_actions, type: Array[String]
       optional :value, type: Hash
       requires :automation, type: String
-      optional :cloned_from, type: Integer
     end
     post "/api/rest/v1/automations" do
       status 201

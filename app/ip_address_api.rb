@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/ip_addresses" do
       status 200
-      [ { "id" => "Site", "associated_with" => "Site", "group_id" => 1, "ip_addresses" => "127.0.0.1" } ]
+      [ { "id" => "Site", "associated_with" => "Site", "group_id" => 1, "ip_addresses" => [ "127.0.0.1" ] } ]
     end
 
     params do

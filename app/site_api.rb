@@ -81,6 +81,7 @@ module FilesMockServer
       optional :user_requests_notify_admins, type: Boolean
       optional :ftp_enabled, type: Boolean
       optional :sftp_enabled, type: Boolean
+      optional :bundle_watermark_value, type: Hash
       optional :allowed_2fa_method_sms, type: Boolean
       optional :allowed_2fa_method_u2f, type: Boolean
       optional :allowed_2fa_method_totp, type: Boolean

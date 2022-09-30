@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/locks/:path" do
       status 200
-      [ { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "recursive" => true, "owner" => "user", "scope" => "shared", "exclusive" => true, "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "allow_access_by_any_user" => true, "user_id" => 1, "username" => "" } ]
+      [ { "path" => "locked_file", "timeout" => 1, "depth" => "infinity", "recursive" => true, "owner" => "user", "scope" => "shared", "exclusive" => true, "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "allow_access_by_any_user" => true, "user_id" => 1, "username" => "" } ]
     end
 
     params do
@@ -22,7 +22,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/locks/:path" do
       status 201
-      { "path" => "locked_file", "timeout" => 43200, "depth" => "infinity", "recursive" => true, "owner" => "user", "scope" => "shared", "exclusive" => true, "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "allow_access_by_any_user" => true, "user_id" => 1, "username" => "" }
+      { "path" => "locked_file", "timeout" => 1, "depth" => "infinity", "recursive" => true, "owner" => "user", "scope" => "shared", "exclusive" => true, "token" => "17c54824e9931a4688ca032d03f6663c", "type" => "write", "allow_access_by_any_user" => true, "user_id" => 1, "username" => "" }
     end
 
     params do

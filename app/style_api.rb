@@ -7,7 +7,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/styles/:path" do
       status 200
-      { "id" => 1, "path" => "", "logo" => "https://mysite.files.com/...", "thumbnail" => "" }
+      { "id" => 1, "path" => "example", "logo" => "https://mysite.files.com/...", "thumbnail" => "example" }
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/styles/:path" do
       status 200
-      { "id" => 1, "path" => "", "logo" => "https://mysite.files.com/...", "thumbnail" => "" }
+      { "id" => 1, "path" => "example", "logo" => "https://mysite.files.com/...", "thumbnail" => "example" }
     end
 
     params do

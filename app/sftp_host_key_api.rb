@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/sftp_host_keys" do
       status 200
-      [ { "id" => 1, "name" => "", "fingerprint_md5" => "", "fingerprint_sha256" => "" } ]
+      [ { "id" => 1, "name" => "example", "fingerprint_md5" => "example", "fingerprint_sha256" => "example" } ]
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/sftp_host_keys/:id" do
       status 200
-      { "id" => 1, "name" => "", "fingerprint_md5" => "", "fingerprint_sha256" => "" }
+      { "id" => 1, "name" => "example", "fingerprint_md5" => "example", "fingerprint_sha256" => "example" }
     end
 
     params do
@@ -25,7 +25,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/sftp_host_keys" do
       status 201
-      { "id" => 1, "name" => "", "fingerprint_md5" => "", "fingerprint_sha256" => "" }
+      { "id" => 1, "name" => "example", "fingerprint_md5" => "example", "fingerprint_sha256" => "example" }
     end
 
     params do
@@ -35,7 +35,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/sftp_host_keys/:id" do
       status 200
-      { "id" => 1, "name" => "", "fingerprint_md5" => "", "fingerprint_sha256" => "" }
+      { "id" => 1, "name" => "example", "fingerprint_md5" => "example", "fingerprint_sha256" => "example" }
     end
 
     params do

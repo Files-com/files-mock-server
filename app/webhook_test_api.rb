@@ -15,7 +15,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/webhook_tests" do
       status 201
-      { "code" => 200, "message" => "", "status" => "", "data" => "", "success" => true }
+      { "code" => 200, "message" => "", "status" => "", "data" => "example", "success" => true }
     end
   end
 end

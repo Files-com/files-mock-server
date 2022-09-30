@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/clickwraps" do
       status 200
-      [ { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" } ]
+      [ { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "example", "use_with_bundles" => "example", "use_with_inboxes" => "example" } ]
     end
 
     params do
@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/clickwraps/:id" do
       status 200
-      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "example", "use_with_bundles" => "example", "use_with_inboxes" => "example" }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/clickwraps" do
       status 201
-      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "example", "use_with_bundles" => "example", "use_with_inboxes" => "example" }
     end
 
     params do
@@ -41,7 +41,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/clickwraps/:id" do
       status 200
-      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "", "use_with_bundles" => "", "use_with_inboxes" => "" }
+      { "id" => 1, "name" => "Example Site NDA for Files.com Use", "body" => "[Legal body text]", "use_with_users" => "example", "use_with_bundles" => "example", "use_with_inboxes" => "example" }
     end
 
     params do

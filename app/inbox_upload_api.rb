@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/inbox_uploads" do
       status 200
-      [ { "inbox_registration" => "", "path" => "a/b/test.txt", "created_at" => "2020-01-01 00:00:00" } ]
+      [ { "inbox_registration" => "example", "path" => "a/b/test.txt", "created_at" => "2000-01-01T01:00:00Z" } ]
     end
   end
 end

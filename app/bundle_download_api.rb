@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/bundle_downloads" do
       status 200
-      [ { "bundle_registration" => "", "download_method" => "file", "path" => "a/b/test.txt", "created_at" => "2020-01-01 00:00:00" } ]
+      [ { "bundle_registration" => "example", "download_method" => "file", "path" => "a/b/test.txt", "created_at" => "2000-01-01T01:00:00Z" } ]
     end
   end
 end

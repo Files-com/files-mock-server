@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } } ]
+      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } } ]
     end
 
     params do
@@ -25,7 +25,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do
@@ -49,7 +49,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do
@@ -74,7 +74,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "", "schedule" => { "days_of_week" => [ 0, 2, 4 ], "times_of_day" => [ "6:30", "14:30" ], "time_zone" => "Eastern Time (US & Canada)" }, "source" => "", "destinations" => [ "destination" ], "destination_replace_from" => "", "destination_replace_to" => "", "description" => "", "path" => "", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do

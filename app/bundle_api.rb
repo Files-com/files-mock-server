@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/bundles" do
       status 200
-      [ { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] } ]
+      [ { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "dont_separate_submissions_by_folder" => true, "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "path_template" => "{{name}}_{{ip}}", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] } ]
     end
 
     params do
@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/bundles/:id" do
       status 200
-      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "dont_separate_submissions_by_folder" => true, "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "path_template" => "{{name}}_{{ip}}", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
     end
 
     params do
@@ -32,11 +32,13 @@ module FilesMockServer
       requires :paths, type: Array[String]
       optional :password, type: String
       optional :form_field_set_id, type: Integer
+      optional :dont_separate_submissions_by_folder, type: Boolean
       optional :expires_at, type: String
       optional :max_uses, type: Integer
       optional :description, type: String
       optional :note, type: String
       optional :code, type: String
+      optional :path_template, type: String
       optional :permissions, type: String
       optional :preview_only, type: Boolean
       optional :require_registration, type: Boolean
@@ -50,7 +52,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/bundles" do
       status 201
-      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "dont_separate_submissions_by_folder" => true, "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "path_template" => "{{name}}_{{ip}}", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
     end
 
     params do
@@ -72,10 +74,12 @@ module FilesMockServer
       optional :clickwrap_id, type: Integer
       optional :code, type: String
       optional :description, type: String
+      optional :dont_separate_submissions_by_folder, type: Boolean
       optional :expires_at, type: String
       optional :inbox_id, type: Integer
       optional :max_uses, type: Integer
       optional :note, type: String
+      optional :path_template, type: String
       optional :permissions, type: String
       optional :preview_only, type: Boolean
       optional :require_registration, type: Boolean
@@ -88,7 +92,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/bundles/:id" do
       status 200
-      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
+      { "code" => "abc123", "url" => "https://subdomain.files.com/f/12345678", "description" => "The public description of the bundle.", "password_protected" => true, "permissions" => "read", "preview_only" => true, "require_registration" => true, "require_share_recipient" => true, "clickwrap_body" => "[Legal text]", "form_field_set" => "", "skip_name" => true, "skip_email" => true, "skip_company" => true, "id" => 1, "created_at" => "2000-01-01T01:00:00Z", "dont_separate_submissions_by_folder" => true, "expires_at" => "2000-01-01T01:00:00Z", "max_uses" => 1, "note" => "The internal note on the bundle.", "path_template" => "{{name}}_{{ip}}", "user_id" => 1, "username" => "user", "clickwrap_id" => 1, "inbox_id" => 1, "watermark_attachment" => "", "watermark_value" => { "key" => "example value" }, "has_inbox" => true, "paths" => [ "file.txt" ] }
     end
 
     params do

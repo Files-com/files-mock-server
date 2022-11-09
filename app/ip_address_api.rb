@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/ip_addresses/exavault-reserved" do
       status 200
-      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => "example", "sftp_enabled" => "example" } ]
+      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => true, "sftp_enabled" => true } ]
     end
 
     params do
@@ -26,7 +26,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/ip_addresses/reserved" do
       status 200
-      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => "example", "sftp_enabled" => "example" } ]
+      [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => true, "sftp_enabled" => true } ]
     end
   end
 end

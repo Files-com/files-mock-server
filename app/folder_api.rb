@@ -21,6 +21,7 @@ module FilesMockServer
     params do
       requires :path, type: String
       optional :mkdir_parents, type: Boolean
+      optional :provided_mtime, type: String
     end
     post "/api/rest/v1/folders/:path" do
       status 201

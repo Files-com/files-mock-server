@@ -144,6 +144,7 @@ module FilesMockServer
       optional :ldap_password_change, type: String
       optional :ldap_password_change_confirmation, type: String
       optional :smtp_password, type: String
+      optional :session_expiry_minutes, type: Integer
     end
     patch "/api/rest/v1/site" do
       status 200

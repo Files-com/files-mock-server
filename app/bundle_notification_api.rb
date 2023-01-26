@@ -22,7 +22,7 @@ module FilesMockServer
     end
 
     params do
-      requires :user_id, type: Integer
+      optional :user_id, type: Integer
       optional :notify_on_registration, type: Boolean
       optional :notify_on_upload, type: Boolean
       requires :bundle_id, type: Integer

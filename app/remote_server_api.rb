@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_servers/:id/configuration_file" do
       status 200
-      { "id" => 1, "permission_set" => "full", "api_token" => "example", "root" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "private_key" => "example", "status" => "example", "config_version" => "example", "server_host_key" => "example" }
+      { "id" => 1, "permission_set" => "full", "api_token" => "example", "root" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "private_key" => "example", "status" => "example", "config_version" => "example", "server_host_key" => "example", "subdomain" => "example" }
     end
 
     params do
@@ -97,10 +97,11 @@ module FilesMockServer
       optional :private_key, type: String
       optional :public_key, type: String
       optional :server_host_key, type: String
+      optional :subdomain, type: String
     end
     post "/api/rest/v1/remote_servers/:id/configuration_file" do
       status 201
-      { "id" => 1, "permission_set" => "full", "api_token" => "example", "root" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "private_key" => "example", "status" => "example", "config_version" => "example", "server_host_key" => "example" }
+      { "id" => 1, "permission_set" => "full", "api_token" => "example", "root" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "private_key" => "example", "status" => "example", "config_version" => "example", "server_host_key" => "example", "subdomain" => "example" }
     end
 
     params do

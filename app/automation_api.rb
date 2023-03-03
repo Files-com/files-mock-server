@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } } ]
+      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } } ]
     end
 
     params do
@@ -25,7 +25,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do
@@ -36,6 +36,7 @@ module FilesMockServer
       optional :destination_replace_to, type: String
       optional :interval, type: String
       optional :path, type: String
+      optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
       optional :schedule, type: Hash
@@ -49,7 +50,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do
@@ -61,6 +62,7 @@ module FilesMockServer
       optional :destination_replace_to, type: String
       optional :interval, type: String
       optional :path, type: String
+      optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
       optional :schedule, type: Hash
@@ -74,7 +76,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "realtime", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
     end
 
     params do

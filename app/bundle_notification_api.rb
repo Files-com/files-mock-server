@@ -6,7 +6,9 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
-      optional :bundle_id, type: Integer
+      optional :sort_by, type: Hash
+      optional :bundle_id, type: String
+      optional :filter, type: Hash
     end
     get "/api/rest/v1/bundle_notifications" do
       status 200

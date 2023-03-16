@@ -10,7 +10,6 @@ module FilesMockServer
       optional :filter, type: Hash
       optional :filter_gt, type: Hash
       optional :filter_gteq, type: Hash
-      optional :filter_like, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
     end

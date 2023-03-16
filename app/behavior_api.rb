@@ -6,13 +6,9 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
-      optional :filter, type: Hash
-      optional :filter_gt, type: Hash
-      optional :filter_gteq, type: Hash
-      optional :filter_like, type: Hash
-      optional :filter_lt, type: Hash
-      optional :filter_lteq, type: Hash
       optional :behavior, type: String
+      optional :filter, type: Hash
+      optional :filter_prefix, type: Hash
     end
     get "/api/rest/v1/behaviors" do
       status 200
@@ -32,11 +28,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
-      optional :filter_gt, type: Hash
-      optional :filter_gteq, type: Hash
-      optional :filter_like, type: Hash
-      optional :filter_lt, type: Hash
-      optional :filter_lteq, type: Hash
+      optional :filter_prefix, type: Hash
       requires :path, type: String
       optional :recursive, type: String
       optional :behavior, type: String

@@ -8,11 +8,6 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
-      optional :filter_gt, type: Hash
-      optional :filter_gteq, type: Hash
-      optional :filter_like, type: Hash
-      optional :filter_lt, type: Hash
-      optional :filter_lteq, type: Hash
       requires :bundle_id, type: Integer
     end
     get "/api/rest/v1/bundle_recipients" do

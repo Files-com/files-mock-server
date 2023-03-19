@@ -96,7 +96,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/file_actions/begin_upload/:path" do
       status 200
-      [ { "send" => { "key" => "example value" }, "action" => "multipart", "ask_about_overwrites" => true, "available_parts" => 1, "expires" => "example", "headers" => { "key" => "example value" }, "http_method" => "PUT", "next_partsize" => 1, "parallel_parts" => true, "parameters" => { "key" => "example value" }, "part_number" => 1, "partsize" => 1, "path" => "", "ref" => "upload-1", "upload_uri" => "example" } ]
+      [ { "send" => { "key" => "example value" }, "action" => "multipart", "ask_about_overwrites" => true, "available_parts" => 1, "expires" => "example", "headers" => { "key" => "example value" }, "http_method" => "PUT", "next_partsize" => 1, "parallel_parts" => true, "retry_parts" => true, "parameters" => { "key" => "example value" }, "part_number" => 1, "partsize" => 1, "path" => "", "ref" => "upload-1", "upload_uri" => "example" } ]
     end
   end
 end

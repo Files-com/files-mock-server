@@ -1,4 +1,4 @@
-FROM ruby:2.5
+FROM ruby:2.7
 MAINTAINER Action Verb, LLC "https://github.com/Files-com"
 
 ADD . /files-mock-server

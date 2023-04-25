@@ -29,7 +29,7 @@ the ability to intentionally provoke errors.
 
 ## Docker Image Usage
 We also supply a docker image for easier accessibility. First install docker; then, execute the following: 
-```
+```bash
      docker run -p 40410:4041 -it filescom/files-mock-server:latest
 ```
 

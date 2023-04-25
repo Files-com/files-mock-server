@@ -22,17 +22,20 @@ the ability to intentionally provoke errors.
 
 
 ## Local Ruby Usage
-
+```
     bundle install
     bundle exec puma
+```
 
 ## Docker Image Usage
 We also supply a docker image for easier accessibility. First install docker; then, execute the following: 
-
+```
      docker run -p 40410:4041 -it filescom/files-mock-server:latest
+```
 
 The image will be pulled from docker-hub, and the mock server can be accessed via the open port bound on the host machine.
 
 Example:
-
+```
     curl 127.0.0.1:40410/api/rest/v1/users
+```

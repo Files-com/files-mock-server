@@ -36,6 +36,6 @@ We also supply a docker image for easier accessibility. First install docker; th
 The image will be pulled from docker-hub, and the mock server can be accessed via the open port bound on the host machine.
 
 Example:
-```
+```bash
     curl 127.0.0.1:40410/api/rest/v1/users
 ```

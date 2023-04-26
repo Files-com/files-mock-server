@@ -7,8 +7,8 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
-      optional :filter, type: Hash
       requires :automation_id, type: Integer
+      optional :filter, type: Hash
     end
     get "/api/rest/v1/automation_runs" do
       status 200

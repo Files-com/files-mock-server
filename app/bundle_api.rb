@@ -50,6 +50,7 @@ module FilesMockServer
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :skip_company, type: Boolean
+      optional :snapshot_id, type: Integer
       optional :watermark_attachment_file, type: File
     end
     post "/api/rest/v1/bundles" do

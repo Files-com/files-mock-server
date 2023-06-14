@@ -7,11 +7,11 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
-      optional :group_id, type: String
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash
       optional :path, type: String
       optional :include_ancestors, type: Boolean
+      optional :group_id, type: String
     end
     get "/api/rest/v1/notifications" do
       status 200

@@ -72,6 +72,7 @@ require "app/request_api"
 require "app/session_api"
 require "app/settings_change_api"
 require "app/sftp_host_key_api"
+require "app/share_group_api"
 require "app/site_api"
 require "app/snapshot_api"
 require "app/sso_strategy_api"
@@ -138,6 +139,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::SessionAPI
   mount FilesMockServer::SettingsChangeAPI
   mount FilesMockServer::SftpHostKeyAPI
+  mount FilesMockServer::ShareGroupAPI
   mount FilesMockServer::SiteAPI
   mount FilesMockServer::SnapshotAPI
   mount FilesMockServer::SsoStrategyAPI

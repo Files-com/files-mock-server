@@ -38,6 +38,7 @@ require "app/bundle_recipient_api"
 require "app/bundle_registration_api"
 require "app/clickwrap_api"
 require "app/dns_record_api"
+require "app/email_incoming_message_api"
 require "app/external_event_api"
 require "app/file_api"
 require "app/file_comment_api"
@@ -105,6 +106,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::BundleRegistrationAPI
   mount FilesMockServer::ClickwrapAPI
   mount FilesMockServer::DnsRecordAPI
+  mount FilesMockServer::EmailIncomingMessageAPI
   mount FilesMockServer::ExternalEventAPI
   mount FilesMockServer::FileAPI
   mount FilesMockServer::FileCommentAPI

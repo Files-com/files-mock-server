@@ -67,6 +67,7 @@ module FilesMockServer
       optional :office_integration_enabled, type: Boolean
       optional :password_validity_days, type: Integer
       optional :receive_admin_alerts, type: Boolean
+      optional :require_login_by, type: String
       optional :require_password_change, type: Boolean
       optional :restapi_permission, type: Boolean
       optional :self_managed, type: Boolean
@@ -143,6 +144,7 @@ module FilesMockServer
       optional :office_integration_enabled, type: Boolean
       optional :password_validity_days, type: Integer
       optional :receive_admin_alerts, type: Boolean
+      optional :require_login_by, type: String
       optional :require_password_change, type: Boolean
       optional :restapi_permission, type: Boolean
       optional :self_managed, type: Boolean

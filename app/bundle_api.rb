@@ -92,6 +92,7 @@ module FilesMockServer
       optional :require_share_recipient, type: Boolean
       optional :send_email_receipt_to_uploader, type: Boolean
       optional :skip_company, type: Boolean
+      optional :start_access_on_date, type: String
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :watermark_attachment_delete, type: Boolean

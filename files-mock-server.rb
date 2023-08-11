@@ -46,6 +46,7 @@ require "app/file_comment_reaction_api"
 require "app/file_migration_api"
 require "app/folder_api"
 require "app/form_field_set_api"
+require "app/gpg_key_api"
 require "app/group_api"
 require "app/group_user_api"
 require "app/history_api"
@@ -114,6 +115,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::FileMigrationAPI
   mount FilesMockServer::FolderAPI
   mount FilesMockServer::FormFieldSetAPI
+  mount FilesMockServer::GpgKeyAPI
   mount FilesMockServer::GroupAPI
   mount FilesMockServer::GroupUserAPI
   mount FilesMockServer::HistoryAPI

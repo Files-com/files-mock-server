@@ -9,9 +9,9 @@ module FilesMockServer
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash
       optional :path, type: String
+      optional :include_groups, type: Boolean
       optional :group_id, type: String
       optional :user_id, type: String
-      optional :include_groups, type: Boolean
     end
     get "/api/rest/v1/permissions" do
       status 200

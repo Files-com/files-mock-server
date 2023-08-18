@@ -12,6 +12,7 @@ module FilesMockServer
       optional :file_as_body, type: Boolean
       optional :file_form_field, type: String
       optional :action, type: String
+      optional :use_dedicated_ips, type: Boolean
     end
     post "/api/rest/v1/webhook_tests" do
       status 201

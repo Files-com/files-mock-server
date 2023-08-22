@@ -22,10 +22,10 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      requires :name, type: String
       optional :public_key, type: String
       optional :private_key, type: String
       optional :private_key_password, type: String
+      requires :name, type: String
     end
     post "/api/rest/v1/gpg_keys" do
       status 201
@@ -34,10 +34,10 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      requires :name, type: String
       optional :public_key, type: String
       optional :private_key, type: String
       optional :private_key_password, type: String
+      optional :name, type: String
     end
     patch "/api/rest/v1/gpg_keys/:id" do
       status 200

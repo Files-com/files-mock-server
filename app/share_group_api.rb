@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/share_groups" do
       status 200
-      [ { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "share_group_members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] } ]
+      [ { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] } ]
     end
 
     params do
@@ -17,7 +17,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/share_groups/:id" do
       status 200
-      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "share_group_members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
+      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/share_groups" do
       status 201
-      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "share_group_members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
+      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
     end
 
     params do
@@ -39,7 +39,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/share_groups/:id" do
       status 200
-      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "share_group_members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
+      { "id" => 1, "name" => "Test group 1", "notes" => "This group is defined for testing purposes", "user_id" => 1, "members" => [ { "name" => "John Doe", "company" => "Acme Ltd", "email" => "johndoe@gmail.com" } ] }
     end
 
     params do

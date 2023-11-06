@@ -24,10 +24,10 @@ module FilesMockServer
     end
 
     params do
-      optional :name, type: String
       optional :notes, type: String
       optional :user_ids, type: String
       optional :admin_ids, type: String
+      requires :name, type: String
     end
     post "/api/rest/v1/groups" do
       status 201
@@ -36,10 +36,10 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      optional :name, type: String
       optional :notes, type: String
       optional :user_ids, type: String
       optional :admin_ids, type: String
+      optional :name, type: String
     end
     patch "/api/rest/v1/groups/:id" do
       status 200

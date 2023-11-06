@@ -80,7 +80,7 @@ module FilesMockServer
       optional :require_2fa, type: String
       optional :time_zone, type: String
       optional :user_root, type: String
-      optional :username, type: String
+      requires :username, type: String
     end
     post "/api/rest/v1/users" do
       status 201

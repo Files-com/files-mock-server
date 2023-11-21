@@ -13,13 +13,6 @@ module FilesMockServer
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
       optional :ids, type: String
-      optional "q[username]", type: String
-      optional "q[email]", type: String
-      optional "q[notes]", type: String
-      optional "q[admin]", type: String
-      optional "q[allowed_ips]", type: String
-      optional "q[password_validity_days]", type: String
-      optional "q[ssl_required]", type: String
       optional :search, type: String
     end
     get "/api/rest/v1/users" do

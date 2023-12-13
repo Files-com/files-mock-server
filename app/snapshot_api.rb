@@ -22,7 +22,7 @@ module FilesMockServer
     params do
       optional :expires_at, type: String
       optional :name, type: String
-      optional :paths, type: Array[String]
+      optional :paths, type: [ String ]
     end
     post "/api/rest/v1/snapshots" do
       status 201
@@ -33,7 +33,7 @@ module FilesMockServer
       requires :id, type: Integer
       optional :expires_at, type: String
       optional :name, type: String
-      optional :paths, type: Array[String]
+      optional :paths, type: [ String ]
     end
     patch "/api/rest/v1/snapshots/:id" do
       status 200

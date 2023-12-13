@@ -24,7 +24,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :notes, type: String
       requires :name, type: String
-      requires :members, type: Array[Hash]
+      requires :members, type: [ Hash ]
     end
     post "/api/rest/v1/share_groups" do
       status 201
@@ -35,7 +35,7 @@ module FilesMockServer
       requires :id, type: Integer
       optional :notes, type: String
       optional :name, type: String
-      optional :members, type: Array[Hash]
+      optional :members, type: [ Hash ]
     end
     patch "/api/rest/v1/share_groups/:id" do
       status 200

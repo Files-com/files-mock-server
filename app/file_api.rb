@@ -17,8 +17,8 @@ module FilesMockServer
     params do
       requires :path, type: String
       optional :action, type: String
-      optional "etags[etag]", type: Array[String]
-      optional "etags[part]", type: Array[Integer]
+      optional "etags[etag]", type: [ String ]
+      optional "etags[part]", type: [ Integer ]
       optional :length, type: Integer
       optional :mkdir_parents, type: Boolean
       optional :part, type: Integer

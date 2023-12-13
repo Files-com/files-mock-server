@@ -28,7 +28,7 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      requires :paths, type: Array[String]
+      requires :paths, type: [ String ]
       optional :password, type: String
       optional :form_field_set_id, type: Integer
       optional :create_snapshot, type: Boolean
@@ -61,9 +61,9 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      optional :to, type: Array[String]
+      optional :to, type: [ String ]
       optional :note, type: String
-      optional :recipients, type: Array[Hash]
+      optional :recipients, type: [ Hash ]
     end
     post "/api/rest/v1/bundles/:id/share" do
       status 204
@@ -72,7 +72,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      optional :paths, type: Array[String]
+      optional :paths, type: [ String ]
       optional :password, type: String
       optional :form_field_set_id, type: Integer
       optional :clickwrap_id, type: Integer

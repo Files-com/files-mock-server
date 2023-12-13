@@ -26,7 +26,7 @@ module FilesMockServer
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :skip_company, type: Boolean
-      optional :form_fields, type: Array[Hash]
+      optional :form_fields, type: [ Hash ]
     end
     post "/api/rest/v1/form_field_sets" do
       status 201
@@ -39,7 +39,7 @@ module FilesMockServer
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :skip_company, type: Boolean
-      optional :form_fields, type: Array[Hash]
+      optional :form_fields, type: [ Hash ]
     end
     patch "/api/rest/v1/form_field_sets/:id" do
       status 200

@@ -37,9 +37,9 @@ module FilesMockServer
       optional :recursive, type: Boolean
       optional :send_interval, type: String
       optional :message, type: String
-      optional :triggering_filenames, type: Array[String]
-      optional :triggering_group_ids, type: Array[Integer]
-      optional :triggering_user_ids, type: Array[Integer]
+      optional :triggering_filenames, type: [ String ]
+      optional :triggering_group_ids, type: [ Integer ]
+      optional :triggering_user_ids, type: [ Integer ]
       optional :trigger_by_share_recipients, type: Boolean
       optional :group_id, type: Integer
       optional :path, type: String
@@ -61,9 +61,9 @@ module FilesMockServer
       optional :recursive, type: Boolean
       optional :send_interval, type: String
       optional :message, type: String
-      optional :triggering_filenames, type: Array[String]
-      optional :triggering_group_ids, type: Array[Integer]
-      optional :triggering_user_ids, type: Array[Integer]
+      optional :triggering_filenames, type: [ String ]
+      optional :triggering_group_ids, type: [ Integer ]
+      optional :triggering_user_ids, type: [ Integer ]
       optional :trigger_by_share_recipients, type: Boolean
     end
     patch "/api/rest/v1/notifications/:id" do

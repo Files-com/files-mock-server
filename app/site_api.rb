@@ -97,7 +97,7 @@ module FilesMockServer
       optional :bundle_watermark_value, type: Hash
       optional :group_admins_can_set_user_password, type: Boolean
       optional :bundle_recipient_blacklist_free_email_domains, type: Boolean
-      optional :bundle_recipient_blacklist_domains, type: Array[String]
+      optional :bundle_recipient_blacklist_domains, type: [ String ]
       optional :allowed_2fa_method_sms, type: Boolean
       optional :allowed_2fa_method_u2f, type: Boolean
       optional :allowed_2fa_method_totp, type: Boolean

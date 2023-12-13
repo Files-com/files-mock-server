@@ -29,7 +29,7 @@ module FilesMockServer
     params do
       optional :source, type: String
       optional :destination, type: String
-      optional :destinations, type: Array[String]
+      optional :destinations, type: [ String ]
       optional :destination_replace_from, type: String
       optional :destination_replace_to, type: String
       optional :interval, type: String
@@ -42,7 +42,7 @@ module FilesMockServer
       optional :disabled, type: Boolean
       optional :name, type: String
       optional :trigger, type: String
-      optional :trigger_actions, type: Array[String]
+      optional :trigger_actions, type: [ String ]
       optional :value, type: Hash
       optional :recurring_day, type: Integer
       requires :automation, type: String
@@ -64,7 +64,7 @@ module FilesMockServer
       requires :id, type: Integer
       optional :source, type: String
       optional :destination, type: String
-      optional :destinations, type: Array[String]
+      optional :destinations, type: [ String ]
       optional :destination_replace_from, type: String
       optional :destination_replace_to, type: String
       optional :interval, type: String
@@ -77,7 +77,7 @@ module FilesMockServer
       optional :disabled, type: Boolean
       optional :name, type: String
       optional :trigger, type: String
-      optional :trigger_actions, type: Array[String]
+      optional :trigger_actions, type: [ String ]
       optional :value, type: Hash
       optional :recurring_day, type: Integer
       optional :automation, type: String

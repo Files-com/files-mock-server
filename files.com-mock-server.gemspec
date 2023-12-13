@@ -2,7 +2,7 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 
 Gem::Specification.new do |s|
   s.name        = "files.com-mock-server"
-  s.version     = File.open(File.expand_path('_VERSION', __dir__)).read
+  s.version     = File.read(File.expand_path('_VERSION', __dir__))
   s.platform    = Gem::Platform::RUBY
   s.authors     = [ "files.com" ]
   s.email       = [ "support@files.com" ]
@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubocop'
 
   s.files = `find *`.split("\n").uniq.sort.reject(&:empty?)
+  s.metadata['rubygems_mfa_required'] = 'true'
 end

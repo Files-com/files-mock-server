@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "Files.com Mock API Server."
   s.description = "Mock Files.com Server API for your own Integration Testing."
   s.license     = "MIT"
-  s.required_ruby_version = ">= 2.5"
+  s.required_ruby_version = ">= 3.2.2"
   s.add_dependency 'activesupport', ">= 6.0.3.2"
   s.add_dependency 'grape', ">= 1.3.3"
   s.add_dependency 'puma', ">= 4.3.5"

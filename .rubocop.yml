@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 3.2
   NewCops: enable
 
 Layout/ArgumentAlignment:
@@ -161,4 +161,8 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 
 Style/WordArray:
+  Enabled: false
+
+# Added for option var_number
+Naming/VariableNumber:
   Enabled: false

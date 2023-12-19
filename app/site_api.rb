@@ -94,6 +94,7 @@ module FilesMockServer
       optional :sftp_enabled, type: Boolean
       optional :sftp_host_key_type, type: String
       optional :active_sftp_host_key_id, type: Integer
+      optional :protocol_access_groups_only, type: Boolean
       optional :bundle_watermark_value, type: Hash
       optional :group_admins_can_set_user_password, type: Boolean
       optional :bundle_recipient_blacklist_free_email_domains, type: Boolean

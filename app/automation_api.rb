@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "daily", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "recurring_day" => 25, "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } } ]
+      [ { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "daily", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "recurring_day" => 25, "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -38,6 +38,7 @@ module FilesMockServer
       optional :user_ids, type: String
       optional :group_ids, type: String
       optional :schedule, type: Hash
+      optional :always_overwrite_size_matching_files, type: Boolean
       optional :description, type: String
       optional :disabled, type: Boolean
       optional :name, type: String
@@ -49,7 +50,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "daily", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "recurring_day" => 25, "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -73,6 +74,7 @@ module FilesMockServer
       optional :user_ids, type: String
       optional :group_ids, type: String
       optional :schedule, type: Hash
+      optional :always_overwrite_size_matching_files, type: Boolean
       optional :description, type: String
       optional :disabled, type: Boolean
       optional :name, type: String
@@ -84,7 +86,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "automation" => "create_folder", "deleted" => true, "disabled" => true, "trigger" => "daily", "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "schedule" => "example", "source" => "example", "destinations" => [ "destination" ], "destination_replace_from" => "example", "destination_replace_to" => "example", "description" => "example", "recurring_day" => 25, "path" => "example", "user_id" => 1, "sync_ids" => [ 1, 2 ], "user_ids" => [ 1, 2 ], "group_ids" => [ 1, 2 ], "webhook_url" => "https://app.files.com/api/webhooks/abc123", "trigger_actions" => [ "create" ], "value" => { "limit" => "1" } }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do

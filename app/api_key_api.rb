@@ -37,7 +37,6 @@ module FilesMockServer
       optional :description, type: String
       optional :expires_at, type: String
       optional :permission_set, type: String
-      optional :path, type: String
     end
     post "/api/rest/v1/api_keys" do
       status 201

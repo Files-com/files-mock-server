@@ -22,13 +22,15 @@ the ability to intentionally provoke errors.
 
 
 ## Local Ruby Usage
-```
+
+```bash
     bundle install
     bundle exec puma
 ```
 
 ## Docker Image Usage
 We also supply a docker image for easier accessibility. First install docker; then, execute the following:
+
 ```bash
      docker run -p 40410:4041 -it filescom/files-mock-server:latest
 ```

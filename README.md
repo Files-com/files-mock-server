@@ -20,7 +20,6 @@ the ability to intentionally provoke errors.
 
 * Ruby 2.4+
 
-
 ## Local Ruby Usage
 
 ```bash

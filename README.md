@@ -29,6 +29,7 @@ the ability to intentionally provoke errors.
 ```
 
 ## Docker Image Usage
+
 We also supply a docker image for easier accessibility. First install docker; then, execute the following:
 
 ```bash

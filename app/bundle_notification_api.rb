@@ -22,10 +22,10 @@ module FilesMockServer
     end
 
     params do
-      optional :notify_on_registration, type: Boolean
-      optional :notify_on_upload, type: Boolean
       requires :bundle_id, type: Integer
       optional :user_id, type: Integer
+      optional :notify_on_registration, type: Boolean
+      optional :notify_on_upload, type: Boolean
     end
     post "/api/rest/v1/bundle_notifications" do
       status 201

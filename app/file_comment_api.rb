@@ -9,7 +9,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/file_comments/files/:path" do
       status 200
-      [ { "id" => 1, "body" => "What a great file!", "reactions" => [ nil ] } ]
+      [ { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/file_comments" do
       status 201
-      { "id" => 1, "body" => "What a great file!", "reactions" => [ nil ] }
+      { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] }
     end
 
     params do
@@ -27,7 +27,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/file_comments/:id" do
       status 200
-      { "id" => 1, "body" => "What a great file!", "reactions" => [ nil ] }
+      { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] }
     end
 
     params do

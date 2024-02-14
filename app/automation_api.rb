@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations" do
       status 200
-      [ { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" } ]
+      [ { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule_days_of_week" => [ 0, 2, 4 ], "schedule_times_of_day" => [ "06:30", "14:30" ], "schedule_time_zone" => "Eastern Time (US & Canada)", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule_days_of_week" => [ 0, 2, 4 ], "schedule_times_of_day" => [ "06:30", "14:30" ], "schedule_time_zone" => "Eastern Time (US & Canada)", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -37,7 +37,9 @@ module FilesMockServer
       optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
-      optional :schedule, type: Hash
+      optional :schedule_days_of_week, type: [ Integer ]
+      optional :schedule_times_of_day, type: [ String ]
+      optional :schedule_time_zone, type: String
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :description, type: String
       optional :disabled, type: Boolean
@@ -50,7 +52,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/automations" do
       status 201
-      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule_days_of_week" => [ 0, 2, 4 ], "schedule_times_of_day" => [ "06:30", "14:30" ], "schedule_time_zone" => "Eastern Time (US & Canada)", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do
@@ -73,7 +75,9 @@ module FilesMockServer
       optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
-      optional :schedule, type: Hash
+      optional :schedule_days_of_week, type: [ Integer ]
+      optional :schedule_times_of_day, type: [ String ]
+      optional :schedule_time_zone, type: String
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :description, type: String
       optional :disabled, type: Boolean
@@ -86,7 +90,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/automations/:id" do
       status 200
-      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule" => "example", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
+      { "id" => 1, "always_overwrite_size_matching_files" => true, "automation" => "create_folder", "deleted" => true, "description" => "example", "destination_replace_from" => "example", "destination_replace_to" => "example", "destinations" => [ "destination" ], "disabled" => true, "group_ids" => [ 1, 2 ], "interval" => "week", "last_modified_at" => "2000-01-01T01:00:00Z", "name" => "example", "path" => "example", "recurring_day" => 25, "schedule_days_of_week" => [ 0, 2, 4 ], "schedule_times_of_day" => [ "06:30", "14:30" ], "schedule_time_zone" => "Eastern Time (US & Canada)", "source" => "example", "sync_ids" => [ 1, 2 ], "trigger_actions" => [ "create" ], "trigger" => "daily", "user_id" => 1, "user_ids" => [ 1, 2 ], "value" => { "limit" => "1" }, "webhook_url" => "https://app.files.com/api/webhooks/abc123" }
     end
 
     params do

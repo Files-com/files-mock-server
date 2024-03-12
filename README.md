@@ -18,7 +18,8 @@ the ability to intentionally provoke errors.
 
 ## Requirements
 
-* Ruby 2.4+
+* Ruby 3+
+
 
 ## Local Ruby Usage
 
@@ -26,6 +27,7 @@ the ability to intentionally provoke errors.
     bundle install
     bundle exec puma
 ```
+
 
 ## Docker Image Usage
 
@@ -41,3 +43,10 @@ Example:
 ```bash
     curl 127.0.0.1:40410/api/rest/v1/users
 ```
+
+
+## Getting Support
+
+The Files.com team is happy to help with any issues you may have running the Files.com mock server.
+
+Just email <support@files.com> and we'll get the process started.

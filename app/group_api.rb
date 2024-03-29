@@ -12,7 +12,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/groups" do
       status 200
-      [ { "id" => 1, "name" => "owners", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true } ]
+      [ { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true } ]
     end
 
     params do
@@ -20,7 +20,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/groups/:id" do
       status 200
-      { "id" => 1, "name" => "owners", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
     end
 
     params do
@@ -31,11 +31,12 @@ module FilesMockServer
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean
       optional :restapi_permission, type: Boolean
+      optional :allowed_ips, type: String
       requires :name, type: String
     end
     post "/api/rest/v1/groups" do
       status 201
-      { "id" => 1, "name" => "owners", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
     end
 
     params do
@@ -47,11 +48,12 @@ module FilesMockServer
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean
       optional :restapi_permission, type: Boolean
+      optional :allowed_ips, type: String
       optional :name, type: String
     end
     patch "/api/rest/v1/groups/:id" do
       status 200
-      { "id" => 1, "name" => "owners", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "example", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true }
     end
 
     params do

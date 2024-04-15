@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors" do
       status 200
-      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" } } ]
+      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" } }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
     end
 
     params do
@@ -34,7 +34,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors/folders/:path" do
       status 200
-      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" } } ]
+      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true } ]
     end
 
     params do
@@ -47,7 +47,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/behaviors" do
       status 201
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" } }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
     end
 
     params do
@@ -75,7 +75,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" } }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
     end
 
     params do

@@ -40,6 +40,7 @@ module FilesMockServer
     params do
       optional :value, type: String
       optional :attachment_file, type: File
+      optional :disable_parent_folder_behavior, type: Boolean
       optional :name, type: String
       optional :description, type: String
       requires :path, type: String
@@ -67,6 +68,7 @@ module FilesMockServer
       requires :id, type: [ String, Integer, Hash ]
       optional :value, type: String
       optional :attachment_file, type: File
+      optional :disable_parent_folder_behavior, type: Boolean
       optional :name, type: String
       optional :description, type: String
       optional :behavior, type: String

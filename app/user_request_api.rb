@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/user_requests" do
       status 200
-      [ { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments" } ]
+      [ { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments", "company" => "Acme Inc." } ]
     end
 
     params do
@@ -16,17 +16,18 @@ module FilesMockServer
     end
     get "/api/rest/v1/user_requests/:id" do
       status 200
-      { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments" }
+      { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments", "company" => "Acme Inc." }
     end
 
     params do
       requires :name, type: String
       requires :email, type: String
       requires :details, type: String
+      optional :company, type: String
     end
     post "/api/rest/v1/user_requests" do
       status 201
-      { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments" }
+      { "id" => 1, "name" => "John Doe", "email" => "example", "details" => "Changed Departments", "company" => "Acme Inc." }
     end
 
     params do

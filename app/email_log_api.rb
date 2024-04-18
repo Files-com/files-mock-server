@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/email_logs" do
       status 200
-      [ { "timestamp" => "2000-01-01T01:00:00Z", "message" => "example", "status" => "example", "subject" => "example", "to" => "example", "cc" => "example" } ]
+      [ { "timestamp" => "2000-01-01T01:00:00Z", "message" => "example", "status" => "example", "subject" => "example", "to" => "example", "cc" => "example", "delivery_method" => "example", "smtp_hostname" => "example", "smtp_ip" => "example" } ]
     end
   end
 end

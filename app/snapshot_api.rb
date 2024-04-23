@@ -31,6 +31,14 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+    end
+    post "/api/rest/v1/snapshots/:id/finalize" do
+      status 204
+      body false
+    end
+
+    params do
+      requires :id, type: Integer
       optional :expires_at, type: String
       optional :name, type: String
       optional :paths, type: [ String ]

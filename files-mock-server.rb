@@ -34,6 +34,7 @@ require "app/automation_run_api"
 require "app/bandwidth_snapshot_api"
 require "app/behavior_api"
 require "app/bundle_api"
+require "app/bundle_action_api"
 require "app/bundle_download_api"
 require "app/bundle_notification_api"
 require "app/bundle_recipient_api"
@@ -110,6 +111,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::BandwidthSnapshotAPI
   mount FilesMockServer::BehaviorAPI
   mount FilesMockServer::BundleAPI
+  mount FilesMockServer::BundleActionAPI
   mount FilesMockServer::BundleDownloadAPI
   mount FilesMockServer::BundleNotificationAPI
   mount FilesMockServer::BundleRecipientAPI

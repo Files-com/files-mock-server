@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors" do
       status 200
-      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true } ]
+      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true, "recursive" => true } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true, "recursive" => true }
     end
 
     params do
@@ -29,18 +29,19 @@ module FilesMockServer
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash
       requires :path, type: String
-      optional :recursive, type: String
+      optional :ancestor_behaviors, type: String
       optional :behavior, type: String
     end
     get "/api/rest/v1/behaviors/folders/:path" do
       status 200
-      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true } ]
+      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true, "recursive" => true } ]
     end
 
     params do
       optional :value, type: String
       optional :attachment_file, type: File
       optional :disable_parent_folder_behavior, type: Boolean
+      optional :recursive, type: Boolean
       optional :name, type: String
       optional :description, type: String
       requires :path, type: String
@@ -48,7 +49,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/behaviors" do
       status 201
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true, "recursive" => true }
     end
 
     params do
@@ -69,6 +70,7 @@ module FilesMockServer
       optional :value, type: String
       optional :attachment_file, type: File
       optional :disable_parent_folder_behavior, type: Boolean
+      optional :recursive, type: Boolean
       optional :name, type: String
       optional :description, type: String
       optional :behavior, type: String
@@ -77,7 +79,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true }
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "key" => "example value" }, "disable_parent_folder_behavior" => true, "recursive" => true }
     end
 
     params do

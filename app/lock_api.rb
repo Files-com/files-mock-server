@@ -17,7 +17,7 @@ module FilesMockServer
       requires :path, type: String
       optional :allow_access_by_any_user, type: Boolean
       optional :exclusive, type: Boolean
-      optional :recursive, type: String
+      optional :recursive, type: Boolean
       optional :timeout, type: Integer
     end
     post "/api/rest/v1/locks/:path" do

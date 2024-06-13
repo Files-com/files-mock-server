@@ -93,6 +93,7 @@ require "app/usage_snapshot_api"
 require "app/user_api"
 require "app/user_cipher_use_api"
 require "app/user_request_api"
+require "app/web_dav_action_log_api"
 require "app/webhook_test_api"
 
 class FilesMockServer::API < Grape::API
@@ -171,5 +172,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UserAPI
   mount FilesMockServer::UserCipherUseAPI
   mount FilesMockServer::UserRequestAPI
+  mount FilesMockServer::WebDavActionLogAPI
   mount FilesMockServer::WebhookTestAPI
 end

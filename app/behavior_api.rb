@@ -73,8 +73,6 @@ module FilesMockServer
       optional :recursive, type: Boolean
       optional :name, type: String
       optional :description, type: String
-      optional :behavior, type: String
-      optional :path, type: String
       optional :attachment_delete, type: [ String, Integer, Hash ]
     end
     patch "/api/rest/v1/behaviors/:id" do

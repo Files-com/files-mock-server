@@ -74,6 +74,7 @@ require "app/payment_api"
 require "app/permission_api"
 require "app/priority_api"
 require "app/project_api"
+require "app/public_hosting_request_log_api"
 require "app/public_key_api"
 require "app/remote_bandwidth_snapshot_api"
 require "app/remote_server_api"
@@ -153,6 +154,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::PermissionAPI
   mount FilesMockServer::PriorityAPI
   mount FilesMockServer::ProjectAPI
+  mount FilesMockServer::PublicHostingRequestLogAPI
   mount FilesMockServer::PublicKeyAPI
   mount FilesMockServer::RemoteBandwidthSnapshotAPI
   mount FilesMockServer::RemoteServerAPI

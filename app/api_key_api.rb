@@ -6,6 +6,8 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash
@@ -37,6 +39,7 @@ module FilesMockServer
       optional :expires_at, type: String
       optional :permission_set, type: String
       requires :name, type: String
+      optional :path, type: String
     end
     post "/api/rest/v1/api_keys" do
       status 201

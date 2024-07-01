@@ -5,6 +5,8 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash
@@ -25,11 +27,13 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash
       requires :path, type: String
-      optional :ancestor_behaviors, type: String
+      optional :ancestor_behaviors, type: Boolean
       optional :behavior, type: String
     end
     get "/api/rest/v1/behaviors/folders/:path" do

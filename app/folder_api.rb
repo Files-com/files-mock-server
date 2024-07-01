@@ -5,6 +5,7 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :page, type: Integer
       requires :path, type: String
       optional :filter, type: String
       optional :preview_size, type: String

@@ -6,6 +6,8 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash
@@ -42,7 +44,6 @@ module FilesMockServer
       optional :path_template, type: String
       optional :path_template_time_zone, type: String
       optional :permissions, type: String
-      optional :preview_only, type: Boolean
       optional :require_registration, type: Boolean
       optional :clickwrap_id, type: Integer
       optional :inbox_id, type: Integer
@@ -89,7 +90,6 @@ module FilesMockServer
       optional :path_template, type: String
       optional :path_template_time_zone, type: String
       optional :permissions, type: String
-      optional :preview_only, type: Boolean
       optional :require_registration, type: Boolean
       optional :require_share_recipient, type: Boolean
       optional :send_email_receipt_to_uploader, type: Boolean

@@ -5,6 +5,8 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       requires :inbox_id, type: Integer

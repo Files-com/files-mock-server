@@ -5,6 +5,8 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :action, type: String
+      optional :page, type: Integer
     end
     get "/api/rest/v1/snapshots" do
       status 200

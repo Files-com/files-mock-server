@@ -73,6 +73,7 @@ module FilesMockServer
       optional :azure_blob_storage_sas_token, type: String
       optional :azure_files_storage_account, type: String
       optional :azure_files_storage_share_name, type: String
+      optional :azure_files_storage_sas_token, type: String
       optional :s3_compatible_bucket, type: String
       optional :s3_compatible_endpoint, type: String
       optional :s3_compatible_region, type: String
@@ -164,6 +165,7 @@ module FilesMockServer
       optional :azure_blob_storage_sas_token, type: String
       optional :azure_files_storage_account, type: String
       optional :azure_files_storage_share_name, type: String
+      optional :azure_files_storage_sas_token, type: String
       optional :s3_compatible_bucket, type: String
       optional :s3_compatible_endpoint, type: String
       optional :s3_compatible_region, type: String

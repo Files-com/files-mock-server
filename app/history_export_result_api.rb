@@ -6,8 +6,6 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
-      optional :action, type: String
-      optional :page, type: Integer
       requires :history_export_id, type: Integer
     end
     get "/api/rest/v1/history_export_results" do

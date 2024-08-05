@@ -6,8 +6,6 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
-      optional :action, type: String
-      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash

@@ -6,8 +6,6 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
-      optional :action, type: String
-      optional :page, type: Integer
     end
     get "/api/rest/v1/form_field_sets" do
       status 200

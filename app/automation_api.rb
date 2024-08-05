@@ -5,8 +5,6 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
-      optional :action, type: String
-      optional :page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_gt, type: Hash
@@ -30,7 +28,6 @@ module FilesMockServer
 
     params do
       optional :source, type: String
-      optional :destination, type: String
       optional :destinations, type: [ String ]
       optional :destination_replace_from, type: String
       optional :destination_replace_to, type: String
@@ -39,7 +36,6 @@ module FilesMockServer
       optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
-      optional :schedule, type: Hash
       optional :schedule_days_of_week, type: [ Integer ]
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String
@@ -74,7 +70,6 @@ module FilesMockServer
     params do
       requires :id, type: Integer
       optional :source, type: String
-      optional :destination, type: String
       optional :destinations, type: [ String ]
       optional :destination_replace_from, type: String
       optional :destination_replace_to, type: String
@@ -83,7 +78,6 @@ module FilesMockServer
       optional :sync_ids, type: String
       optional :user_ids, type: String
       optional :group_ids, type: String
-      optional :schedule, type: Hash
       optional :schedule_days_of_week, type: [ Integer ]
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String

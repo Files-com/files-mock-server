@@ -20,7 +20,6 @@ require 'lib/grape_extensions'
 
 require "app/action_notification_export_api"
 require "app/action_notification_export_result_api"
-require "app/action_webhook_failure_api"
 require "app/api_key_api"
 require "app/api_request_log_api"
 require "app/app_api"
@@ -101,7 +100,6 @@ require "app/webhook_test_api"
 class FilesMockServer::API < Grape::API
   mount FilesMockServer::ActionNotificationExportAPI
   mount FilesMockServer::ActionNotificationExportResultAPI
-  mount FilesMockServer::ActionWebhookFailureAPI
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::ApiRequestLogAPI
   mount FilesMockServer::AppAPI

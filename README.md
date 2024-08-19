@@ -15,35 +15,32 @@ for correctness.
 Eventually we will add features intended for integration testing, such as
 the ability to intentionally provoke errors.
 
-
 ## Requirements
 
 * Ruby 3+
 
-
 ## Local Ruby Usage
 
 ```bash
-    bundle install
-    bundle exec puma
+bundle install
+bundle exec puma
 ```
-
 
 ## Docker Image Usage
 
 We also supply a docker image for easier accessibility. First install docker; then, execute the following:
 
 ```bash
-     docker run -p 40410:4041 -it filescom/files-mock-server:latest
+docker run -p 40410:4041 -it filescom/files-mock-server:latest
 ```
 
 The image will be pulled from docker-hub, and the mock server can be accessed via the open port bound on the host machine.
 
 Example:
-```bash
-    curl 127.0.0.1:40410/api/rest/v1/users
-```
 
+```bash
+curl 127.0.0.1:40410/api/rest/v1/users
+```
 
 ## Getting Support
 

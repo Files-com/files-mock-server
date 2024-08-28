@@ -13,7 +13,6 @@ module FilesMockServer
       optional :search_all, type: Boolean
       optional :with_previews, type: Boolean
       optional :with_priority_color, type: Boolean
-      optional :point_in_time, type: String
     end
     get "/api/rest/v1/folders/:path" do
       status 200

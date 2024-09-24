@@ -24,7 +24,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_servers/:id/configuration_file" do
       status 200
-      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
+      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
     end
 
     params do
@@ -115,7 +115,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/remote_servers/:id/configuration_file" do
       status 201
-      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
+      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
     end
 
     params do

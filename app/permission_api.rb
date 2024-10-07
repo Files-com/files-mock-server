@@ -19,8 +19,8 @@ module FilesMockServer
     end
 
     params do
+      requires :path, type: String
       optional :group_id, type: Integer
-      optional :path, type: String
       optional :permission, type: String
       optional :recursive, type: Boolean
       optional :user_id, type: Integer

@@ -11,7 +11,6 @@ module FilesMockServer
       optional :filter_gteq, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
-      optional :with_deleted, type: Boolean
     end
     get "/api/rest/v1/automations" do
       status 200

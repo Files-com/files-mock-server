@@ -25,6 +25,7 @@ module FilesMockServer
       optional :recursive, type: Boolean
       optional :user_id, type: Integer
       optional :username, type: String
+      optional :group_name, type: String
     end
     post "/api/rest/v1/permissions" do
       status 201

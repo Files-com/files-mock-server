@@ -5,6 +5,9 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      optional :filter_prefix, type: Hash
     end
     get "/api/rest/v1/remote_servers" do
       status 200

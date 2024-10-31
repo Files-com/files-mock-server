@@ -11,8 +11,6 @@ module FilesMockServer
       optional :filter_gteq, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
-      optional :bundle_id, type: Integer
-      optional :bundle_registration_id, type: Integer
     end
     get "/api/rest/v1/bundle_actions" do
       status 200

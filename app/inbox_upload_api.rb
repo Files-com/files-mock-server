@@ -11,8 +11,6 @@ module FilesMockServer
       optional :filter_gteq, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
-      optional :inbox_registration_id, type: Integer
-      optional :inbox_id, type: Integer
     end
     get "/api/rest/v1/inbox_uploads" do
       status 200

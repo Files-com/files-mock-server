@@ -122,6 +122,18 @@ module FilesMockServer
     end
 
     params do
+      optional :cursor, type: String
+      optional :per_page, type: Integer
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      optional :filter_prefix, type: Hash
+    end
+    post "/api/rest/v1/remote_servers/create_export" do
+      status 201
+      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+    end
+
+    params do
       requires :id, type: Integer
       optional :aws_access_key, type: String
       optional :aws_secret_key, type: String

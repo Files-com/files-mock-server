@@ -12,5 +12,16 @@ module FilesMockServer
       status 200
       [ { "timestamp" => "2000-01-01T01:00:00Z", "api_key_id" => 1, "api_key_prefix" => "example", "user_id" => 1, "username" => "example", "user_is_from_parent_site" => true, "interface" => "example", "request_method" => "example", "request_path" => "example", "request_ip" => "example", "request_host" => "example", "request_id" => "example", "api_name" => "example", "user_agent" => "example", "error_type" => "example", "error_message" => "example", "response_code" => 1, "success" => true, "duration_ms" => 1 } ]
     end
+
+    params do
+      optional :cursor, type: String
+      optional :per_page, type: Integer
+      optional :filter, type: Hash
+      optional :filter_prefix, type: Hash
+    end
+    post "/api/rest/v1/api_request_logs/create_export" do
+      status 201
+      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+    end
   end
 end

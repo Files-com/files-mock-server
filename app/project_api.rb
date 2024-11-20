@@ -28,6 +28,15 @@ module FilesMockServer
     end
 
     params do
+      optional :cursor, type: String
+      optional :per_page, type: Integer
+    end
+    post "/api/rest/v1/projects/create_export" do
+      status 201
+      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+    end
+
+    params do
       requires :id, type: Integer
       requires :global_access, type: String
     end

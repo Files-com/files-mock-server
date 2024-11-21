@@ -32,8 +32,6 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       requires :message_id, type: Integer
     end
     post "/api/rest/v1/message_reactions/create_export" do

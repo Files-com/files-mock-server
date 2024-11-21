@@ -35,8 +35,6 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
     end
     post "/api/rest/v1/gpg_keys/create_export" do

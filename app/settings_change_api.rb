@@ -14,8 +14,6 @@ module FilesMockServer
     end
 
     params do
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
     end

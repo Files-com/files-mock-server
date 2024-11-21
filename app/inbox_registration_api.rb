@@ -13,8 +13,6 @@ module FilesMockServer
     end
 
     params do
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :folder_behavior_id, type: Integer
     end
     post "/api/rest/v1/inbox_registrations/create_export" do

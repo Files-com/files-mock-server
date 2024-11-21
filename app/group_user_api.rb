@@ -25,8 +25,6 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :group_id, type: Integer
     end
     post "/api/rest/v1/group_users/create_export" do

@@ -13,8 +13,6 @@ module FilesMockServer
     end
 
     params do
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :bundle_id, type: Integer
     end
     post "/api/rest/v1/bundle_registrations/create_export" do

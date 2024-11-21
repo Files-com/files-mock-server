@@ -13,8 +13,6 @@ module FilesMockServer
     end
 
     params do
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       requires :path, type: String
     end
     post "/api/rest/v1/priorities/create_export" do

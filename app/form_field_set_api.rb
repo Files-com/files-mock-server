@@ -35,8 +35,6 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :cursor, type: String
-      optional :per_page, type: Integer
     end
     post "/api/rest/v1/form_field_sets/create_export" do
       status 201

@@ -34,8 +34,6 @@ module FilesMockServer
 
     params do
       optional :user_id, type: Integer
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       requires :project_id, type: Integer
     end
     post "/api/rest/v1/messages/create_export" do

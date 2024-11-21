@@ -76,12 +76,10 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
-      requires :path, type: String
+      requires :path, type: Integer
     end
-    post "/api/rest/v1/history/files/:path" do
+    post "/api/rest/v1/history/files/:path/create_export" do
       status 201
       [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
     end
@@ -90,12 +88,10 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
-      requires :path, type: String
+      requires :path, type: Integer
     end
-    post "/api/rest/v1/history/folders/:path" do
+    post "/api/rest/v1/history/folders/:path/create_export" do
       status 201
       [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
     end
@@ -104,12 +100,10 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       requires :user_id, type: Integer
     end
-    post "/api/rest/v1/history/users/:user_id" do
+    post "/api/rest/v1/history/users/:user_id/create_export" do
       status 201
       [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
     end
@@ -118,11 +112,9 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
     end
-    post "/api/rest/v1/history/login" do
+    post "/api/rest/v1/history/login/create_export" do
       status 201
       [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
     end
@@ -131,8 +123,6 @@ module FilesMockServer
       optional :start_at, type: String
       optional :end_at, type: String
       optional :display, type: String
-      optional :cursor, type: String
-      optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
       optional :filter_prefix, type: Hash

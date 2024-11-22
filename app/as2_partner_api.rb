@@ -37,11 +37,6 @@ module FilesMockServer
       { "id" => 1, "as2_station_id" => 1, "name" => "AS2 Partner Name", "uri" => "example", "server_certificate" => "require_match", "http_auth_username" => "username", "additional_http_headers" => { "key" => "example value" }, "default_mime_type" => "application/octet-stream", "mdn_validation_level" => "none", "enable_dedicated_ips" => true, "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "example", "public_certificate_subject" => "example", "public_certificate_issuer" => "example", "public_certificate_serial" => "example", "public_certificate_not_before" => "example", "public_certificate_not_after" => "example" }
     end
 
-    post "/api/rest/v1/as2_partners/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
-    end
-
     params do
       requires :id, type: Integer
       optional :enable_dedicated_ips, type: Boolean

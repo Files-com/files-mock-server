@@ -45,20 +45,6 @@ module FilesMockServer
     end
 
     params do
-      optional :user_id, type: Integer
-      optional :sort_by, type: Hash
-      optional :filter, type: Hash
-      optional :filter_gt, type: Hash
-      optional :filter_gteq, type: Hash
-      optional :filter_lt, type: Hash
-      optional :filter_lteq, type: Hash
-    end
-    post "/api/rest/v1/api_keys/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
-    end
-
-    params do
       optional :expires_at, type: String
       optional :name, type: String
       optional :permission_set, type: String

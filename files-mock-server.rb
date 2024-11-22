@@ -43,7 +43,6 @@ require "app/dns_record_api"
 require "app/email_incoming_message_api"
 require "app/email_log_api"
 require "app/exavault_api_request_log_api"
-require "app/export_api"
 require "app/external_event_api"
 require "app/file_api"
 require "app/file_comment_api"
@@ -126,7 +125,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::EmailIncomingMessageAPI
   mount FilesMockServer::EmailLogAPI
   mount FilesMockServer::ExavaultApiRequestLogAPI
-  mount FilesMockServer::ExportAPI
   mount FilesMockServer::ExternalEventAPI
   mount FilesMockServer::FileAPI
   mount FilesMockServer::FileCommentAPI

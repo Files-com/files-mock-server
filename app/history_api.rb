@@ -81,7 +81,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/history/files/:path/create_export" do
       status 201
-      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
 
     params do
@@ -93,7 +93,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/history/folders/:path/create_export" do
       status 201
-      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
 
     params do
@@ -105,7 +105,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/history/users/:user_id/create_export" do
       status 201
-      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
 
     params do
@@ -116,7 +116,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/history/login/create_export" do
       status 201
-      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
 
     params do
@@ -129,7 +129,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/history/create_export" do
       status 201
-      [ { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" } ]
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
   end
 end

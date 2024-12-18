@@ -5,6 +5,7 @@ module FilesMockServer
     params do
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :sort_by, type: Hash
       optional :bundle_id, type: Integer
     end
     get "/api/rest/v1/bundle_registrations" do

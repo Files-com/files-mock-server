@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automation_runs" do
       status 200
-      [ { "id" => 1, "automation_id" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "retried_at" => "2000-01-01T01:00:00Z", "retry_of_run_id" => 1, "retried_in_run_id" => 1, "runtime" => 1.0, "status" => "success", "successful_operations" => 1, "failed_operations" => 1, "status_messages_url" => "https://www.example.com/log_file.txt" } ]
+      [ { "id" => 1, "automation_id" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "retry_at" => "example", "retried_at" => "2000-01-01T01:00:00Z", "retried_in_run_id" => 1, "retry_of_run_id" => 1, "runtime" => 1.0, "status" => "success", "successful_operations" => 1, "failed_operations" => 1, "status_messages_url" => "https://www.example.com/log_file.txt" } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/automation_runs/:id" do
       status 200
-      { "id" => 1, "automation_id" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "retried_at" => "2000-01-01T01:00:00Z", "retry_of_run_id" => 1, "retried_in_run_id" => 1, "runtime" => 1.0, "status" => "success", "successful_operations" => 1, "failed_operations" => 1, "status_messages_url" => "https://www.example.com/log_file.txt" }
+      { "id" => 1, "automation_id" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "retry_at" => "example", "retried_at" => "2000-01-01T01:00:00Z", "retried_in_run_id" => 1, "retry_of_run_id" => 1, "runtime" => 1.0, "status" => "success", "successful_operations" => 1, "failed_operations" => 1, "status_messages_url" => "https://www.example.com/log_file.txt" }
     end
   end
 end

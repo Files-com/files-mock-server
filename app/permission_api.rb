@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/permissions" do
       status 200
-      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true } ]
+      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true, "site_id" => 1 } ]
     end
 
     params do
@@ -26,10 +26,11 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :username, type: String
       optional :group_name, type: String
+      optional :site_id, type: Integer
     end
     post "/api/rest/v1/permissions" do
       status 201
-      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true }
+      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true, "site_id" => 1 }
     end
 
     params do

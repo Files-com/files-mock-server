@@ -9,6 +9,7 @@ module FilesMockServer
       optional :preview_size, type: String
       optional :sort_by, type: Hash
       optional :search, type: String
+      optional :search_custom_metadata_key, type: String
       optional :search_all, type: Boolean
       optional :with_previews, type: Boolean
       optional :with_priority_color, type: Boolean

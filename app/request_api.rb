@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/requests" do
       status 200
-      [ { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => "example", "user_display_name" => "example" } ]
+      [ { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => 1, "user_display_name" => "example" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/requests/folders/:path" do
       status 200
-      [ { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => "example", "user_display_name" => "example" } ]
+      [ { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => 1, "user_display_name" => "example" } ]
     end
 
     params do
@@ -34,7 +34,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/requests" do
       status 201
-      { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => "example", "user_display_name" => "example" }
+      { "id" => 1, "path" => "example", "source" => "example", "destination" => "example", "automation_id" => 1, "user_display_name" => "example" }
     end
 
     params do

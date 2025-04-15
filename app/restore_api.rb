@@ -13,9 +13,10 @@ module FilesMockServer
 
     params do
       requires :earliest_date, type: String
+      optional :prefix, type: String
       optional :restore_deleted_permissions, type: Boolean
       optional :restore_in_place, type: Boolean
-      optional :prefix, type: String
+      optional :update_timestamps, type: Boolean
     end
     post "/api/rest/v1/restores" do
       status 201

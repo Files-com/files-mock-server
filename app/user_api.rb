@@ -164,6 +164,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+      optional :new_owner_id, type: Integer
     end
     delete "/api/rest/v1/users/:id" do
       status 204

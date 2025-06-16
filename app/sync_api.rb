@@ -50,6 +50,14 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+    end
+    post "/api/rest/v1/syncs/:id/manual_run" do
+      status 204
+      body false
+    end
+
+    params do
+      requires :id, type: Integer
       optional :name, type: String
       optional :description, type: String
       optional :src_path, type: String

@@ -27,6 +27,10 @@ module FilesMockServer
       optional :private_key, type: String
       optional :private_key_password, type: String
       requires :name, type: String
+      optional :generate_expires_at, type: String
+      optional :generate_keypair, type: Boolean
+      optional :generate_full_name, type: String
+      optional :generate_email, type: String
     end
     post "/api/rest/v1/gpg_keys" do
       status 201

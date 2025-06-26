@@ -58,6 +58,7 @@ require "app/group_user_api"
 require "app/history_api"
 require "app/history_export_api"
 require "app/history_export_result_api"
+require "app/holiday_region_api"
 require "app/inbox_recipient_api"
 require "app/inbox_registration_api"
 require "app/inbox_upload_api"
@@ -145,6 +146,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::HistoryAPI
   mount FilesMockServer::HistoryExportAPI
   mount FilesMockServer::HistoryExportResultAPI
+  mount FilesMockServer::HolidayRegionAPI
   mount FilesMockServer::InboxRecipientAPI
   mount FilesMockServer::InboxRegistrationAPI
   mount FilesMockServer::InboxUploadAPI

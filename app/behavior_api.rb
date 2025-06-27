@@ -7,7 +7,6 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
-      optional :filter_prefix, type: Hash
     end
     get "/api/rest/v1/behaviors" do
       status 200
@@ -27,7 +26,6 @@ module FilesMockServer
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
-      optional :filter_prefix, type: Hash
       requires :path, type: String
       optional :ancestor_behaviors, type: Boolean
     end

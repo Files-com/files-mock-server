@@ -21,9 +21,6 @@ module FilesMockServer
     end
 
     params do
-      requires :canary_file_path, type: String
-      requires :remote_server_mount_id, type: Integer
-      requires :remote_server_id, type: Integer
       optional :enabled, type: Boolean
       optional :fall, type: Integer
       optional :health_check_enabled, type: Boolean
@@ -34,6 +31,9 @@ module FilesMockServer
       optional :priority, type: Integer
       optional :remote_path, type: String
       optional :rise, type: Integer
+      requires :canary_file_path, type: String
+      requires :remote_server_mount_id, type: Integer
+      requires :remote_server_id, type: Integer
     end
     post "/api/rest/v1/remote_mount_backends" do
       status 201
@@ -50,9 +50,6 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      requires :canary_file_path, type: String
-      requires :remote_server_mount_id, type: Integer
-      requires :remote_server_id, type: Integer
       optional :enabled, type: Boolean
       optional :fall, type: Integer
       optional :health_check_enabled, type: Boolean
@@ -63,6 +60,8 @@ module FilesMockServer
       optional :priority, type: Integer
       optional :remote_path, type: String
       optional :rise, type: Integer
+      optional :canary_file_path, type: String
+      optional :remote_server_id, type: Integer
     end
     patch "/api/rest/v1/remote_mount_backends/:id" do
       status 200

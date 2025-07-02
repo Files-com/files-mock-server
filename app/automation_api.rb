@@ -38,6 +38,7 @@ module FilesMockServer
       optional :schedule_days_of_week, type: [ Integer ]
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String
+      optional :holiday_region, type: String
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :always_serialize_jobs, type: Boolean
       optional :description, type: String
@@ -85,6 +86,7 @@ module FilesMockServer
       optional :schedule_days_of_week, type: [ Integer ]
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String
+      optional :holiday_region, type: String
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :always_serialize_jobs, type: Boolean
       optional :description, type: String

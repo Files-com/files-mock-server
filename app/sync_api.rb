@@ -33,6 +33,8 @@ module FilesMockServer
       optional :interval, type: String
       optional :trigger, type: String
       optional :trigger_file, type: String
+      optional :holiday_region, type: String
+      optional :sync_interval_minutes, type: Integer
       optional :recurring_day, type: Integer
       optional :schedule_time_zone, type: String
       optional :schedule_days_of_week, type: [ Integer ]
@@ -71,6 +73,8 @@ module FilesMockServer
       optional :interval, type: String
       optional :trigger, type: String
       optional :trigger_file, type: String
+      optional :holiday_region, type: String
+      optional :sync_interval_minutes, type: Integer
       optional :recurring_day, type: Integer
       optional :schedule_time_zone, type: String
       optional :schedule_days_of_week, type: [ Integer ]

@@ -20,9 +20,9 @@ module FilesMockServer
     end
 
     params do
-      requires :action, type: String
-      requires :authentication_method, type: String
-      requires :inactivity_days, type: Integer
+      optional :action, type: String
+      optional :authentication_method, type: String
+      optional :inactivity_days, type: Integer
       optional :include_site_admins, type: Boolean
       optional :include_folder_admins, type: Boolean
       optional :user_state, type: String
@@ -34,9 +34,9 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      requires :action, type: String
-      requires :authentication_method, type: String
-      requires :inactivity_days, type: Integer
+      optional :action, type: String
+      optional :authentication_method, type: String
+      optional :inactivity_days, type: Integer
       optional :include_site_admins, type: Boolean
       optional :include_folder_admins, type: Boolean
       optional :user_state, type: String

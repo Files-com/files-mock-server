@@ -156,6 +156,7 @@ module FilesMockServer
       optional :user_root, type: String
       optional :user_home, type: String
       optional :username, type: String
+      optional :clear_2fa, type: Boolean
     end
     patch "/api/rest/v1/users/:id" do
       status 200

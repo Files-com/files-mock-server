@@ -26,7 +26,6 @@ module FilesMockServer
       optional :dest_path, type: String
       optional :src_remote_server_id, type: Integer
       optional :dest_remote_server_id, type: Integer
-      optional :two_way, type: Boolean
       optional :keep_after_copy, type: Boolean
       optional :delete_empty_folders, type: Boolean
       optional :disabled, type: Boolean
@@ -69,7 +68,6 @@ module FilesMockServer
       optional :dest_path, type: String
       optional :src_remote_server_id, type: Integer
       optional :dest_remote_server_id, type: Integer
-      optional :two_way, type: Boolean
       optional :keep_after_copy, type: Boolean
       optional :delete_empty_folders, type: Boolean
       optional :disabled, type: Boolean

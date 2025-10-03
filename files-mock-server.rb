@@ -83,6 +83,7 @@ require "app/remote_mount_backend_api"
 require "app/remote_server_api"
 require "app/request_api"
 require "app/restore_api"
+require "app/scim_log_api"
 require "app/session_api"
 require "app/settings_change_api"
 require "app/sftp_action_log_api"
@@ -172,6 +173,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::RemoteServerAPI
   mount FilesMockServer::RequestAPI
   mount FilesMockServer::RestoreAPI
+  mount FilesMockServer::ScimLogAPI
   mount FilesMockServer::SessionAPI
   mount FilesMockServer::SettingsChangeAPI
   mount FilesMockServer::SftpActionLogAPI

@@ -29,6 +29,7 @@ module FilesMockServer
       optional :size, type: Integer
       optional :structure, type: String
       optional :with_rename, type: Boolean
+      optional :buffered_upload, type: Boolean
     end
     post "/api/rest/v1/files/:path" do
       status 201

@@ -11,11 +11,12 @@ module FilesMockServer
       optional :path, type: String
       optional :include_groups, type: Boolean
       optional :group_id, type: String
+      optional :partner_id, type: String
       optional :user_id, type: String
     end
     get "/api/rest/v1/permissions" do
       status 200
-      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true, "site_id" => 1 } ]
+      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "permission" => "full", "recursive" => true, "site_id" => 1 } ]
     end
 
     params do
@@ -23,6 +24,7 @@ module FilesMockServer
       optional :group_id, type: Integer
       optional :permission, type: String
       optional :recursive, type: Boolean
+      optional :partner_id, type: Integer
       optional :user_id, type: Integer
       optional :username, type: String
       optional :group_name, type: String
@@ -30,7 +32,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/permissions" do
       status 201
-      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "permission" => "full", "recursive" => true, "site_id" => 1 }
+      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "permission" => "full", "recursive" => true, "site_id" => 1 }
     end
 
     params do

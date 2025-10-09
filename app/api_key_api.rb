@@ -15,12 +15,12 @@ module FilesMockServer
     end
     get "/api/rest/v1/api_keys" do
       status 200
-      [ { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 } ]
+      [ { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 } ]
     end
 
     get "/api/rest/v1/api_key" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/api_keys/:id" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
     end
 
     params do
@@ -37,11 +37,12 @@ module FilesMockServer
       optional :expires_at, type: String
       optional :permission_set, type: String
       requires :name, type: String
+      optional :aws_style_credentials, type: Boolean
       optional :path, type: String
     end
     post "/api/rest/v1/api_keys" do
       status 201
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
     end
 
     params do
@@ -51,7 +52,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/api_key" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
     end
 
     params do
@@ -63,7 +64,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/api_keys/:id" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "url" => "example", "user_id" => 1 }
     end
 
     delete "/api/rest/v1/api_key" do

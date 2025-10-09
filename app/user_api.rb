@@ -60,6 +60,7 @@ module FilesMockServer
       optional :company, type: String
       optional :notes, type: String
       optional :office_integration_enabled, type: Boolean
+      optional :partner_admin, type: Boolean
       optional :partner_id, type: Integer
       optional :password_validity_days, type: Integer
       optional :readonly_site_admin, type: Boolean
@@ -141,6 +142,7 @@ module FilesMockServer
       optional :company, type: String
       optional :notes, type: String
       optional :office_integration_enabled, type: Boolean
+      optional :partner_admin, type: Boolean
       optional :partner_id, type: Integer
       optional :password_validity_days, type: Integer
       optional :readonly_site_admin, type: Boolean

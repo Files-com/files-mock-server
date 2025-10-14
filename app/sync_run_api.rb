@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/sync_runs" do
       status 200
-      [ { "id" => 1, "sync_id" => 1, "site_id" => 1, "status" => "example", "src_remote_server_type" => "example", "dest_remote_server_type" => "example", "body" => "example", "event_errors" => [ "example" ], "compared_files" => 1, "compared_folders" => 1, "errored_files" => 1, "successful_files" => 1, "runtime" => 1.0, "log_url" => "https://www.example.com/log_file.txt", "completed_at" => "2000-01-01T01:00:00Z", "dry_run" => true, "bytes_synced" => 1, "estimated_bytes_count" => 1, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "body" => "example", "bytes_synced" => 1, "compared_files" => 1, "compared_folders" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "dest_remote_server_type" => "example", "dry_run" => true, "errored_files" => 1, "estimated_bytes_count" => 1, "event_errors" => [ "example" ], "log_url" => "https://www.example.com/log_file.txt", "runtime" => 1.0, "site_id" => 1, "src_remote_server_type" => "example", "status" => "example", "successful_files" => 1, "sync_id" => 1, "sync_name" => "Azure to SharePoint Sync", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/sync_runs/:id" do
       status 200
-      { "id" => 1, "sync_id" => 1, "site_id" => 1, "status" => "example", "src_remote_server_type" => "example", "dest_remote_server_type" => "example", "body" => "example", "event_errors" => [ "example" ], "compared_files" => 1, "compared_folders" => 1, "errored_files" => 1, "successful_files" => 1, "runtime" => 1.0, "log_url" => "https://www.example.com/log_file.txt", "completed_at" => "2000-01-01T01:00:00Z", "dry_run" => true, "bytes_synced" => 1, "estimated_bytes_count" => 1, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "body" => "example", "bytes_synced" => 1, "compared_files" => 1, "compared_folders" => 1, "completed_at" => "2000-01-01T01:00:00Z", "created_at" => "2000-01-01T01:00:00Z", "dest_remote_server_type" => "example", "dry_run" => true, "errored_files" => 1, "estimated_bytes_count" => 1, "event_errors" => [ "example" ], "log_url" => "https://www.example.com/log_file.txt", "runtime" => 1.0, "site_id" => 1, "src_remote_server_type" => "example", "status" => "example", "successful_files" => 1, "sync_id" => 1, "sync_name" => "Azure to SharePoint Sync", "updated_at" => "2000-01-01T01:00:00Z" }
     end
   end
 end

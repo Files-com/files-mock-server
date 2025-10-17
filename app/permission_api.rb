@@ -16,7 +16,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/permissions" do
       status 200
-      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "permission" => "full", "recursive" => true, "site_id" => 1 } ]
+      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 } ]
     end
 
     params do
@@ -32,7 +32,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/permissions" do
       status 201
-      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "permission" => "full", "recursive" => true, "site_id" => 1 }
+      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 }
     end
 
     params do

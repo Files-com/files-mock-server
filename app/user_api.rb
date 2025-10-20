@@ -165,6 +165,7 @@ module FilesMockServer
       optional :user_home, type: String
       optional :username, type: String
       optional :clear_2fa, type: Boolean
+      optional :convert_to_partner_user, type: Boolean
     end
     patch "/api/rest/v1/users/:id" do
       status 200

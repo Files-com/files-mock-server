@@ -4,6 +4,10 @@ This serves a mock Files.com API server, which is useful for testing
 things like the Files.com SDKs and other direct integrations
 against the Files.com API.
 
+Files.com is the cloud-native, next-gen MFT, SFTP, and secure file-sharing platform that replaces brittle legacy servers with one always-on, secure fabric. Automate mission-critical file flows—across any cloud, protocol, or partner—while supporting human collaboration and eliminating manual work.
+
+With universal SFTP, AS2, HTTPS, and 50+ native connectors backed by military-grade encryption, Files.com unifies governance, visibility, and compliance in a single pane of glass.
+
 It is built as a simple Grape app with generated definitions for each
 API endpoint.
 

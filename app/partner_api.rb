@@ -21,7 +21,6 @@ module FilesMockServer
     end
 
     params do
-      optional :name, type: String
       optional :allow_bypassing_2fa_policies, type: Boolean
       optional :allow_credential_changes, type: Boolean
       optional :allow_providing_gpg_keys, type: Boolean
@@ -29,6 +28,7 @@ module FilesMockServer
       optional :notes, type: String
       optional :root_folder, type: String
       optional :tags, type: String
+      requires :name, type: String
     end
     post "/api/rest/v1/partners" do
       status 201
@@ -37,7 +37,6 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      optional :name, type: String
       optional :allow_bypassing_2fa_policies, type: Boolean
       optional :allow_credential_changes, type: Boolean
       optional :allow_providing_gpg_keys, type: Boolean
@@ -45,6 +44,7 @@ module FilesMockServer
       optional :notes, type: String
       optional :root_folder, type: String
       optional :tags, type: String
+      optional :name, type: String
     end
     patch "/api/rest/v1/partners/:id" do
       status 200

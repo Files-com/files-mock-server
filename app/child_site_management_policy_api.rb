@@ -20,7 +20,7 @@ module FilesMockServer
     end
 
     params do
-      optional :value, type: String
+      optional :value, type: Hash
       optional :skip_child_site_ids, type: [ Integer ]
       requires :policy_type, type: String
       optional :name, type: String
@@ -32,12 +32,12 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: [ String, Integer, Hash ]
-      optional :value, type: String
+      requires :id, type: Integer
+      optional :value, type: Hash
       optional :skip_child_site_ids, type: [ Integer ]
       optional :policy_type, type: String
       optional :name, type: String
-      optional :description, type: [ String, Integer, Hash ]
+      optional :description, type: String
     end
     patch "/api/rest/v1/child_site_management_policies/:id" do
       status 200

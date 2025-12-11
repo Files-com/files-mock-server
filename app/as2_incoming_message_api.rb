@@ -11,7 +11,6 @@ module FilesMockServer
       optional :filter_gteq, type: Hash
       optional :filter_lt, type: Hash
       optional :filter_lteq, type: Hash
-      optional :as2_partner_id, type: Integer
     end
     get "/api/rest/v1/as2_incoming_messages" do
       status 200

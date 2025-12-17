@@ -83,6 +83,7 @@ require "app/public_key_api"
 require "app/remote_bandwidth_snapshot_api"
 require "app/remote_mount_backend_api"
 require "app/remote_server_api"
+require "app/remote_server_credential_api"
 require "app/request_api"
 require "app/restore_api"
 require "app/scim_log_api"
@@ -175,6 +176,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::RemoteBandwidthSnapshotAPI
   mount FilesMockServer::RemoteMountBackendAPI
   mount FilesMockServer::RemoteServerAPI
+  mount FilesMockServer::RemoteServerCredentialAPI
   mount FilesMockServer::RequestAPI
   mount FilesMockServer::RestoreAPI
   mount FilesMockServer::ScimLogAPI

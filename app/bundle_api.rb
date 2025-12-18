@@ -96,6 +96,7 @@ module FilesMockServer
       optional :start_access_on_date, type: String
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
+      optional :user_id, type: Integer
       optional :watermark_attachment_delete, type: Boolean
       optional :watermark_attachment_file, type: File
     end

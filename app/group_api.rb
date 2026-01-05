@@ -28,13 +28,13 @@ module FilesMockServer
       optional :notes, type: String
       optional :user_ids, type: String
       optional :admin_ids, type: String
-      optional :workspace_id, type: Integer
       optional :ftp_permission, type: Boolean
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean
       optional :restapi_permission, type: Boolean
       optional :allowed_ips, type: String
       requires :name, type: String
+      optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/groups" do
       status 201
@@ -46,7 +46,6 @@ module FilesMockServer
       optional :notes, type: String
       optional :user_ids, type: String
       optional :admin_ids, type: String
-      optional :workspace_id, type: Integer
       optional :ftp_permission, type: Boolean
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean

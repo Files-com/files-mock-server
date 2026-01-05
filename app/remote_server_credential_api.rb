@@ -23,7 +23,6 @@ module FilesMockServer
     end
 
     params do
-      optional :workspace_id, type: Integer
       optional :name, type: String
       optional :description, type: String
       optional :server_type, type: String
@@ -54,6 +53,7 @@ module FilesMockServer
       optional :linode_secret_key, type: String
       optional :s3_compatible_secret_key, type: String
       optional :wasabi_secret_key, type: String
+      optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/remote_server_credentials" do
       status 201
@@ -62,7 +62,6 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
-      optional :workspace_id, type: Integer
       optional :name, type: String
       optional :description, type: String
       optional :server_type, type: String

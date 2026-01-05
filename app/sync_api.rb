@@ -83,7 +83,6 @@ module FilesMockServer
       optional :schedule_time_zone, type: String
       optional :schedule_days_of_week, type: [ Integer ]
       optional :schedule_times_of_day, type: [ String ]
-      optional :workspace_id, type: Integer
     end
     patch "/api/rest/v1/syncs/:id" do
       status 200

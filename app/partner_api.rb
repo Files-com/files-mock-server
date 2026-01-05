@@ -6,10 +6,11 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
+      optional :filter, type: Hash
     end
     get "/api/rest/v1/partners" do
       status 200
-      [ { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] } ]
+      [ { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] } ]
     end
 
     params do
@@ -17,7 +18,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/partners/:id" do
       status 200
-      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do
@@ -29,10 +30,11 @@ module FilesMockServer
       optional :root_folder, type: String
       optional :tags, type: String
       requires :name, type: String
+      optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/partners" do
       status 201
-      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do
@@ -48,7 +50,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/partners/:id" do
       status 200
-      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => true, "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "root_folder" => "/AcmeCorp", "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do

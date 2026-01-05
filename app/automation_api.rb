@@ -58,8 +58,8 @@ module FilesMockServer
       optional :trigger_actions, type: [ String ]
       optional :value, type: Hash
       optional :recurring_day, type: Integer
-      optional :workspace_id, type: Integer
       requires :automation, type: String
+      optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/automations" do
       status 201
@@ -108,7 +108,6 @@ module FilesMockServer
       optional :trigger_actions, type: [ String ]
       optional :value, type: Hash
       optional :recurring_day, type: Integer
-      optional :workspace_id, type: Integer
       optional :automation, type: String
     end
     patch "/api/rest/v1/automations/:id" do

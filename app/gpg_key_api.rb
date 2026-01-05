@@ -29,11 +29,11 @@ module FilesMockServer
     params do
       optional :user_id, type: Integer
       optional :partner_id, type: Integer
-      optional :workspace_id, type: Integer
       optional :public_key, type: String
       optional :private_key, type: String
       optional :private_key_password, type: String
       requires :name, type: String
+      optional :workspace_id, type: Integer
       optional :generate_expires_at, type: String
       optional :generate_keypair, type: Boolean
       optional :generate_full_name, type: String
@@ -47,7 +47,6 @@ module FilesMockServer
     params do
       requires :id, type: Integer
       optional :partner_id, type: Integer
-      optional :workspace_id, type: Integer
       optional :public_key, type: String
       optional :private_key, type: String
       optional :private_key_password, type: String

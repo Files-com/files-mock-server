@@ -35,7 +35,7 @@ module FilesMockServer
     end
 
     params do
-      optional :value, type: String
+      optional :value, type: Hash
       optional :attachment_file, type: File
       optional :disable_parent_folder_behavior, type: Boolean
       optional :recursive, type: Boolean
@@ -63,14 +63,14 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: [ String, Integer, Hash ]
-      optional :value, type: String
+      requires :id, type: [ Hash, String, Integer ]
+      optional :value, type: Hash
       optional :attachment_file, type: File
       optional :disable_parent_folder_behavior, type: Boolean
       optional :recursive, type: Boolean
       optional :name, type: String
       optional :description, type: String
-      optional :attachment_delete, type: [ String, Integer, Hash ]
+      optional :attachment_delete, type: [ Hash, String, Integer ]
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200

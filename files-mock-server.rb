@@ -110,6 +110,7 @@ require "app/user_request_api"
 require "app/user_sftp_client_use_api"
 require "app/web_dav_action_log_api"
 require "app/webhook_test_api"
+require "app/workspace_api"
 
 class FilesMockServer::API < Grape::API
   mount FilesMockServer::ActionNotificationExportAPI
@@ -204,4 +205,5 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UserSftpClientUseAPI
   mount FilesMockServer::WebDavActionLogAPI
   mount FilesMockServer::WebhookTestAPI
+  mount FilesMockServer::WorkspaceAPI
 end

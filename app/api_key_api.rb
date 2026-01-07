@@ -35,10 +35,10 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :description, type: String
       optional :expires_at, type: String
-      optional :permission_set, type: String
       requires :name, type: String
       optional :aws_style_credentials, type: Boolean
       optional :path, type: String
+      optional :permission_set, type: String
     end
     post "/api/rest/v1/api_keys" do
       status 201
@@ -59,7 +59,6 @@ module FilesMockServer
       requires :id, type: Integer
       optional :description, type: String
       optional :expires_at, type: String
-      optional :permission_set, type: String
       optional :name, type: String
     end
     patch "/api/rest/v1/api_keys/:id" do

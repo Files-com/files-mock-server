@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_server_credentials" do
       status 200
-      [ { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "azure_blob_storage_account" => "storage-account-name", "azure_files_storage_account" => "storage-account-name", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" } ]
+      [ { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" } ]
     end
 
     params do
@@ -19,7 +19,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_server_credentials/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "azure_blob_storage_account" => "storage-account-name", "azure_files_storage_account" => "storage-account-name", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
     end
 
     params do
@@ -27,8 +27,6 @@ module FilesMockServer
       optional :description, type: String
       optional :server_type, type: String
       optional :aws_access_key, type: String
-      optional :azure_blob_storage_account, type: String
-      optional :azure_files_storage_account, type: String
       optional :cloudflare_access_key, type: String
       optional :filebase_access_key, type: String
       optional :google_cloud_storage_s3_compatible_access_key, type: String
@@ -57,7 +55,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/remote_server_credentials" do
       status 201
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "azure_blob_storage_account" => "storage-account-name", "azure_files_storage_account" => "storage-account-name", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
     end
 
     params do
@@ -66,8 +64,6 @@ module FilesMockServer
       optional :description, type: String
       optional :server_type, type: String
       optional :aws_access_key, type: String
-      optional :azure_blob_storage_account, type: String
-      optional :azure_files_storage_account, type: String
       optional :cloudflare_access_key, type: String
       optional :filebase_access_key, type: String
       optional :google_cloud_storage_s3_compatible_access_key, type: String
@@ -95,7 +91,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/remote_server_credentials/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "azure_blob_storage_account" => "storage-account-name", "azure_files_storage_account" => "storage-account-name", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
     end
 
     params do

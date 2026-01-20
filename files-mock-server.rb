@@ -75,6 +75,7 @@ require "app/message_reaction_api"
 require "app/notification_api"
 require "app/outbound_connection_log_api"
 require "app/partner_api"
+require "app/partner_site_request_api"
 require "app/payment_api"
 require "app/permission_api"
 require "app/priority_api"
@@ -170,6 +171,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::NotificationAPI
   mount FilesMockServer::OutboundConnectionLogAPI
   mount FilesMockServer::PartnerAPI
+  mount FilesMockServer::PartnerSiteRequestAPI
   mount FilesMockServer::PaymentAPI
   mount FilesMockServer::PermissionAPI
   mount FilesMockServer::PriorityAPI

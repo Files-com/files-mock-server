@@ -69,6 +69,14 @@ module FilesMockServer
 
     params do
       requires :path, type: String
+    end
+    get "/api/rest/v1/file_actions/zip_list/:path" do
+      status 200
+      [ { "path" => "example", "size" => 1 } ]
+    end
+
+    params do
+      requires :path, type: String
       requires :destination, type: String
       optional :structure, type: Boolean
       optional :overwrite, type: Boolean
@@ -84,6 +92,27 @@ module FilesMockServer
       optional :overwrite, type: Boolean
     end
     post "/api/rest/v1/file_actions/move/:path" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :path, type: String
+      requires :destination, type: String
+      optional :filename, type: String
+      optional :overwrite, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/unzip" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :paths, type: [ String ]
+      requires :destination, type: String
+      optional :overwrite, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/zip" do
       status 201
       { "status" => "pending", "file_migration_id" => 1 }
     end

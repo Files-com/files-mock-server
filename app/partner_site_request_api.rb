@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/partner_site_requests" do
       status 200
-      [ { "id" => 1, "partner_id" => 1, "linked_site_id" => 1, "status" => "pending", "pairing_key" => "abc123xyz", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "partner_id" => 1, "linked_site_id" => 1, "status" => "pending", "main_site_name" => "Acme Site", "pairing_key" => "abc123xyz", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -25,7 +25,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/partner_site_requests" do
       status 201
-      { "id" => 1, "partner_id" => 1, "linked_site_id" => 1, "status" => "pending", "pairing_key" => "abc123xyz", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "partner_id" => 1, "linked_site_id" => 1, "status" => "pending", "main_site_name" => "Acme Site", "pairing_key" => "abc123xyz", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do

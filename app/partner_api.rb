@@ -27,9 +27,9 @@ module FilesMockServer
       optional :allow_providing_gpg_keys, type: Boolean
       optional :allow_user_creation, type: Boolean
       optional :notes, type: String
-      optional :root_folder, type: String
       optional :tags, type: String
       requires :name, type: String
+      requires :root_folder, type: String
       optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/partners" do
@@ -44,9 +44,9 @@ module FilesMockServer
       optional :allow_providing_gpg_keys, type: Boolean
       optional :allow_user_creation, type: Boolean
       optional :notes, type: String
-      optional :root_folder, type: String
       optional :tags, type: String
       optional :name, type: String
+      optional :root_folder, type: String
     end
     patch "/api/rest/v1/partners/:id" do
       status 200

@@ -12,7 +12,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/bundle_recipients" do
       status 200
-      [ { "company" => "Acme Inc.", "name" => "John Doe", "note" => "Some note.", "recipient" => "john.doe@example.com", "sent_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "company" => "Acme Inc.", "name" => "John Doe", "note" => "Some note.", "recipient" => "john.doe@example.com", "sent_at" => "2000-01-01T01:00:00Z", "workspace_id" => 1 } ]
     end
 
     params do
@@ -26,7 +26,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/bundle_recipients" do
       status 201
-      { "company" => "Acme Inc.", "name" => "John Doe", "note" => "Some note.", "recipient" => "john.doe@example.com", "sent_at" => "2000-01-01T01:00:00Z" }
+      { "company" => "Acme Inc.", "name" => "John Doe", "note" => "Some note.", "recipient" => "john.doe@example.com", "sent_at" => "2000-01-01T01:00:00Z", "workspace_id" => 1 }
     end
   end
 end

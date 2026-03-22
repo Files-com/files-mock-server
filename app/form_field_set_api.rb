@@ -23,6 +23,7 @@ module FilesMockServer
     params do
       optional :user_id, type: Integer
       optional :title, type: String
+      optional :workspace_id, type: Integer
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :skip_company, type: Boolean
@@ -36,6 +37,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
       optional :title, type: String
+      optional :workspace_id, type: Integer
       optional :skip_email, type: Boolean
       optional :skip_name, type: Boolean
       optional :skip_company, type: Boolean

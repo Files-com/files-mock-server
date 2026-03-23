@@ -16,12 +16,13 @@ module FilesMockServer
     end
     get "/api/rest/v1/permissions" do
       status 200
-      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 } ]
+      [ { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "group_ids" => [ 1 ], "group_names" => [ "example" ], "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 } ]
     end
 
     params do
       requires :path, type: String
       optional :group_id, type: Integer
+      optional :group_ids, type: String
       optional :permission, type: String
       optional :recursive, type: Boolean
       optional :partner_id, type: Integer
@@ -32,7 +33,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/permissions" do
       status 201
-      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 }
+      { "id" => 1, "path" => "example", "user_id" => 1, "username" => "user", "group_id" => 1, "group_name" => "example", "group_ids" => [ 1 ], "group_names" => [ "example" ], "partner_id" => 1, "partner_name" => "Acme Corp.", "permission" => "full", "recursive" => true, "site_id" => 1 }
     end
 
     params do

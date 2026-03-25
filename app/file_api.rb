@@ -27,6 +27,7 @@ module FilesMockServer
       optional :ref, type: String
       optional :restart, type: Integer
       optional :size, type: Integer
+      optional :copy_behaviors, type: Boolean
       optional :structure, type: String
       optional :with_rename, type: Boolean
       optional :buffered_upload, type: Boolean
@@ -78,6 +79,7 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
+      optional :copy_behaviors, type: Boolean
       optional :structure, type: Boolean
       optional :overwrite, type: Boolean
     end

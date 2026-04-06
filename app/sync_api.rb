@@ -26,7 +26,6 @@ module FilesMockServer
       optional :description, type: String
       optional :dest_path, type: String
       optional :dest_remote_server_id, type: Integer
-      optional :dest_site_id, type: Integer
       optional :disabled, type: Boolean
       optional :exclude_patterns, type: [ String ]
       optional :holiday_region, type: String
@@ -40,7 +39,6 @@ module FilesMockServer
       optional :schedule_times_of_day, type: [ String ]
       optional :src_path, type: String
       optional :src_remote_server_id, type: Integer
-      optional :src_site_id, type: Integer
       optional :sync_interval_minutes, type: Integer
       optional :trigger, type: String
       optional :trigger_file, type: String
@@ -73,7 +71,6 @@ module FilesMockServer
       optional :description, type: String
       optional :dest_path, type: String
       optional :dest_remote_server_id, type: Integer
-      optional :dest_site_id, type: Integer
       optional :disabled, type: Boolean
       optional :exclude_patterns, type: [ String ]
       optional :holiday_region, type: String
@@ -87,7 +84,6 @@ module FilesMockServer
       optional :schedule_times_of_day, type: [ String ]
       optional :src_path, type: String
       optional :src_remote_server_id, type: Integer
-      optional :src_site_id, type: Integer
       optional :sync_interval_minutes, type: Integer
       optional :trigger, type: String
       optional :trigger_file, type: String

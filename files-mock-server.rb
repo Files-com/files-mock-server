@@ -77,6 +77,7 @@ require "app/message_api"
 require "app/message_comment_api"
 require "app/message_comment_reaction_api"
 require "app/message_reaction_api"
+require "app/metadata_category_api"
 require "app/notification_api"
 require "app/outbound_connection_log_api"
 require "app/partner_api"
@@ -178,6 +179,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::MessageCommentAPI
   mount FilesMockServer::MessageCommentReactionAPI
   mount FilesMockServer::MessageReactionAPI
+  mount FilesMockServer::MetadataCategoryAPI
   mount FilesMockServer::NotificationAPI
   mount FilesMockServer::OutboundConnectionLogAPI
   mount FilesMockServer::PartnerAPI

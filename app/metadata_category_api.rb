@@ -21,6 +21,16 @@ module FilesMockServer
     end
 
     params do
+      optional :cursor, type: String
+      optional :per_page, type: Integer
+      requires :path, type: String
+    end
+    get "/api/rest/v1/metadata_categories/list_by_path/:path" do
+      status 200
+      [ { "id" => 1, "name" => "Approval Workflow", "definitions" => { "Approval Status" => [ "Under Review", "Approved", "Rejected" ], "Reviewer" => [] }, "default_columns" => [ "Approval Status" ] } ]
+    end
+
+    params do
       requires :name, type: String
       optional :default_columns, type: [ String ]
     end

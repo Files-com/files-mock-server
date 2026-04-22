@@ -13,7 +13,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/groups" do
       status 200
-      [ { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "site_id" => 1, "workspace_id" => 1 } ]
+      [ { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 } ]
     end
 
     params do
@@ -21,7 +21,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/groups/:id" do
       status 200
-      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "site_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -32,13 +32,14 @@ module FilesMockServer
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean
       optional :restapi_permission, type: Boolean
+      optional :desktop_configuration_profile_id, type: Integer
       optional :allowed_ips, type: String
       requires :name, type: String
       optional :workspace_id, type: Integer
     end
     post "/api/rest/v1/groups" do
       status 201
-      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "site_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -50,12 +51,13 @@ module FilesMockServer
       optional :sftp_permission, type: Boolean
       optional :dav_permission, type: Boolean
       optional :restapi_permission, type: Boolean
+      optional :desktop_configuration_profile_id, type: Integer
       optional :allowed_ips, type: String
       optional :name, type: String
     end
     patch "/api/rest/v1/groups/:id" do
       status 200
-      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "site_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
     end
 
     params do

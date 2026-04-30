@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/desktop_configuration_profiles" do
       status 200
-      [ { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "mount_mappings" => { "key" => "example value" } } ]
+      [ { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } } ]
     end
 
     params do
@@ -18,7 +18,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/desktop_configuration_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do
@@ -26,10 +26,11 @@ module FilesMockServer
       requires :mount_mappings, type: Hash
       optional :workspace_id, type: Integer
       optional :use_for_all_users, type: Boolean
+      optional :disable_drive_mounting, type: Boolean
     end
     post "/api/rest/v1/desktop_configuration_profiles" do
       status 201
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do
@@ -38,10 +39,11 @@ module FilesMockServer
       optional :workspace_id, type: Integer
       optional :mount_mappings, type: Hash
       optional :use_for_all_users, type: Boolean
+      optional :disable_drive_mounting, type: Boolean
     end
     patch "/api/rest/v1/desktop_configuration_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do

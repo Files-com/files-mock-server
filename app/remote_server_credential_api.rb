@@ -54,6 +54,7 @@ module FilesMockServer
       optional :s3_compatible_secret_key, type: String
       optional :wasabi_secret_key, type: String
       optional :workspace_id, type: Integer
+      optional :copy_values_from_credential_id, type: Integer
     end
     post "/api/rest/v1/remote_server_credentials" do
       status 201

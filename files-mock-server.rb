@@ -102,6 +102,7 @@ require "app/sftp_host_key_api"
 require "app/share_group_api"
 require "app/siem_http_destination_api"
 require "app/site_api"
+require "app/site_subdomain_redirect_api"
 require "app/snapshot_api"
 require "app/sso_strategy_api"
 require "app/style_api"
@@ -204,6 +205,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ShareGroupAPI
   mount FilesMockServer::SiemHttpDestinationAPI
   mount FilesMockServer::SiteAPI
+  mount FilesMockServer::SiteSubdomainRedirectAPI
   mount FilesMockServer::SnapshotAPI
   mount FilesMockServer::SsoStrategyAPI
   mount FilesMockServer::StyleAPI

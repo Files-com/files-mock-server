@@ -188,6 +188,7 @@ module FilesMockServer
       optional :disable_2fa_with_delay, type: Boolean
       optional :ldap_password_change, type: String
       optional :ldap_password_change_confirmation, type: String
+      optional :redirect_old_subdomain, type: Boolean
       optional :smtp_password, type: String
     end
     patch "/api/rest/v1/site" do

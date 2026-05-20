@@ -45,6 +45,11 @@ require "app/desktop_configuration_profile_api"
 require "app/dns_record_api"
 require "app/email_incoming_message_api"
 require "app/email_log_api"
+require "app/event_channel_api"
+require "app/event_delivery_attempt_api"
+require "app/event_record_api"
+require "app/event_subscription_api"
+require "app/event_target_api"
 require "app/exavault_api_request_log_api"
 require "app/expectation_api"
 require "app/expectation_evaluation_api"
@@ -84,6 +89,7 @@ require "app/partner_api"
 require "app/partner_site_api"
 require "app/partner_site_request_api"
 require "app/payment_api"
+require "app/pending_work_event_api"
 require "app/permission_api"
 require "app/project_api"
 require "app/public_hosting_request_log_api"
@@ -101,9 +107,11 @@ require "app/sftp_action_log_api"
 require "app/sftp_host_key_api"
 require "app/share_group_api"
 require "app/siem_http_destination_api"
+require "app/siem_http_destination_event_api"
 require "app/site_api"
 require "app/site_subdomain_redirect_api"
 require "app/snapshot_api"
+require "app/sso_event_api"
 require "app/sso_strategy_api"
 require "app/style_api"
 require "app/sync_api"
@@ -115,6 +123,7 @@ require "app/user_api"
 require "app/user_cipher_use_api"
 require "app/user_lifecycle_rule_api"
 require "app/user_request_api"
+require "app/user_security_event_api"
 require "app/user_sftp_client_use_api"
 require "app/web_dav_action_log_api"
 require "app/webhook_test_api"
@@ -148,6 +157,11 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::EmailIncomingMessageAPI
   mount FilesMockServer::EmailLogAPI
+  mount FilesMockServer::EventChannelAPI
+  mount FilesMockServer::EventDeliveryAttemptAPI
+  mount FilesMockServer::EventRecordAPI
+  mount FilesMockServer::EventSubscriptionAPI
+  mount FilesMockServer::EventTargetAPI
   mount FilesMockServer::ExavaultApiRequestLogAPI
   mount FilesMockServer::ExpectationAPI
   mount FilesMockServer::ExpectationEvaluationAPI
@@ -187,6 +201,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::PartnerSiteAPI
   mount FilesMockServer::PartnerSiteRequestAPI
   mount FilesMockServer::PaymentAPI
+  mount FilesMockServer::PendingWorkEventAPI
   mount FilesMockServer::PermissionAPI
   mount FilesMockServer::ProjectAPI
   mount FilesMockServer::PublicHostingRequestLogAPI
@@ -204,9 +219,11 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::SftpHostKeyAPI
   mount FilesMockServer::ShareGroupAPI
   mount FilesMockServer::SiemHttpDestinationAPI
+  mount FilesMockServer::SiemHttpDestinationEventAPI
   mount FilesMockServer::SiteAPI
   mount FilesMockServer::SiteSubdomainRedirectAPI
   mount FilesMockServer::SnapshotAPI
+  mount FilesMockServer::SsoEventAPI
   mount FilesMockServer::SsoStrategyAPI
   mount FilesMockServer::StyleAPI
   mount FilesMockServer::SyncAPI
@@ -218,6 +235,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UserCipherUseAPI
   mount FilesMockServer::UserLifecycleRuleAPI
   mount FilesMockServer::UserRequestAPI
+  mount FilesMockServer::UserSecurityEventAPI
   mount FilesMockServer::UserSftpClientUseAPI
   mount FilesMockServer::WebDavActionLogAPI
   mount FilesMockServer::WebhookTestAPI

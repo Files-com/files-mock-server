@@ -189,6 +189,7 @@ module FilesMockServer
       optional :user_home, type: String
       optional :workspace_admin, type: Boolean
       optional :username, type: String
+      optional :workspace_id, type: Integer
       optional :clear_2fa, type: Boolean
       optional :convert_to_partner_user, type: Boolean
     end

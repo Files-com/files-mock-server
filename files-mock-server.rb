@@ -100,6 +100,7 @@ require "app/remote_server_api"
 require "app/remote_server_credential_api"
 require "app/request_api"
 require "app/restore_api"
+require "app/scheduled_export_api"
 require "app/scim_log_api"
 require "app/session_api"
 require "app/settings_change_api"
@@ -212,6 +213,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::RemoteServerCredentialAPI
   mount FilesMockServer::RequestAPI
   mount FilesMockServer::RestoreAPI
+  mount FilesMockServer::ScheduledExportAPI
   mount FilesMockServer::ScimLogAPI
   mount FilesMockServer::SessionAPI
   mount FilesMockServer::SettingsChangeAPI

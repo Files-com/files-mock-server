@@ -4,7 +4,7 @@ module FilesMockServer
 
     get "/api/rest/v1/partner_sites/linked_partner_sites" do
       status 200
-      [ { "partner_id" => 1, "partner_name" => "Acme Corp", "linked_site_id" => 1, "linked_site_name" => "Acme's Partner Site", "main_site_id" => 2, "main_site_name" => "Acme Site" } ]
+      [ { "host_partner_id" => 1, "host_partner_name" => "Acme Corp", "guest_partner_id" => 2, "guest_partner_name" => "Example Corp", "host_site_id" => 1, "host_site_name" => "Acme Site", "guest_site_id" => 2, "guest_site_name" => "Example Site", "workspace_id" => 1 } ]
     end
 
     params do
@@ -13,7 +13,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/partner_sites" do
       status 200
-      [ { "partner_id" => 1, "partner_name" => "Acme Corp", "linked_site_id" => 1, "linked_site_name" => "Acme's Partner Site", "main_site_id" => 2, "main_site_name" => "Acme Site" } ]
+      [ { "host_partner_id" => 1, "host_partner_name" => "Acme Corp", "guest_partner_id" => 2, "guest_partner_name" => "Example Corp", "host_site_id" => 1, "host_site_name" => "Acme Site", "guest_site_id" => 2, "guest_site_name" => "Example Site", "workspace_id" => 1 } ]
     end
   end
 end

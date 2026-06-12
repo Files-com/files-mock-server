@@ -22,6 +22,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+      optional :deleted, type: Boolean
     end
     get "/api/rest/v1/bundles/:id" do
       status 200

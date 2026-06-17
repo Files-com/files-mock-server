@@ -101,6 +101,34 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
+      optional :gpg_key_ids, type: [ Integer ]
+      optional :gpg_key_partner_id, type: Integer
+      optional :use_all_private_keys, type: Boolean
+      optional :ignore_mdc_error, type: Boolean
+      optional :overwrite, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/gpg_decrypt/:path" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :path, type: String
+      requires :destination, type: String
+      optional :gpg_key_ids, type: [ Integer ]
+      optional :gpg_key_partner_id, type: Integer
+      optional :signing_key_id, type: Integer
+      optional :armor, type: Boolean
+      optional :overwrite, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/gpg_encrypt/:path" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :path, type: String
+      requires :destination, type: String
       optional :filename, type: String
       optional :overwrite, type: Boolean
     end

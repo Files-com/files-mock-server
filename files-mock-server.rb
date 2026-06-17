@@ -41,6 +41,7 @@ require "app/bundle_recipient_api"
 require "app/bundle_registration_api"
 require "app/child_site_management_policy_api"
 require "app/clickwrap_api"
+require "app/custom_domain_api"
 require "app/desktop_configuration_profile_api"
 require "app/dns_record_api"
 require "app/email_incoming_message_api"
@@ -154,6 +155,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::BundleRegistrationAPI
   mount FilesMockServer::ChildSiteManagementPolicyAPI
   mount FilesMockServer::ClickwrapAPI
+  mount FilesMockServer::CustomDomainAPI
   mount FilesMockServer::DesktopConfigurationProfileAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::EmailIncomingMessageAPI

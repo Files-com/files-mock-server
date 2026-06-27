@@ -21,6 +21,7 @@ require 'lib/grape_extensions'
 require "app/action_log_api"
 require "app/action_notification_export_api"
 require "app/action_notification_export_result_api"
+require "app/ai_task_api"
 require "app/api_key_api"
 require "app/api_request_log_api"
 require "app/app_api"
@@ -137,6 +138,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ActionLogAPI
   mount FilesMockServer::ActionNotificationExportAPI
   mount FilesMockServer::ActionNotificationExportResultAPI
+  mount FilesMockServer::AiTaskAPI
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::ApiRequestLogAPI
   mount FilesMockServer::AppAPI

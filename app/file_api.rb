@@ -103,6 +103,7 @@ module FilesMockServer
       requires :destination, type: String
       requires :transform_type, type: String
       requires :target_format, type: String
+      optional :script, type: String
       optional :width, type: Integer
       optional :height, type: Integer
       optional :overwrite, type: Boolean

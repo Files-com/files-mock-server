@@ -20,5 +20,14 @@ module FilesMockServer
       status 200
       { "id" => 1, "workspace_id" => 1, "expectation_id" => 1, "status" => "open", "opened_via" => "manual", "opened_at" => "2000-01-01T01:00:00Z", "window_start_at" => "2000-01-01T01:00:00Z", "window_end_at" => "2000-01-01T01:00:00Z", "deadline_at" => "2000-01-01T01:00:00Z", "late_acceptance_cutoff_at" => "2000-01-01T01:00:00Z", "hard_close_at" => "2000-01-01T01:00:00Z", "closed_at" => "2000-01-01T01:00:00Z", "matched_files" => [], "missing_files" => [], "criteria_errors" => [ "count expected exactly 2, got 1" ], "summary" => nil, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
+
+    params do
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+    end
+    post "/api/rest/v1/expectation_evaluations/create_export" do
+      status 201
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
+    end
   end
 end

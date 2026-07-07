@@ -60,6 +60,7 @@ module FilesMockServer
       optional :recurring_day, type: Integer
       requires :automation, type: String
       optional :workspace_id, type: Integer
+      optional :cloned_from, type: Integer
     end
     post "/api/rest/v1/automations" do
       status 201
@@ -72,6 +73,19 @@ module FilesMockServer
     post "/api/rest/v1/automations/:id/manual_run" do
       status 204
       body false
+    end
+
+    params do
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      optional :filter_gt, type: Hash
+      optional :filter_gteq, type: Hash
+      optional :filter_lt, type: Hash
+      optional :filter_lteq, type: Hash
+    end
+    post "/api/rest/v1/automations/create_export" do
+      status 201
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
     end
 
     params do

@@ -7,6 +7,7 @@ module FilesMockServer
       optional :per_page, type: Integer
       requires :path, type: String
       optional :include_children, type: Boolean
+      optional :bundle_registration_code, type: String
     end
     get "/api/rest/v1/locks/:path" do
       status 200
@@ -15,10 +16,16 @@ module FilesMockServer
 
     params do
       requires :path, type: String
+      optional :token, type: String
+      optional :type, type: String
       optional :allow_access_by_any_user, type: Boolean
+      optional :scope, type: String
       optional :exclusive, type: Boolean
+      optional :depth, type: String
       optional :recursive, type: Boolean
+      optional :owner, type: String
       optional :timeout, type: Integer
+      optional :bundle_registration_code, type: String
     end
     post "/api/rest/v1/locks/:path" do
       status 201
@@ -28,6 +35,7 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :token, type: String
+      optional :bundle_registration_code, type: String
     end
     delete "/api/rest/v1/locks/:path" do
       status 204

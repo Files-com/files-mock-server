@@ -24,5 +24,18 @@ module FilesMockServer
       status 200
       { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "event_errors" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example", "folder_behavior_id" => 1 }
     end
+
+    params do
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      optional :filter_gt, type: Hash
+      optional :filter_gteq, type: Hash
+      optional :filter_lt, type: Hash
+      optional :filter_lteq, type: Hash
+    end
+    post "/api/rest/v1/pending_work_events/create_export" do
+      status 201
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
+    end
   end
 end

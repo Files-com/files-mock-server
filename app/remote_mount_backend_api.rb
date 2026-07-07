@@ -49,6 +49,14 @@ module FilesMockServer
     end
 
     params do
+      optional :filter, type: Hash
+    end
+    post "/api/rest/v1/remote_mount_backends/create_export" do
+      status 201
+      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
+    end
+
+    params do
       requires :id, type: Integer
       optional :enabled, type: Boolean
       optional :fall, type: Integer

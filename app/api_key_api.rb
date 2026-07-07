@@ -15,12 +15,12 @@ module FilesMockServer
     end
     get "/api/rest/v1/api_keys" do
       status 200
-      [ { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 } ]
+      [ { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 } ]
     end
 
     get "/api/rest/v1/api_key" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -28,7 +28,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/api_keys/:id" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -36,8 +36,6 @@ module FilesMockServer
       optional :description, type: String
       optional :expires_at, type: String
       requires :name, type: String
-      optional :pairing_key, type: String
-      optional :platform, type: String
       optional :aws_style_credentials, type: Boolean
       optional :path, type: String
       optional :permission_set, type: String
@@ -45,21 +43,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/api_keys" do
       status 201
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
-    end
-
-    params do
-      optional :user_id, type: Integer
-      optional :sort_by, type: Hash
-      optional :filter, type: Hash
-      optional :filter_gt, type: Hash
-      optional :filter_gteq, type: Hash
-      optional :filter_lt, type: Hash
-      optional :filter_lteq, type: Hash
-    end
-    post "/api/rest/v1/api_keys/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -69,7 +53,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/api_key" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
     end
 
     params do
@@ -80,7 +64,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/api_keys/:id" do
       status 200
-      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "path" => "shared/docs", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "descriptive_label" => "Site-wide API key for https://site.files.com/ (key ID #1)", "description" => "example", "created_at" => "2000-01-01T01:00:00Z", "expires_at" => "2000-01-01T01:00:00Z", "key" => "[key]", "aws_style_credentials" => true, "aws_access_key_id" => "[aws_access_key_id]", "aws_secret_key" => "[aws_secret_key]", "last_use_at" => "2000-01-01T01:00:00Z", "name" => "My Main API Key", "permission_set" => "full", "platform" => "win32", "site_id" => 1, "site_name" => "example", "url" => "example", "user_id" => 1, "workspace_id" => 1 }
     end
 
     delete "/api/rest/v1/api_key" do

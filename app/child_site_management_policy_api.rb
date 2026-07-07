@@ -31,11 +31,6 @@ module FilesMockServer
       { "id" => 1, "policy_type" => "settings", "name" => "example", "description" => "example", "value" => "{ \"color2_left\": \"#000000\" }", "applied_child_site_ids" => [ 1, 2 ], "skip_child_site_ids" => [ 1, 2 ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
-    post "/api/rest/v1/child_site_management_policies/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
-    end
-
     params do
       requires :id, type: Integer
       optional :value, type: Hash

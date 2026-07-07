@@ -26,14 +26,5 @@ module FilesMockServer
       status 201
       { "earliest_date" => "2000-01-01T01:00:00Z", "id" => 1, "dirs_restored" => 1, "dirs_errored" => 1, "dirs_total" => 1, "files_restored" => 1, "files_errored" => 1, "files_total" => 1, "prefix" => "foo/bar/baz.txt", "restoration_type" => "files", "restore_in_place" => true, "restore_deleted_permissions" => true, "users_restored" => 1, "users_errored" => 1, "users_total" => 1, "api_keys_restored" => 1, "public_keys_restored" => 1, "two_factor_authentication_methods_restored" => 1, "status" => "pending", "update_timestamps" => true, "workspace_id" => 12, "error_messages" => [ "example" ] }
     end
-
-    params do
-      optional :sort_by, type: Hash
-      optional :filter, type: Hash
-    end
-    post "/api/rest/v1/restores/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
-    end
   end
 end

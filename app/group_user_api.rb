@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/group_users" do
       status 200
-      [ { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example", "name" => "example", "id" => 1 } ]
+      [ { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example" } ]
     end
 
     params do
@@ -20,16 +20,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/group_users" do
       status 201
-      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example", "name" => "example", "id" => 1 }
-    end
-
-    params do
-      optional :group_id, type: Integer
-      optional :user_id, type: Integer
-    end
-    post "/api/rest/v1/group_users/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
+      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example" }
     end
 
     params do
@@ -40,7 +31,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/group_users/:id" do
       status 200
-      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example", "name" => "example", "id" => 1 }
+      { "group_name" => "My Group", "group_id" => 1, "user_id" => 1, "admin" => true, "username" => "example" }
     end
 
     params do

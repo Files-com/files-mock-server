@@ -18,15 +18,11 @@ $LOAD_PATH.push __dir__
 require 'lib/base64_upload'
 require 'lib/grape_extensions'
 
-require "app/account_api"
 require "app/action_log_api"
 require "app/action_notification_export_api"
 require "app/action_notification_export_result_api"
-require "app/action_webhook_failure_api"
-require "app/agent_proxy_identity_api"
 require "app/ai_assistant_personality_api"
 require "app/ai_task_api"
-require "app/announcement_api"
 require "app/api_key_api"
 require "app/api_request_log_api"
 require "app/app_api"
@@ -39,28 +35,20 @@ require "app/automation_log_api"
 require "app/automation_run_api"
 require "app/bandwidth_snapshot_api"
 require "app/behavior_api"
-require "app/blog_post_api"
 require "app/bundle_api"
 require "app/bundle_action_api"
 require "app/bundle_download_api"
 require "app/bundle_notification_api"
 require "app/bundle_recipient_api"
-require "app/bundle_recipient_registration_api"
 require "app/bundle_registration_api"
-require "app/certificate_api"
 require "app/chat_session_api"
-require "app/child_site_api"
 require "app/child_site_management_policy_api"
 require "app/clickwrap_api"
-require "app/clickwrap_acceptance_api"
-require "app/client_log_api"
-require "app/crash_report_api"
 require "app/custom_domain_api"
 require "app/desktop_configuration_profile_api"
 require "app/dns_record_api"
 require "app/email_incoming_message_api"
 require "app/email_log_api"
-require "app/email_preference_api"
 require "app/event_channel_api"
 require "app/event_delivery_attempt_api"
 require "app/event_record_api"
@@ -70,7 +58,6 @@ require "app/exavault_api_request_log_api"
 require "app/expectation_api"
 require "app/expectation_evaluation_api"
 require "app/expectation_incident_api"
-require "app/export_api"
 require "app/external_event_api"
 require "app/file_api"
 require "app/file_comment_api"
@@ -79,8 +66,6 @@ require "app/file_migration_api"
 require "app/file_migration_log_api"
 require "app/folder_api"
 require "app/form_field_set_api"
-require "app/front_end_server_api"
-require "app/frontend_metric_api"
 require "app/ftp_action_log_api"
 require "app/gpg_key_api"
 require "app/group_api"
@@ -90,27 +75,19 @@ require "app/history_export_api"
 require "app/history_export_result_api"
 require "app/holiday_region_api"
 require "app/inbound_s3_log_api"
-require "app/inbox_api"
 require "app/inbox_recipient_api"
-require "app/inbox_recipient_registration_api"
 require "app/inbox_registration_api"
 require "app/inbox_upload_api"
 require "app/invoice_api"
-require "app/ip_abuse_entry_api"
 require "app/ip_address_api"
 require "app/key_lifecycle_rule_api"
-require "app/label_api"
-require "app/lead_api"
 require "app/lock_api"
 require "app/message_api"
 require "app/message_comment_api"
 require "app/message_comment_reaction_api"
 require "app/message_reaction_api"
 require "app/metadata_category_api"
-require "app/monitoring_stat_api"
-require "app/mover_package_api"
 require "app/notification_api"
-require "app/nps_response_api"
 require "app/outbound_connection_log_api"
 require "app/partner_api"
 require "app/partner_channel_api"
@@ -119,25 +96,18 @@ require "app/partner_site_request_api"
 require "app/payment_api"
 require "app/pending_work_event_api"
 require "app/permission_api"
-require "app/plan_api"
-require "app/preview_api"
 require "app/project_api"
 require "app/public_hosting_request_log_api"
-require "app/public_inbox_api"
 require "app/public_key_api"
-require "app/public_url_api"
-require "app/release_api"
 require "app/remote_bandwidth_snapshot_api"
 require "app/remote_mount_backend_api"
 require "app/remote_server_api"
 require "app/remote_server_credential_api"
 require "app/request_api"
 require "app/restore_api"
-require "app/revision_api"
 require "app/scheduled_export_api"
 require "app/scim_log_api"
 require "app/session_api"
-require "app/setting_api"
 require "app/settings_change_api"
 require "app/sftp_action_log_api"
 require "app/sftp_host_key_api"
@@ -149,15 +119,10 @@ require "app/site_subdomain_redirect_api"
 require "app/snapshot_api"
 require "app/sso_event_api"
 require "app/sso_strategy_api"
-require "app/staging_site_api"
 require "app/style_api"
-require "app/support_request_api"
 require "app/sync_api"
-require "app/sync_api_usage_snapshot_report_api"
-require "app/sync_bandwidth_snapshot_api"
 require "app/sync_log_api"
 require "app/sync_run_api"
-require "app/two_factor_authentication_method_api"
 require "app/usage_daily_snapshot_api"
 require "app/usage_snapshot_api"
 require "app/user_api"
@@ -166,23 +131,16 @@ require "app/user_lifecycle_rule_api"
 require "app/user_request_api"
 require "app/user_security_event_api"
 require "app/user_sftp_client_use_api"
-require "app/warning_api"
 require "app/web_dav_action_log_api"
 require "app/webhook_test_api"
 require "app/workspace_api"
-require "app/zip_download_api"
-require "app/zip_download_file_api"
 
 class FilesMockServer::API < Grape::API
-  mount FilesMockServer::AccountAPI
   mount FilesMockServer::ActionLogAPI
   mount FilesMockServer::ActionNotificationExportAPI
   mount FilesMockServer::ActionNotificationExportResultAPI
-  mount FilesMockServer::ActionWebhookFailureAPI
-  mount FilesMockServer::AgentProxyIdentityAPI
   mount FilesMockServer::AiAssistantPersonalityAPI
   mount FilesMockServer::AiTaskAPI
-  mount FilesMockServer::AnnouncementAPI
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::ApiRequestLogAPI
   mount FilesMockServer::AppAPI
@@ -195,28 +153,20 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::AutomationRunAPI
   mount FilesMockServer::BandwidthSnapshotAPI
   mount FilesMockServer::BehaviorAPI
-  mount FilesMockServer::BlogPostAPI
   mount FilesMockServer::BundleAPI
   mount FilesMockServer::BundleActionAPI
   mount FilesMockServer::BundleDownloadAPI
   mount FilesMockServer::BundleNotificationAPI
   mount FilesMockServer::BundleRecipientAPI
-  mount FilesMockServer::BundleRecipientRegistrationAPI
   mount FilesMockServer::BundleRegistrationAPI
-  mount FilesMockServer::CertificateAPI
   mount FilesMockServer::ChatSessionAPI
-  mount FilesMockServer::ChildSiteAPI
   mount FilesMockServer::ChildSiteManagementPolicyAPI
   mount FilesMockServer::ClickwrapAPI
-  mount FilesMockServer::ClickwrapAcceptanceAPI
-  mount FilesMockServer::ClientLogAPI
-  mount FilesMockServer::CrashReportAPI
   mount FilesMockServer::CustomDomainAPI
   mount FilesMockServer::DesktopConfigurationProfileAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::EmailIncomingMessageAPI
   mount FilesMockServer::EmailLogAPI
-  mount FilesMockServer::EmailPreferenceAPI
   mount FilesMockServer::EventChannelAPI
   mount FilesMockServer::EventDeliveryAttemptAPI
   mount FilesMockServer::EventRecordAPI
@@ -226,7 +176,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ExpectationAPI
   mount FilesMockServer::ExpectationEvaluationAPI
   mount FilesMockServer::ExpectationIncidentAPI
-  mount FilesMockServer::ExportAPI
   mount FilesMockServer::ExternalEventAPI
   mount FilesMockServer::FileAPI
   mount FilesMockServer::FileCommentAPI
@@ -235,8 +184,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::FileMigrationLogAPI
   mount FilesMockServer::FolderAPI
   mount FilesMockServer::FormFieldSetAPI
-  mount FilesMockServer::FrontEndServerAPI
-  mount FilesMockServer::FrontendMetricAPI
   mount FilesMockServer::FtpActionLogAPI
   mount FilesMockServer::GpgKeyAPI
   mount FilesMockServer::GroupAPI
@@ -246,27 +193,19 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::HistoryExportResultAPI
   mount FilesMockServer::HolidayRegionAPI
   mount FilesMockServer::InboundS3LogAPI
-  mount FilesMockServer::InboxAPI
   mount FilesMockServer::InboxRecipientAPI
-  mount FilesMockServer::InboxRecipientRegistrationAPI
   mount FilesMockServer::InboxRegistrationAPI
   mount FilesMockServer::InboxUploadAPI
   mount FilesMockServer::InvoiceAPI
-  mount FilesMockServer::IpAbuseEntryAPI
   mount FilesMockServer::IpAddressAPI
   mount FilesMockServer::KeyLifecycleRuleAPI
-  mount FilesMockServer::LabelAPI
-  mount FilesMockServer::LeadAPI
   mount FilesMockServer::LockAPI
   mount FilesMockServer::MessageAPI
   mount FilesMockServer::MessageCommentAPI
   mount FilesMockServer::MessageCommentReactionAPI
   mount FilesMockServer::MessageReactionAPI
   mount FilesMockServer::MetadataCategoryAPI
-  mount FilesMockServer::MonitoringStatAPI
-  mount FilesMockServer::MoverPackageAPI
   mount FilesMockServer::NotificationAPI
-  mount FilesMockServer::NpsResponseAPI
   mount FilesMockServer::OutboundConnectionLogAPI
   mount FilesMockServer::PartnerAPI
   mount FilesMockServer::PartnerChannelAPI
@@ -275,25 +214,18 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::PaymentAPI
   mount FilesMockServer::PendingWorkEventAPI
   mount FilesMockServer::PermissionAPI
-  mount FilesMockServer::PlanAPI
-  mount FilesMockServer::PreviewAPI
   mount FilesMockServer::ProjectAPI
   mount FilesMockServer::PublicHostingRequestLogAPI
-  mount FilesMockServer::PublicInboxAPI
   mount FilesMockServer::PublicKeyAPI
-  mount FilesMockServer::PublicUrlAPI
-  mount FilesMockServer::ReleaseAPI
   mount FilesMockServer::RemoteBandwidthSnapshotAPI
   mount FilesMockServer::RemoteMountBackendAPI
   mount FilesMockServer::RemoteServerAPI
   mount FilesMockServer::RemoteServerCredentialAPI
   mount FilesMockServer::RequestAPI
   mount FilesMockServer::RestoreAPI
-  mount FilesMockServer::RevisionAPI
   mount FilesMockServer::ScheduledExportAPI
   mount FilesMockServer::ScimLogAPI
   mount FilesMockServer::SessionAPI
-  mount FilesMockServer::SettingAPI
   mount FilesMockServer::SettingsChangeAPI
   mount FilesMockServer::SftpActionLogAPI
   mount FilesMockServer::SftpHostKeyAPI
@@ -305,15 +237,10 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::SnapshotAPI
   mount FilesMockServer::SsoEventAPI
   mount FilesMockServer::SsoStrategyAPI
-  mount FilesMockServer::StagingSiteAPI
   mount FilesMockServer::StyleAPI
-  mount FilesMockServer::SupportRequestAPI
   mount FilesMockServer::SyncAPI
-  mount FilesMockServer::SyncApiUsageSnapshotReportAPI
-  mount FilesMockServer::SyncBandwidthSnapshotAPI
   mount FilesMockServer::SyncLogAPI
   mount FilesMockServer::SyncRunAPI
-  mount FilesMockServer::TwoFactorAuthenticationMethodAPI
   mount FilesMockServer::UsageDailySnapshotAPI
   mount FilesMockServer::UsageSnapshotAPI
   mount FilesMockServer::UserAPI
@@ -322,10 +249,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UserRequestAPI
   mount FilesMockServer::UserSecurityEventAPI
   mount FilesMockServer::UserSftpClientUseAPI
-  mount FilesMockServer::WarningAPI
   mount FilesMockServer::WebDavActionLogAPI
   mount FilesMockServer::WebhookTestAPI
   mount FilesMockServer::WorkspaceAPI
-  mount FilesMockServer::ZipDownloadAPI
-  mount FilesMockServer::ZipDownloadFileAPI
 end

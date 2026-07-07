@@ -45,14 +45,5 @@ module FilesMockServer
       status 200
       { "id" => 1, "workspace_id" => 1, "expectation_id" => 1, "status" => "open", "opened_at" => "2000-01-01T01:00:00Z", "last_failed_at" => "2000-01-01T01:00:00Z", "acknowledged_at" => "2000-01-01T01:00:00Z", "snoozed_until" => "2000-01-01T01:00:00Z", "resolved_at" => "2000-01-01T01:00:00Z", "opened_by_evaluation_id" => 1, "last_evaluation_id" => 2, "resolved_by_evaluation_id" => 3, "summary" => nil, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
-
-    params do
-      optional :sort_by, type: Hash
-      optional :filter, type: Hash
-    end
-    post "/api/rest/v1/expectation_incidents/create_export" do
-      status 201
-      { "id" => 1, "export_status" => "example", "export_type" => "example", "export_rows" => 1, "download_uri" => "example", "message" => "example" }
-    end
   end
 end

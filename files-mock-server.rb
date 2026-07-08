@@ -107,6 +107,7 @@ require "app/request_api"
 require "app/restore_api"
 require "app/scheduled_export_api"
 require "app/scim_log_api"
+require "app/secret_api"
 require "app/session_api"
 require "app/settings_change_api"
 require "app/sftp_action_log_api"
@@ -225,6 +226,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::RestoreAPI
   mount FilesMockServer::ScheduledExportAPI
   mount FilesMockServer::ScimLogAPI
+  mount FilesMockServer::SecretAPI
   mount FilesMockServer::SessionAPI
   mount FilesMockServer::SettingsChangeAPI
   mount FilesMockServer::SftpActionLogAPI

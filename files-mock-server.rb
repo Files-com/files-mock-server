@@ -91,6 +91,7 @@ require "app/notification_api"
 require "app/outbound_connection_log_api"
 require "app/partner_api"
 require "app/partner_channel_api"
+require "app/partner_channel_template_api"
 require "app/partner_site_api"
 require "app/partner_site_request_api"
 require "app/payment_api"
@@ -210,6 +211,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::OutboundConnectionLogAPI
   mount FilesMockServer::PartnerAPI
   mount FilesMockServer::PartnerChannelAPI
+  mount FilesMockServer::PartnerChannelTemplateAPI
   mount FilesMockServer::PartnerSiteAPI
   mount FilesMockServer::PartnerSiteRequestAPI
   mount FilesMockServer::PaymentAPI

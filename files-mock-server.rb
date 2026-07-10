@@ -78,6 +78,7 @@ require "app/inbound_s3_log_api"
 require "app/inbox_recipient_api"
 require "app/inbox_registration_api"
 require "app/inbox_upload_api"
+require "app/integration_centric_profile_api"
 require "app/invoice_api"
 require "app/ip_address_api"
 require "app/key_lifecycle_rule_api"
@@ -198,6 +199,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::InboxRecipientAPI
   mount FilesMockServer::InboxRegistrationAPI
   mount FilesMockServer::InboxUploadAPI
+  mount FilesMockServer::IntegrationCentricProfileAPI
   mount FilesMockServer::InvoiceAPI
   mount FilesMockServer::IpAddressAPI
   mount FilesMockServer::KeyLifecycleRuleAPI

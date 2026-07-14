@@ -13,10 +13,11 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
+      requires :name, type: String
+      optional :default_columns, type: [ String ]
     end
-    get "/api/rest/v1/metadata_categories/:id" do
-      status 200
+    post "/api/rest/v1/metadata_categories" do
+      status 201
       { "id" => 1, "name" => "Approval Workflow", "definitions" => { "Approval Status" => [ "Under Review", "Approved", "Rejected" ], "Reviewer" => [] }, "default_columns" => [ "Approval Status" ] }
     end
 
@@ -31,11 +32,10 @@ module FilesMockServer
     end
 
     params do
-      requires :name, type: String
-      optional :default_columns, type: [ String ]
+      requires :id, type: Integer
     end
-    post "/api/rest/v1/metadata_categories" do
-      status 201
+    get "/api/rest/v1/metadata_categories/:id" do
+      status 200
       { "id" => 1, "name" => "Approval Workflow", "definitions" => { "Approval Status" => [ "Under Review", "Approved", "Rejected" ], "Reviewer" => [] }, "default_columns" => [ "Approval Status" ] }
     end
 

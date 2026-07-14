@@ -14,14 +14,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/as2_stations/:id" do
-      status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "AS2 Station Name", "uri" => "example", "domain" => "domain.test", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "example", "public_certificate" => "example", "private_key_md5" => "example", "public_certificate_subject" => "example", "public_certificate_issuer" => "example", "public_certificate_serial" => "example", "public_certificate_not_before" => "example", "public_certificate_not_after" => "example", "private_key_password_md5" => "example" }
-    end
-
-    params do
       requires :name, type: String
       optional :workspace_id, type: Integer
       requires :public_certificate, type: String
@@ -30,6 +22,14 @@ module FilesMockServer
     end
     post "/api/rest/v1/as2_stations" do
       status 201
+      { "id" => 1, "workspace_id" => 1, "name" => "AS2 Station Name", "uri" => "example", "domain" => "domain.test", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "example", "public_certificate" => "example", "private_key_md5" => "example", "public_certificate_subject" => "example", "public_certificate_issuer" => "example", "public_certificate_serial" => "example", "public_certificate_not_before" => "example", "public_certificate_not_after" => "example", "private_key_password_md5" => "example" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/as2_stations/:id" do
+      status 200
       { "id" => 1, "workspace_id" => 1, "name" => "AS2 Station Name", "uri" => "example", "domain" => "domain.test", "hex_public_certificate_serial" => "A5:EB:C1:95:DC:D8:2B:E7", "public_certificate_md5" => "example", "public_certificate" => "example", "private_key_md5" => "example", "public_certificate_subject" => "example", "public_certificate_issuer" => "example", "public_certificate_serial" => "example", "public_certificate_not_before" => "example", "public_certificate_not_after" => "example", "private_key_password_md5" => "example" }
     end
 

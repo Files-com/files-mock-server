@@ -14,14 +14,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/event_targets/:id" do
-      status 200
-      { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
-    end
-
-    params do
       requires :name, type: String
       optional :workspace_id, type: Integer
       optional :apply_to_all_workspaces, type: Boolean
@@ -32,6 +24,14 @@ module FilesMockServer
     end
     post "/api/rest/v1/event_targets" do
       status 201
+      { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/event_targets/:id" do
+      status 200
       { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 

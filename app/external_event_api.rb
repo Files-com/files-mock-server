@@ -18,19 +18,19 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/external_events/:id" do
-      status 200
-      { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
-    end
-
-    params do
       requires :status, type: String
       requires :body, type: String
     end
     post "/api/rest/v1/external_events" do
       status 201
+      { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/external_events/:id" do
+      status 200
       { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
     end
   end

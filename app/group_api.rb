@@ -17,14 +17,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/groups/:id" do
-      status 200
-      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ai_assistant_personality_id" => 1, "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "integration_centric_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
-    end
-
-    params do
       optional :notes, type: String
       optional :user_ids, type: String
       optional :admin_ids, type: String
@@ -41,6 +33,14 @@ module FilesMockServer
     end
     post "/api/rest/v1/groups" do
       status 201
+      { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ai_assistant_personality_id" => 1, "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "integration_centric_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/groups/:id" do
+      status 200
       { "id" => 1, "name" => "owners", "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "admin_ids" => "1", "notes" => "example", "user_ids" => "1", "usernames" => "user", "ai_assistant_personality_id" => 1, "ftp_permission" => true, "sftp_permission" => true, "dav_permission" => true, "restapi_permission" => true, "desktop_configuration_profile_id" => 1, "integration_centric_profile_id" => 1, "site_id" => 1, "workspace_id" => 1 }
     end
 

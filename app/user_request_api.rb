@@ -12,14 +12,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/user_requests/:id" do
-      status 200
-      { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments", "company" => "Acme Inc." }
-    end
-
-    params do
       requires :name, type: String
       requires :email, type: String
       requires :details, type: String
@@ -27,6 +19,14 @@ module FilesMockServer
     end
     post "/api/rest/v1/user_requests" do
       status 201
+      { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments", "company" => "Acme Inc." }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/user_requests/:id" do
+      status 200
       { "id" => 1, "name" => "John Doe", "email" => "john.doe@files.com", "details" => "Changed Departments", "company" => "Acme Inc." }
     end
 

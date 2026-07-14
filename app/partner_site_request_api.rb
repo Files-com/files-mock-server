@@ -14,20 +14,20 @@ module FilesMockServer
     end
 
     params do
-      requires :pairing_key, type: String
-    end
-    get "/api/rest/v1/partner_site_requests/find_by_pairing_key" do
-      status 204
-      body false
-    end
-
-    params do
       requires :host_partner_id, type: Integer
       requires :guest_site_url, type: String
     end
     post "/api/rest/v1/partner_site_requests" do
       status 201
       { "id" => 1, "host_partner_id" => 1, "guest_site_url" => "https://example.files.com", "status" => "pending", "host_site_name" => "Acme Site", "pairing_key" => "abc123xyz", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+    end
+
+    params do
+      requires :pairing_key, type: String
+    end
+    get "/api/rest/v1/partner_site_requests/find_by_pairing_key" do
+      status 204
+      body false
     end
 
     params do

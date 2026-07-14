@@ -12,14 +12,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/snapshots/:id" do
-      status 200
-      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1 }
-    end
-
-    params do
       optional :expires_at, type: String
       optional :name, type: String
       optional :paths, type: [ String ]
@@ -32,9 +24,9 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/snapshots/:id/finalize" do
-      status 204
-      body false
+    get "/api/rest/v1/snapshots/:id" do
+      status 200
+      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1 }
     end
 
     params do
@@ -52,6 +44,14 @@ module FilesMockServer
       requires :id, type: Integer
     end
     delete "/api/rest/v1/snapshots/:id" do
+      status 204
+      body false
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    post "/api/rest/v1/snapshots/:id/finalize" do
       status 204
       body false
     end

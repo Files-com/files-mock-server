@@ -16,22 +16,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/remote_servers/:id" do
-      status 200
-      { "id" => 1, "disabled" => true, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "upload_staging_path" => "/tmp/uploads", "allow_relative_paths" => true, "name" => "My Remote server", "description" => "More information or notes about my server", "port" => 1, "buffer_uploads" => "example", "max_connections" => 1, "pin_to_site_region" => true, "pinned_region" => "us-east-1", "remote_server_credential_id" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "workspace_id" => 1, "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_authentication_method" => "json", "google_cloud_storage_oauth_scope" => "https://www.googleapis.com/auth/devstorage.read_only", "google_cloud_storage_project_id" => "my-project", "google_cloud_storage_s3_compatible_access_key" => "example", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "wasabi_access_key" => "example", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "azure_blob_storage_hierarchical_namespace" => true, "azure_blob_storage_dns_suffix" => "usgovcloudapi.net", "azure_files_storage_account" => "storage-account-name", "azure_files_storage_share_name" => "share-name", "azure_files_storage_dns_suffix" => "file.core.windows.net", "s3_compatible_bucket" => "my-bucket", "s3_compatible_endpoint" => "mys3platform.com", "s3_compatible_region" => "us-east-1", "s3_compatible_virtual_hosted_style" => true, "s3_compatible_access_key" => "example", "enable_dedicated_ips" => true, "files_agent_permission_set" => "read_write", "files_agent_root" => "example", "files_agent_api_token" => "example", "files_agent_version" => "example", "files_agent_up_to_date" => true, "files_agent_latest_version" => "example", "files_agent_supports_push_updates" => true, "outbound_agent_id" => 1, "filebase_bucket" => "my-bucket", "filebase_access_key" => "example", "files_api_key_prefix" => "example", "cloudflare_bucket" => "my-bucket", "cloudflare_access_key" => "example", "cloudflare_endpoint" => "https://<ACCOUNT_ID>.r2.cloudflarestorage.com", "dropbox_teams" => true, "linode_bucket" => "my-bucket", "linode_access_key" => "example", "linode_region" => "us-east-1", "supports_versioning" => true }
-    end
-
-    params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/remote_servers/:id/configuration_file" do
-      status 200
-      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "auto_update_policy" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
-    end
-
-    params do
       optional :user_id, type: Integer
       optional :password, type: String
       optional :private_key, type: String
@@ -120,28 +104,9 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/remote_servers/:id/agent_push_update" do
+    get "/api/rest/v1/remote_servers/:id" do
       status 200
-      { "version" => "example", "message" => "example", "current_version" => "example", "pending_version" => "example", "last_error" => "example", "error" => "example" }
-    end
-
-    params do
-      requires :id, type: Integer
-      optional :api_token, type: String
-      optional :permission_set, type: String
-      optional :root, type: String
-      optional :hostname, type: String
-      optional :port, type: Integer
-      optional :status, type: String
-      optional :config_version, type: String
-      optional :private_key, type: String
-      optional :public_key, type: String
-      optional :server_host_key, type: String
-      optional :subdomain, type: String
-    end
-    post "/api/rest/v1/remote_servers/:id/configuration_file" do
-      status 201
-      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "auto_update_policy" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
+      { "id" => 1, "disabled" => true, "authentication_method" => "password", "hostname" => "remote-server.com", "remote_home_path" => "/home/user1", "upload_staging_path" => "/tmp/uploads", "allow_relative_paths" => true, "name" => "My Remote server", "description" => "More information or notes about my server", "port" => 1, "buffer_uploads" => "example", "max_connections" => 1, "pin_to_site_region" => true, "pinned_region" => "us-east-1", "remote_server_credential_id" => 1, "s3_bucket" => "my-bucket", "s3_region" => "us-east-1", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "server_certificate" => "require_match", "server_host_key" => "[public key]", "server_type" => "s3", "workspace_id" => 1, "ssl" => "if_available", "username" => "user", "google_cloud_storage_bucket" => "my-bucket", "google_cloud_storage_authentication_method" => "json", "google_cloud_storage_oauth_scope" => "https://www.googleapis.com/auth/devstorage.read_only", "google_cloud_storage_project_id" => "my-project", "google_cloud_storage_s3_compatible_access_key" => "example", "backblaze_b2_s3_endpoint" => "s3.us-west-001.backblazeb2.com", "backblaze_b2_bucket" => "my-bucket", "wasabi_bucket" => "my-bucket", "wasabi_region" => "us-west-1", "wasabi_access_key" => "example", "auth_status" => "in_setup", "auth_account_name" => "me@example.com", "one_drive_account_type" => "personal", "azure_blob_storage_account" => "storage-account-name", "azure_blob_storage_container" => "container-name", "azure_blob_storage_hierarchical_namespace" => true, "azure_blob_storage_dns_suffix" => "usgovcloudapi.net", "azure_files_storage_account" => "storage-account-name", "azure_files_storage_share_name" => "share-name", "azure_files_storage_dns_suffix" => "file.core.windows.net", "s3_compatible_bucket" => "my-bucket", "s3_compatible_endpoint" => "mys3platform.com", "s3_compatible_region" => "us-east-1", "s3_compatible_virtual_hosted_style" => true, "s3_compatible_access_key" => "example", "enable_dedicated_ips" => true, "files_agent_permission_set" => "read_write", "files_agent_root" => "example", "files_agent_api_token" => "example", "files_agent_version" => "example", "files_agent_up_to_date" => true, "files_agent_latest_version" => "example", "files_agent_supports_push_updates" => true, "outbound_agent_id" => 1, "filebase_bucket" => "my-bucket", "filebase_access_key" => "example", "files_api_key_prefix" => "example", "cloudflare_bucket" => "my-bucket", "cloudflare_access_key" => "example", "cloudflare_endpoint" => "https://<ACCOUNT_ID>.r2.cloudflarestorage.com", "dropbox_teams" => true, "linode_bucket" => "my-bucket", "linode_access_key" => "example", "linode_region" => "us-east-1", "supports_versioning" => true }
     end
 
     params do
@@ -235,6 +200,41 @@ module FilesMockServer
     delete "/api/rest/v1/remote_servers/:id" do
       status 204
       body false
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/remote_servers/:id/configuration_file" do
+      status 200
+      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "auto_update_policy" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    post "/api/rest/v1/remote_servers/:id/agent_push_update" do
+      status 200
+      { "version" => "example", "message" => "example", "current_version" => "example", "pending_version" => "example", "last_error" => "example", "error" => "example" }
+    end
+
+    params do
+      requires :id, type: Integer
+      optional :api_token, type: String
+      optional :permission_set, type: String
+      optional :root, type: String
+      optional :hostname, type: String
+      optional :port, type: Integer
+      optional :status, type: String
+      optional :config_version, type: String
+      optional :private_key, type: String
+      optional :public_key, type: String
+      optional :server_host_key, type: String
+      optional :subdomain, type: String
+    end
+    post "/api/rest/v1/remote_servers/:id/configuration_file" do
+      status 201
+      { "id" => 1, "permission_set" => "example", "private_key" => "example", "subdomain" => "example", "root" => "C:\\Users\\", "follow_links" => true, "prefer_protocol" => "example", "dns" => "example", "proxy_all_outbound" => true, "endpoint_override" => "example", "log_file" => "example", "log_level" => "example", "log_rotate_num" => 1, "log_rotate_size" => 1, "override_max_concurrent_jobs" => 1, "graceful_shutdown_timeout" => 1, "transfer_rate_limit" => "example", "auto_update_policy" => "example", "api_token" => "example", "port" => 1, "hostname" => "example", "public_key" => "example", "status" => "example", "server_host_key" => "example", "config_version" => "example" }
     end
   end
 end

@@ -15,18 +15,18 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/workspaces/:id" do
-      status 200
-      { "id" => 1, "name" => "Project Alpha" }
-    end
-
-    params do
       optional :name, type: String
     end
     post "/api/rest/v1/workspaces" do
       status 201
+      { "id" => 1, "name" => "Project Alpha" }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/workspaces/:id" do
+      status 200
       { "id" => 1, "name" => "Project Alpha" }
     end
 

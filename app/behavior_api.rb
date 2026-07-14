@@ -14,27 +14,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/behaviors/:id" do
-      status 200
-      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "method" => "GET" }, "public_hosting_url" => "example", "disable_parent_folder_behavior" => true, "recursive" => true }
-    end
-
-    params do
-      optional :cursor, type: String
-      optional :per_page, type: Integer
-      optional :sort_by, type: Hash
-      optional :filter, type: Hash
-      requires :path, type: String
-      optional :ancestor_behaviors, type: Boolean
-    end
-    get "/api/rest/v1/behaviors/folders/:path" do
-      status 200
-      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "method" => "GET" }, "public_hosting_url" => "example", "disable_parent_folder_behavior" => true, "recursive" => true } ]
-    end
-
-    params do
       optional :value, type: Hash
       optional :attachment_file, type: File
       optional :disable_parent_folder_behavior, type: Boolean
@@ -60,6 +39,27 @@ module FilesMockServer
     post "/api/rest/v1/behaviors/webhook/test" do
       status 200
       body false
+    end
+
+    params do
+      optional :cursor, type: String
+      optional :per_page, type: Integer
+      optional :sort_by, type: Hash
+      optional :filter, type: Hash
+      requires :path, type: String
+      optional :ancestor_behaviors, type: Boolean
+    end
+    get "/api/rest/v1/behaviors/folders/:path" do
+      status 200
+      [ { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "method" => "GET" }, "public_hosting_url" => "example", "disable_parent_folder_behavior" => true, "recursive" => true } ]
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/behaviors/:id" do
+      status 200
+      { "id" => 1, "path" => "example", "attachment_url" => "example", "behavior" => "webhook", "name" => "example", "description" => "example", "value" => { "method" => "GET" }, "public_hosting_url" => "example", "disable_parent_folder_behavior" => true, "recursive" => true }
     end
 
     params do

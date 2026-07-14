@@ -3,6 +3,15 @@ module FilesMockServer
     format :json
 
     params do
+      requires :body, type: String
+      requires :path, type: String
+    end
+    post "/api/rest/v1/file_comments" do
+      status 201
+      { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] }
+    end
+
+    params do
       optional :cursor, type: String
       optional :per_page, type: Integer
       requires :path, type: String
@@ -10,15 +19,6 @@ module FilesMockServer
     get "/api/rest/v1/file_comments/files/:path" do
       status 200
       [ { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] } ]
-    end
-
-    params do
-      requires :body, type: String
-      requires :path, type: String
-    end
-    post "/api/rest/v1/file_comments" do
-      status 201
-      { "id" => 1, "body" => "What a great file!", "reactions" => [ { "id" => 1, "emoji" => "👍" } ] }
     end
 
     params do

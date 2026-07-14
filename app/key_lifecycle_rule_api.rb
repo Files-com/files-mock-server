@@ -14,14 +14,6 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
-    end
-    get "/api/rest/v1/key_lifecycle_rules/:id" do
-      status 200
-      { "id" => 1, "key_type" => "gpg", "inactivity_days" => 12, "expiration_days" => 365, "apply_to_all_workspaces" => true, "name" => "inactive gpg keys", "workspace_id" => 12 }
-    end
-
-    params do
       optional :apply_to_all_workspaces, type: Boolean
       optional :expiration_days, type: Integer
       optional :key_type, type: String
@@ -31,6 +23,14 @@ module FilesMockServer
     end
     post "/api/rest/v1/key_lifecycle_rules" do
       status 201
+      { "id" => 1, "key_type" => "gpg", "inactivity_days" => 12, "expiration_days" => 365, "apply_to_all_workspaces" => true, "name" => "inactive gpg keys", "workspace_id" => 12 }
+    end
+
+    params do
+      requires :id, type: Integer
+    end
+    get "/api/rest/v1/key_lifecycle_rules/:id" do
+      status 200
       { "id" => 1, "key_type" => "gpg", "inactivity_days" => 12, "expiration_days" => 365, "apply_to_all_workspaces" => true, "name" => "inactive gpg keys", "workspace_id" => 12 }
     end
 

@@ -60,7 +60,7 @@ module FilesMockServer
 
     get "/api/rest/v1/automations/authoring_schema" do
       status 200
-      { "definition_schema" => "example", "nodes" => [ "example" ] }
+      { "definition_schema" => "example", "error_families" => [ "example" ], "nodes" => [ "example" ] }
     end
 
     params do

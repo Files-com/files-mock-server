@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_server_credentials" do
       status 200
-      [ { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" } ]
+      [ { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "sharepoint_tenant_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_client_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_app_credential_type" => "secret", "username" => "user" } ]
     end
 
     params do
@@ -26,6 +26,8 @@ module FilesMockServer
       optional :google_cloud_storage_s3_compatible_access_key, type: String
       optional :linode_access_key, type: String
       optional :s3_compatible_access_key, type: String
+      optional :sharepoint_client_id, type: String
+      optional :sharepoint_tenant_id, type: String
       optional :username, type: String
       optional :wasabi_access_key, type: String
       optional :password, type: String
@@ -44,13 +46,15 @@ module FilesMockServer
       optional :google_cloud_storage_s3_compatible_secret_key, type: String
       optional :linode_secret_key, type: String
       optional :s3_compatible_secret_key, type: String
+      optional :sharepoint_client_certificate, type: String
+      optional :sharepoint_client_secret, type: String
       optional :wasabi_secret_key, type: String
       optional :workspace_id, type: Integer
       optional :copy_values_from_credential_id, type: Integer
     end
     post "/api/rest/v1/remote_server_credentials" do
       status 201
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "sharepoint_tenant_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_client_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_app_credential_type" => "secret", "username" => "user" }
     end
 
     params do
@@ -58,7 +62,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_server_credentials/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "sharepoint_tenant_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_client_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_app_credential_type" => "secret", "username" => "user" }
     end
 
     params do
@@ -74,6 +78,8 @@ module FilesMockServer
       optional :google_cloud_storage_s3_compatible_access_key, type: String
       optional :linode_access_key, type: String
       optional :s3_compatible_access_key, type: String
+      optional :sharepoint_client_id, type: String
+      optional :sharepoint_tenant_id, type: String
       optional :username, type: String
       optional :wasabi_access_key, type: String
       optional :password, type: String
@@ -92,11 +98,13 @@ module FilesMockServer
       optional :google_cloud_storage_s3_compatible_secret_key, type: String
       optional :linode_secret_key, type: String
       optional :s3_compatible_secret_key, type: String
+      optional :sharepoint_client_certificate, type: String
+      optional :sharepoint_client_secret, type: String
       optional :wasabi_secret_key, type: String
     end
     patch "/api/rest/v1/remote_server_credentials/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "username" => "user" }
+      { "id" => 1, "workspace_id" => 1, "name" => "My Credential", "description" => "More information or notes about this credential.", "server_type" => "s3", "aws_access_key" => "example", "s3_assume_role_arn" => "example", "s3_assume_role_duration_seconds" => 1, "s3_assume_role_external_id" => "example", "google_cloud_storage_s3_compatible_access_key" => "example", "wasabi_access_key" => "example", "s3_compatible_access_key" => "example", "filebase_access_key" => "example", "cloudflare_access_key" => "example", "linode_access_key" => "example", "sharepoint_tenant_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_client_id" => "00000000-0000-0000-0000-000000000000", "sharepoint_app_credential_type" => "secret", "username" => "user" }
     end
 
     params do

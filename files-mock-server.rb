@@ -130,6 +130,7 @@ require "app/sync_run_api"
 require "app/usage_daily_snapshot_api"
 require "app/usage_snapshot_api"
 require "app/user_api"
+require "app/user_additional_email_recipient_api"
 require "app/user_cipher_use_api"
 require "app/user_lifecycle_rule_api"
 require "app/user_request_api"
@@ -252,6 +253,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::UsageDailySnapshotAPI
   mount FilesMockServer::UsageSnapshotAPI
   mount FilesMockServer::UserAPI
+  mount FilesMockServer::UserAdditionalEmailRecipientAPI
   mount FilesMockServer::UserCipherUseAPI
   mount FilesMockServer::UserLifecycleRuleAPI
   mount FilesMockServer::UserRequestAPI

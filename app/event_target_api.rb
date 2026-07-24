@@ -17,10 +17,10 @@ module FilesMockServer
       requires :name, type: String
       optional :workspace_id, type: Integer
       optional :apply_to_all_workspaces, type: Boolean
-      requires :target_type, type: String
       optional :enabled, type: Boolean
       requires :config, type: Hash
       optional :delivery_policy, type: Hash
+      requires :target_type, type: String
     end
     post "/api/rest/v1/event_targets" do
       status 201
@@ -40,7 +40,6 @@ module FilesMockServer
       optional :name, type: String
       optional :workspace_id, type: Integer
       optional :apply_to_all_workspaces, type: Boolean
-      optional :target_type, type: String
       optional :enabled, type: Boolean
       optional :config, type: Hash
       optional :delivery_policy, type: Hash

@@ -217,7 +217,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/remote_servers/:id/agent_nodes" do
       status 200
-      { "node_id" => "example", "name" => "example", "hostname" => "example", "availability_role" => "example", "connection_status" => "example", "is_default" => true, "agent_version" => "example", "direct_transfer_available" => true, "last_seen_at" => "2000-01-01T01:00:00Z" }
+      { "node_id" => "example", "name" => "example", "hostname" => "example", "availability_role" => "example", "status" => "example", "is_default" => true, "direct_transfer_available" => true, "last_seen_at" => "2000-01-01T01:00:00Z", "instances" => [ { "instance_id" => "example", "process_state" => "example", "status" => "example", "is_default" => true, "agent_version" => "example", "last_seen_at" => "2000-01-01T01:00:00Z", "connections" => [ { "mode" => "example", "status" => "example", "last_seen_at" => "2000-01-01T01:00:00Z" } ] } ] }
     end
 
     params do

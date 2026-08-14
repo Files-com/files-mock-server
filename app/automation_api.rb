@@ -36,6 +36,7 @@ module FilesMockServer
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :always_serialize_jobs, type: Boolean
       optional :description, type: String
+      optional :definition, type: Hash
       optional :disabled, type: Boolean
       optional :exclude_pattern, type: String
       optional :import_urls, type: [ Hash ]
@@ -93,6 +94,7 @@ module FilesMockServer
       optional :always_overwrite_size_matching_files, type: Boolean
       optional :always_serialize_jobs, type: Boolean
       optional :description, type: String
+      optional :definition, type: Hash
       optional :disabled, type: Boolean
       optional :exclude_pattern, type: String
       optional :import_urls, type: [ Hash ]

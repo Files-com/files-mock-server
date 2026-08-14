@@ -13,6 +13,7 @@ module FilesMockServer
     end
 
     params do
+      requires :definition, type: Hash
       requires :name, type: String
     end
     post "/api/rest/v1/holiday_calendars" do
@@ -30,6 +31,7 @@ module FilesMockServer
 
     params do
       requires :id, type: Integer
+      optional :definition, type: Hash
       optional :name, type: String
     end
     patch "/api/rest/v1/holiday_calendars/:id" do

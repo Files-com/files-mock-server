@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/desktop_configuration_profiles" do
       status 200
-      [ { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } } ]
+      [ { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => false, "disable_drive_mounting" => false, "mount_mappings" => { "key" => "example value" } } ]
     end
 
     params do
@@ -22,7 +22,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/desktop_configuration_profiles" do
       status 201
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => false, "disable_drive_mounting" => false, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do
@@ -30,7 +30,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/desktop_configuration_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => false, "disable_drive_mounting" => false, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do
@@ -43,7 +43,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/desktop_configuration_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => true, "disable_drive_mounting" => true, "mount_mappings" => { "key" => "example value" } }
+      { "id" => 1, "name" => "North America Desktop Profile", "workspace_id" => 1, "use_for_all_users" => false, "disable_drive_mounting" => false, "mount_mappings" => { "key" => "example value" } }
     end
 
     params do

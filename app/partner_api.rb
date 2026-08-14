@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/partners" do
       status 200
-      [ { "allow_bypassing_2fa_policies" => true, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "cc_emails_to_responsible_party" => true, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => true, "tags" => "example", "user_ids" => [ 1, 2, 3 ] } ]
+      [ { "allow_bypassing_2fa_policies" => false, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => false, "allow_providing_gpg_keys" => false, "allow_user_creation" => false, "cc_emails_to_responsible_party" => false, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => false, "tags" => "example", "user_ids" => [ 1, 2, 3 ] } ]
     end
 
     params do
@@ -33,7 +33,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/partners" do
       status 201
-      { "allow_bypassing_2fa_policies" => true, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "cc_emails_to_responsible_party" => true, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => true, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => false, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => false, "allow_providing_gpg_keys" => false, "allow_user_creation" => false, "cc_emails_to_responsible_party" => false, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => false, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do
@@ -41,7 +41,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/partners/:id" do
       status 200
-      { "allow_bypassing_2fa_policies" => true, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "cc_emails_to_responsible_party" => true, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => true, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => false, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => false, "allow_providing_gpg_keys" => false, "allow_user_creation" => false, "cc_emails_to_responsible_party" => false, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => false, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do
@@ -64,7 +64,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/partners/:id" do
       status 200
-      { "allow_bypassing_2fa_policies" => true, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => true, "allow_providing_gpg_keys" => true, "allow_user_creation" => true, "cc_emails_to_responsible_party" => true, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => true, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
+      { "allow_bypassing_2fa_policies" => false, "allowed_ips" => "10.0.0.0/8\n127.0.0.1", "allow_credential_changes" => false, "allow_providing_gpg_keys" => false, "allow_user_creation" => false, "cc_emails_to_responsible_party" => false, "id" => 1, "ai_assistant_personality_id" => 1, "workspace_id" => 1, "name" => "Acme Corp", "notes" => "This is a note about the partner.", "partner_admin_ids" => [ 1, 2, 3 ], "partner_channel_template_id" => 1, "partnership_role" => "host", "responsible_group_id" => 1, "responsible_user_id" => 1, "root_folder" => "/AcmeCorp", "show_partner_channel_home_page" => false, "tags" => "example", "user_ids" => [ 1, 2, 3 ] }
     end
 
     params do

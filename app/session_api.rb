@@ -10,7 +10,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/sessions" do
       status 201
-      { "id" => "60525f92e859c4c3d74cb02fd176b1525901b525", "language" => "en", "read_only" => true, "sftp_insecure_ciphers" => true }
+      { "id" => "60525f92e859c4c3d74cb02fd176b1525901b525", "language" => "en", "read_only" => true, "sftp_insecure_ciphers" => false }
     end
 
     delete "/api/rest/v1/sessions" do

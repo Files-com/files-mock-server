@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/integration_centric_profiles" do
       status 200
-      [ { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => true, "expected_remote_servers" => [ "example" ] } ]
+      [ { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => false, "expected_remote_servers" => [ "example" ] } ]
     end
 
     params do
@@ -21,7 +21,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/integration_centric_profiles" do
       status 201
-      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => true, "expected_remote_servers" => [ "example" ] }
+      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => false, "expected_remote_servers" => [ "example" ] }
     end
 
     params do
@@ -29,7 +29,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/integration_centric_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => true, "expected_remote_servers" => [ "example" ] }
+      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => false, "expected_remote_servers" => [ "example" ] }
     end
 
     params do
@@ -41,7 +41,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/integration_centric_profiles/:id" do
       status 200
-      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => true, "expected_remote_servers" => [ "example" ] }
+      { "id" => 1, "name" => "Business Systems Onboarding", "workspace_id" => 1, "use_for_all_users" => false, "expected_remote_servers" => [ "example" ] }
     end
 
     params do

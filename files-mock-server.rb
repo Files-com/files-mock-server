@@ -84,10 +84,6 @@ require "app/invoice_api"
 require "app/ip_address_api"
 require "app/key_lifecycle_rule_api"
 require "app/lock_api"
-require "app/message_api"
-require "app/message_comment_api"
-require "app/message_comment_reaction_api"
-require "app/message_reaction_api"
 require "app/metadata_category_api"
 require "app/notification_api"
 require "app/outbound_connection_log_api"
@@ -99,7 +95,6 @@ require "app/partner_site_request_api"
 require "app/payment_api"
 require "app/pending_work_event_api"
 require "app/permission_api"
-require "app/project_api"
 require "app/public_hosting_request_log_api"
 require "app/public_key_api"
 require "app/remote_bandwidth_snapshot_api"
@@ -208,10 +203,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::IpAddressAPI
   mount FilesMockServer::KeyLifecycleRuleAPI
   mount FilesMockServer::LockAPI
-  mount FilesMockServer::MessageAPI
-  mount FilesMockServer::MessageCommentAPI
-  mount FilesMockServer::MessageCommentReactionAPI
-  mount FilesMockServer::MessageReactionAPI
   mount FilesMockServer::MetadataCategoryAPI
   mount FilesMockServer::NotificationAPI
   mount FilesMockServer::OutboundConnectionLogAPI
@@ -223,7 +214,6 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::PaymentAPI
   mount FilesMockServer::PendingWorkEventAPI
   mount FilesMockServer::PermissionAPI
-  mount FilesMockServer::ProjectAPI
   mount FilesMockServer::PublicHostingRequestLogAPI
   mount FilesMockServer::PublicKeyAPI
   mount FilesMockServer::RemoteBandwidthSnapshotAPI

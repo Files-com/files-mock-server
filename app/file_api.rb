@@ -140,6 +140,7 @@ module FilesMockServer
     params do
       requires :path, type: String
       optional :action, type: String
+      optional :custom_metadata, type: Hash
       optional "etags[etag]", type: [ String ]
       optional "etags[part]", type: [ Integer ]
       optional :length, type: Integer

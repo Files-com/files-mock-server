@@ -8,17 +8,18 @@ module FilesMockServer
     end
     get "/api/rest/v1/sftp_host_keys" do
       status 200
-      [ { "active" => true, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" } ]
+      [ { "active" => true, "custom_domain_id" => 1, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" } ]
     end
 
     params do
       optional :active, type: Boolean
+      optional :custom_domain_id, type: Integer
       optional :name, type: String
       optional :private_key, type: String
     end
     post "/api/rest/v1/sftp_host_keys" do
       status 201
-      { "active" => true, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
+      { "active" => true, "custom_domain_id" => 1, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
     end
 
     params do
@@ -26,18 +27,19 @@ module FilesMockServer
     end
     get "/api/rest/v1/sftp_host_keys/:id" do
       status 200
-      { "active" => true, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
+      { "active" => true, "custom_domain_id" => 1, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
     end
 
     params do
       requires :id, type: Integer
       optional :active, type: Boolean
+      optional :custom_domain_id, type: Integer
       optional :name, type: String
       optional :private_key, type: String
     end
     patch "/api/rest/v1/sftp_host_keys/:id" do
       status 200
-      { "active" => true, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
+      { "active" => true, "custom_domain_id" => 1, "id" => 1, "name" => "My Key", "key_type" => "ssh-rsa", "fingerprint_md5" => "12:7e:f8:61:78:a4:b2:c2:ee:12:51:92:25:a7:42:cc", "fingerprint_sha256" => "SHA256:5ANRkDpXWA+PgOquzZAG9RtQ1Bt8KXYAH2hecr7LQk8" }
     end
 
     params do

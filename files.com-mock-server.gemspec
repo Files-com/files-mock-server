@@ -11,9 +11,10 @@ Gem::Specification.new do |s|
   s.description = "Mock Files.com Server API for your own Integration Testing."
   s.license     = "MIT"
   s.required_ruby_version = ">= 3.2.2"
-  s.add_dependency 'activesupport', ">= 6.0.3.2"
-  s.add_dependency 'grape', ">= 1.3.3"
-  s.add_dependency 'puma', ">= 4.3.5"
+  s.add_dependency 'activesupport', '~> 7.2', '>= 7.2.3.1'
+  s.add_dependency 'grape', '~> 3.1.1'
+  s.add_dependency 'puma', '~> 7.2', '>= 7.2.1'
+  s.add_dependency 'rack', '~> 3.2', '>= 3.2.7'
   s.add_dependency 'rubocop'
 
   s.files = `find *`.split("\n").uniq.sort.reject(&:empty?)

@@ -11,7 +11,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/secrets" do
       status 200
-      [ { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "key" => "example value" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "header_name" => "Authorization" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/secrets" do
       status 201
-      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "key" => "example value" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "header_name" => "Authorization" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -31,7 +31,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/secrets/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "key" => "example value" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "header_name" => "Authorization" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -43,7 +43,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/secrets/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "key" => "example value" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Production API token", "description" => "Used by production API integrations.", "secret_type" => "token", "metadata" => { "header_name" => "Authorization" }, "value_field_names" => [ "example" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do

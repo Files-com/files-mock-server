@@ -60,6 +60,7 @@ module FilesMockServer
       optional :show_partner_channel_home_page, type: Boolean
       optional :tags, type: String
       optional :name, type: String
+      optional :partnership_role, type: String
       optional :root_folder, type: String
     end
     patch "/api/rest/v1/partners/:id" do

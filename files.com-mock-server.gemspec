@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 3.2.2"
   s.add_dependency 'activesupport', '~> 7.2', '>= 7.2.3.1'
   s.add_dependency 'grape', '~> 3.1.1'
-  s.add_dependency 'puma', '~> 7.2', '>= 7.2.1'
+  s.add_dependency 'puma', '~> 8.0', '>= 8.0.2'
   s.add_dependency 'rack', '~> 3.2', '>= 3.2.7'
   s.add_dependency 'rubocop'
 

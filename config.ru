@@ -6,7 +6,7 @@ if FilesMockServer.mode == "simulation"
   require 'lib/simulation'
 
   begin
-    app = FilesMockServer::Simulation::App.new(limits: FilesMockServer::Simulation::Limits.from_env)
+    app = FilesMockServer::Simulation::App.new(limits: FilesMockServer::Simulation::Limits.from_env, transfer_origin: ENV.fetch("FILES_MOCK_TRANSFER_ORIGIN", nil))
   rescue ArgumentError => e
     abort e.message
   end

@@ -1,7 +1,7 @@
 module FilesMockServer
   module Simulation
     # One-shot HTTP faults added through the control API. A rule fails the Nth request (its
-    # `attempt`) that matches its operation and optional match value after the rule was added,
+    # `attempt`) that matches its operation and optional match values after the rule was added,
     # before that request is validated or changes anything. Rules stay listed as pending or
     # consumed until the next reset, so an unused fault is visible rather than silently passing.
     class FaultRules
@@ -10,14 +10,17 @@ module FilesMockServer
       MAX_ATTEMPT = 100
       MAX_RETRY_AFTER = 60
       FIELDS = %w[operation match attempt status retry_after].freeze
+      # Match values that name records or parts by number; the others are strings.
+      NUMBERED_MATCH_KEYS = %w[id part].freeze
 
       Rule = Struct.new(:id, :operation, :match, :attempt, :status, :retry_after, :matched_requests, :consumed_by_request) do
         def pending?
           consumed_by_request.nil?
         end
 
+        # Both rules could match the same request: no value they both constrain differs.
         def overlaps?(other)
-          operation == other.operation && (match.empty? || other.match.empty? || match == other.match)
+          operation == other.operation && match.all? { |key, value| !other.match.key?(key) || other.match[key] == value }
         end
 
         def as_json
@@ -26,7 +29,8 @@ module FilesMockServer
       end
 
       # match_keys maps each operation ID to the request value its rules may match on: "id" (the
-      # record ID in the path), "username", or nil when a rule matches every request to it.
+      # record ID in the path), "username", "path" (a file path), a list of values a rule may combine
+      # (["path", "part"] for upload parts), or nil when a rule matches every request to it.
       def initialize(match_keys)
         @match_keys = match_keys
         @rules = []
@@ -43,10 +47,11 @@ module FilesMockServer
         rule
       end
 
-      # Counts a request against the pending rule it matches; returns that rule if this request is the one it fails.
-      def consume(operation, value, request_seq)
+      # Counts a request, described by its match values, against the pending rule it matches; returns
+      # that rule if this request is the one it fails.
+      def consume(operation, values, request_seq)
         rule = @rules.detect { |candidate|
-          candidate.pending? && candidate.operation == operation && candidate.match.values.all? { |expected| expected == value }
+          candidate.pending? && candidate.operation == operation && candidate.match.all? { |key, expected| values[key] == expected }
         }
         return unless rule
 
@@ -87,15 +92,18 @@ module FilesMockServer
       end
 
       def match_for(operation, match)
-        key = @match_keys[operation]
+        keys = Array(@match_keys[operation])
         raise Error.invalid_control("match must be a JSON object") unless match.is_a?(Hash)
         return match if match.empty?
-        raise Error.invalid_control(key ? "#{operation} rules can only match on #{key}" : "#{operation} rules cannot use match") unless match.keys == [ key ]
+        raise Error.invalid_control(keys.any? ? "#{operation} rules can only match on #{keys.join(" and ")}" : "#{operation} rules cannot use match") unless (match.keys - keys).empty?
 
-        value = match[key]
-        valid = key == "id" ? value.is_a?(Integer) && value.positive? : value.is_a?(String)
-        raise Error.invalid_control(key == "id" ? "match.id must be a positive whole number" : "match.#{key} must be a string") unless valid
-
+        match.each do |key, value|
+          if NUMBERED_MATCH_KEYS.include?(key)
+            raise Error.invalid_control("match.#{key} must be a positive whole number") unless value.is_a?(Integer) && value.positive?
+          else
+            raise Error.invalid_control("match.#{key} must be a string") unless value.is_a?(String)
+          end
+        end
         match
       end
     end

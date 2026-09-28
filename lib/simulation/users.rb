@@ -11,20 +11,6 @@ module FilesMockServer
       # Files.com API list page sizes.
       DEFAULT_PER_PAGE = 1_000
       MAX_PER_PAGE = 10_000
-      # [ Swagger-derived type, format ] => coercion method. Other combinations are not simulated.
-      COERCIONS = {
-        [ "string", nil ] => :string,
-        [ "string", "date-time" ] => :date_time,
-        [ "boolean", nil ] => :boolean,
-        [ "int64", nil ] => :int64,
-        [ "int64", "int64" ] => :int64,
-        [ "int64", "int32" ] => :int32,
-      }.freeze
-      BOOLEANS = { true => true, false => false, "true" => true, "false" => false }.freeze
-      DATE_TIME = /\A\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)\z/
-      # Returned by the coercions below for a rejected value. It is distinct from nil because an explicit
-      # null is a valid value that clears an optional field.
-      INVALID = Object.new.freeze
 
       def initialize(schema, max_records:)
         operations = schema.fetch("operations")
@@ -96,8 +82,8 @@ module FilesMockServer
             next
           end
 
-          value = send(COERCIONS.fetch([ rule["type"], rule["format"] ]), supplied[name])
-          if value.equal?(INVALID)
+          value = Coercion.public_send(Coercion.for(rule), supplied[name])
+          if value.equal?(Coercion::INVALID)
             errors << "#{name} is invalid"
           elsif rule["enum"] && !rule["enum"].include?(value)
             errors << "#{name} does not have a valid value"
@@ -111,7 +97,7 @@ module FilesMockServer
       end
 
       def simulated?(name, rule)
-        (@fields.include?(name) || WRITE_ONLY_PARAMS.include?(name)) && COERCIONS.key?([ rule["type"], rule["format"] ])
+        (@fields.include?(name) || WRITE_ONLY_PARAMS.include?(name)) && Coercion.for(rule)
       end
 
       def present(id, attributes)
@@ -123,63 +109,26 @@ module FilesMockServer
       def page_size(value)
         return DEFAULT_PER_PAGE if value.nil? || value == ""
 
-        size = int32(value)
-        raise Error.bad_request("per_page is invalid") if size.equal?(INVALID)
+        size = Coercion.int32(value)
+        raise Error.bad_request("per_page is invalid") if size.equal?(Coercion::INVALID)
         raise Error.request_params_invalid("per_page must be greater than or equal to 1") if size < 1
         raise Error.request_params_invalid("per_page must be less than or equal to #{MAX_PER_PAGE}") if size > MAX_PER_PAGE
 
         size
       end
 
-      # Cursors are opaque to clients and valid only for this resource, simulator process, reset epoch and page size.
+      # Cursors are valid only for this resource, simulator process, reset epoch and page size.
       def encode_cursor(instance, epoch, per_page, last_id)
-        [ RESOURCE, instance, epoch, per_page, last_id ].join(":").unpack1("H*")
+        Token.encode(RESOURCE, instance, epoch, per_page, last_id)
       end
 
       def cursor_position(token, instance, epoch, per_page)
         return 0 if token.nil? || token == ""
-        raise Error.invalid_cursor unless token.is_a?(String) && token.match?(/\A(?:[0-9a-f]{2}){1,128}\z/)
 
-        fields = [ token ].pack("H*").split(":", -1)
-        valid = fields.size == 5 && fields.first(4) == [ RESOURCE, instance, epoch.to_s, per_page.to_s ] && fields.last.match?(/\A[0-9]+\z/)
-        raise Error.invalid_cursor unless valid
+        last_id = Token.values(token, RESOURCE, instance, epoch, per_page)
+        raise Error.invalid_cursor unless last_id&.size == 1 && last_id.first.match?(/\A[0-9]+\z/)
 
-        Integer(fields.last, 10)
-      end
-
-      def string(value)
-        value.is_a?(String) && value.valid_encoding? ? value : INVALID
-      end
-
-      # Requires an explicit UTC offset so results never depend on the host time zone; returns UTC ISO 8601 like the API.
-      # DateTime rejects impossible dates such as February 30, and the field comparison refuses values it would
-      # otherwise roll over, such as 24:00 or a 60th second, instead of storing a different moment.
-      def date_time(value)
-        return INVALID unless value.is_a?(String) && DATE_TIME.match?(value)
-
-        parsed = DateTime.iso8601(value)
-        return INVALID unless parsed.strftime("%FT%T") == value[0, 19]
-
-        parsed.new_offset(0).strftime("%FT%TZ")
-      rescue ArgumentError
-        INVALID
-      end
-
-      def boolean(value)
-        BOOLEANS.fetch(value, INVALID)
-      end
-
-      def int32(value)
-        integer(value, 2**31)
-      end
-
-      def int64(value)
-        integer(value, 2**63)
-      end
-
-      def integer(value, bound)
-        value = Integer(value, 10) if value.is_a?(String) && value.match?(/\A-?[0-9]+\z/)
-        value.is_a?(Integer) && value >= -bound && value < bound ? value : INVALID
+        Integer(last_id.first, 10)
       end
     end
   end

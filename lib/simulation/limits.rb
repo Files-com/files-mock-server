@@ -8,6 +8,7 @@ module FilesMockServer
         max_records: [ "FILES_MOCK_MAX_RECORDS", 1_000, 100_000 ],
         max_journal_entries: [ "FILES_MOCK_MAX_JOURNAL_ENTRIES", 10_000, 100_000 ],
         max_body_bytes: [ "FILES_MOCK_MAX_BODY_BYTES", 1_048_576, 16_777_216 ],
+        max_transfer_bytes: [ "FILES_MOCK_MAX_TRANSFER_BYTES", 33_554_432, 1_073_741_824 ],
       }.freeze
 
       attr_reader(*SETTINGS.keys)

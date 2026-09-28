@@ -1,3 +1,5 @@
+require "digest"
+require "erb"
 require "io/wait"
 require "json"
 require "minitest/autorun"
@@ -6,12 +8,30 @@ require "rack/lint"
 require "rack/mock_request"
 require "socket"
 require "tempfile"
+require "time"
 
 APP_ROOT = File.expand_path("..", __dir__)
 require File.join(APP_ROOT, "lib/simulation")
 
+# A request body still being received when something else happens, such as a reset.
+class InterruptedBody < StringIO
+  def initialize(body, on_first_read)
+    super(body)
+    @on_first_read = on_first_read
+  end
+
+  def read(...)
+    @on_first_read&.call
+    @on_first_read = nil
+    super
+  end
+end
+
 # Rack-level requests against simulators built inside the test process.
 module SimulationRequests
+  # In-process simulators have no listening socket, so they are given the origin of upload and download URLs.
+  ORIGIN = "http://127.0.0.1:4041".freeze
+
   Response = Struct.new(:status, :headers, :body) do
     def json
       JSON.parse(body)
@@ -20,8 +40,8 @@ module SimulationRequests
 
   attr_reader :app
 
-  def new_app(**)
-    Rack::Lint.new(FilesMockServer::Simulation::App.new(limits: FilesMockServer::Simulation::Limits.new(**)))
+  def new_app(transfer_origin: ORIGIN, **)
+    Rack::Lint.new(FilesMockServer::Simulation::App.new(limits: FilesMockServer::Simulation::Limits.new(**), transfer_origin:))
   end
 
   # Sends params the way the Go and Python SDKs do: in the query string for GET and DELETE, as a JSON body otherwise.
@@ -55,6 +75,15 @@ module SimulationRequests
 
   def request(to, method, uri, body = nil, env = {})
     env = { "CONTENT_TYPE" => "application/json" }.merge(env) if body
+    raw_request(to, method, uri, body, env)
+  end
+
+  # Sends raw bytes, or a GET, to an upload or download URL the simulator issued, with no content type as the SDKs do.
+  def transfer(method, url, body = nil, env = {}, to: app)
+    raw_request(to, method, URI(url).request_uri, body, env)
+  end
+
+  def raw_request(to, method, uri, body, env)
     response = Rack::MockRequest.new(to).request(method, uri, env.merge(input: body))
     Response.new(response.status, response.headers, response.body)
   end
@@ -64,7 +93,8 @@ end
 class ServerProcess
   TIMEOUT = 60
   # Keep the caller's shell settings from changing which server starts.
-  CLEAN_ENV = %w[FILES_MOCK_MODE WEB_CONCURRENCY FILES_MOCK_MAX_RECORDS FILES_MOCK_MAX_JOURNAL_ENTRIES FILES_MOCK_MAX_BODY_BYTES].to_h { |name| [ name, nil ] }.freeze
+  CLEAN_ENV = %w[FILES_MOCK_MODE WEB_CONCURRENCY FILES_MOCK_MAX_RECORDS FILES_MOCK_MAX_JOURNAL_ENTRIES FILES_MOCK_MAX_BODY_BYTES
+                 FILES_MOCK_MAX_TRANSFER_BYTES FILES_MOCK_TRANSFER_ORIGIN].to_h { |name| [ name, nil ] }.freeze
 
   attr_reader :url
 
@@ -147,15 +177,34 @@ class ServerProcess
     URI(url).port
   end
 
-  def request(method, path, body = nil)
+  def request(method, path, body = nil, headers = {})
     Net::HTTP.start("127.0.0.1", port, nil, open_timeout: 10, read_timeout: 10) do |http|
-      http.send_request(method, path, body && JSON.generate(body), body ? { "Content-Type" => "application/json" } : {})
+      http.send_request(method, path, body && JSON.generate(body), (body ? { "Content-Type" => "application/json" } : {}).merge(headers))
     end
   end
 
-  def json(method, path, body = nil)
-    response = request(method, path, body)
+  def json(method, path, body = nil, headers = {})
+    response = request(method, path, body, headers)
     [ response.code.to_i, JSON.parse(response.body) ]
+  end
+
+  # Writes a raw request and returns [ status, headers, body ] once the server closes the connection.
+  def raw(request)
+    socket = TCPSocket.new("127.0.0.1", port)
+    socket.write(request)
+    response = +""
+    while socket.wait_readable(10) && (chunk = socket.read_nonblock(65_536, exception: false))
+      response << chunk unless chunk == :wait_readable
+    end
+    head, body = response.split("\r\n\r\n", 2)
+    status, *fields = head.split("\r\n")
+    headers = fields.to_h do |field|
+      name, value = field.split(": ", 2)
+      [ name.downcase, value ]
+    end
+    [ status[/\A\S+ (\d{3})/, 1].to_i, headers, body ]
+  ensure
+    socket&.close
   end
 
   # Writes raw request parts with a pause between them, so Puma reads each one separately, and

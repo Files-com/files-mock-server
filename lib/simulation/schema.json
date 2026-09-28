@@ -733,6 +733,188 @@
           "required": false
         }
       }
+    },
+    "files.begin_upload": {
+      "operation_id": "FileActionBeginUpload",
+      "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "mkdir_parents": {
+          "type": "boolean",
+          "required": false
+        },
+        "part": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "parts": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "ref": {
+          "type": "string",
+          "required": false
+        },
+        "restart": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "size": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "with_rename": {
+          "type": "boolean",
+          "required": false
+        },
+        "buffered_upload": {
+          "type": "boolean",
+          "required": false
+        },
+        "with_direct_connection_info": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    },
+    "files.finalize_upload": {
+      "operation_id": "PostFilesPath",
+      "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "action": {
+          "type": "string",
+          "required": false
+        },
+        "custom_metadata": {
+          "type": "object",
+          "required": false
+        },
+        "etags[etag]": {
+          "type": "array(string)",
+          "required": false
+        },
+        "etags[part]": {
+          "type": "array(int64)",
+          "required": false
+        },
+        "length": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "mkdir_parents": {
+          "type": "boolean",
+          "required": false
+        },
+        "part": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "parts": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "provided_mtime": {
+          "type": "string",
+          "format": "date-time",
+          "required": false
+        },
+        "ref": {
+          "type": "string",
+          "required": false
+        },
+        "restart": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "size": {
+          "type": "int64",
+          "format": "int32",
+          "required": false
+        },
+        "copy_behaviors": {
+          "type": "boolean",
+          "required": false
+        },
+        "structure": {
+          "type": "string",
+          "required": false
+        },
+        "with_rename": {
+          "type": "boolean",
+          "required": false
+        },
+        "buffered_upload": {
+          "type": "boolean",
+          "required": false
+        },
+        "with_direct_connection_info": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    },
+    "files.download": {
+      "operation_id": "FileDownload",
+      "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "action": {
+          "type": "string",
+          "required": false
+        },
+        "preview_size": {
+          "type": "string",
+          "required": false
+        },
+        "with_previews": {
+          "type": "boolean",
+          "required": false
+        },
+        "with_priority_color": {
+          "type": "boolean",
+          "required": false
+        },
+        "with_direct_connection_info": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    },
+    "files.metadata": {
+      "operation_id": "FileActionFind",
+      "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
+        "preview_size": {
+          "type": "string",
+          "required": false
+        },
+        "with_previews": {
+          "type": "boolean",
+          "required": false
+        },
+        "with_priority_color": {
+          "type": "boolean",
+          "required": false
+        }
+      }
     }
   },
   "entities": {
@@ -826,6 +1008,63 @@
       "user_home",
       "days_remaining_until_password_expire",
       "password_expire_at"
+    ],
+    "files": [
+      "path",
+      "created_by_id",
+      "created_by_api_key_id",
+      "created_by_as2_incoming_message_id",
+      "created_by_automation_id",
+      "created_by_bundle_registration_id",
+      "created_by_inbox_id",
+      "created_by_remote_server_id",
+      "created_by_sync_id",
+      "custom_metadata",
+      "display_name",
+      "type",
+      "size",
+      "created_at",
+      "last_modified_by_id",
+      "last_modified_by_api_key_id",
+      "last_modified_by_automation_id",
+      "last_modified_by_bundle_registration_id",
+      "last_modified_by_remote_server_id",
+      "last_modified_by_sync_id",
+      "mtime",
+      "provided_mtime",
+      "crc32",
+      "md5",
+      "sha1",
+      "sha256",
+      "mime_type",
+      "region",
+      "permissions",
+      "subfolders_locked?",
+      "is_locked",
+      "download_uri",
+      "direct_connection_info",
+      "priority_color",
+      "preview_id",
+      "preview"
+    ],
+    "file_upload_parts": [
+      "send",
+      "action",
+      "ask_about_overwrites",
+      "available_parts",
+      "expires",
+      "headers",
+      "http_method",
+      "next_partsize",
+      "parallel_parts",
+      "retry_parts",
+      "parameters",
+      "part_number",
+      "partsize",
+      "path",
+      "ref",
+      "upload_uri",
+      "direct_connection_info"
     ]
   }
 }

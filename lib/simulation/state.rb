@@ -31,15 +31,19 @@ module FilesMockServer
       end
     end
 
-    # Everything a reset replaces: records, ID counter, request sequence, journal and fault rules.
+    # Everything a reset replaces: records, uploads, files, counters, request sequence, journal and fault rules.
     class State
-      attr_reader :epoch, :users, :journal, :faults
-      attr_accessor :last_user_id, :request_count
+      attr_reader :epoch, :users, :uploads, :files, :journal, :faults
+      attr_accessor :last_user_id, :last_upload_id, :commits, :request_count
 
       def initialize(epoch, limits, fault_match_keys)
         @epoch = epoch
         @users = {} # id => attributes, in creation (and therefore ID) order
         @last_user_id = 0
+        @uploads = {} # upload number => Files::Upload not yet finalized
+        @last_upload_id = 0
+        @files = {} # path => the file's current Files::Version
+        @commits = 0 # finalized uploads; each one numbers the version it created
         @request_count = 0
         @journal = Journal.new(limits.max_journal_entries)
         @faults = FaultRules.new(fault_match_keys)

@@ -14,6 +14,10 @@ if FilesMockServer.mode == "simulation"
   # Puma answers 413 itself for a body over the limit: a declared Content-Length before the body is
   # read, and a chunked body as soon as it crosses the limit.
   http_content_length_limit limits.max_body_bytes
+  # Read each request body on the request thread that serves it, instead of buffering bodies for any
+  # number of waiting connections first, so at most one body per thread is held before the simulator
+  # counts it. Connections beyond the threads wait unread, and keep-alive is off.
+  queue_requests false
   silence_fork_callback_warning
   before_fork do
     abort "FILES_MOCK_MODE=simulation keeps its state in one process; run Puma without workers (no -w or WEB_CONCURRENCY)."

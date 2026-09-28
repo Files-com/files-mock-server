@@ -10,20 +10,6 @@ class SimulationTest < Minitest::Test
     @app = new_app
   end
 
-  # A request body still being received when the simulator is reset.
-  class ResetWhileReading < StringIO
-    def initialize(body, on_first_read)
-      super(body)
-      @on_first_read = on_first_read
-    end
-
-    def read(...)
-      @on_first_read&.call
-      @on_first_read = nil
-      super
-    end
-  end
-
   def test_user_lifecycle_keeps_identity_and_never_reuses_ids
     created = api("POST", "/users", { "username" => "alice", "email" => "alice@example.com", "password" => "never-returned-secret" })
     assert_equal 201, created.status
@@ -114,9 +100,10 @@ class SimulationTest < Minitest::Test
     assert_includes invalid.json["error"], "ssl_required does not have a valid value"
     assert_includes invalid.json["error"], "authenticate_until is invalid"
     assert_equal "username is missing", api("POST", "/users", { "ssl_required" => "always_require" }).json["error"]
-    [ "2026-02-30T12:00:00Z", "2030-01-01T24:00:00Z" ].each do |impossible|
-      response = api("POST", "/users", { "username" => "alice", "authenticate_until" => impossible })
-      assert_equal [ 422, "authenticate_until is invalid" ], [ response.status, response.json["error"] ], impossible
+    # Impossible moments, and a time without a UTC offset, which only a file's provided_mtime accepts.
+    [ "2026-02-30T12:00:00Z", "2030-01-01T24:00:00Z", "2030-01-02T03:04:05" ].each do |rejected|
+      response = api("POST", "/users", { "username" => "alice", "authenticate_until" => rejected })
+      assert_equal [ 422, "authenticate_until is invalid" ], [ response.status, response.json["error"] ], rejected
     end
     assert_empty usernames
 
@@ -264,7 +251,7 @@ class SimulationTest < Minitest::Test
   end
 
   def test_write_in_flight_during_reset_is_refused
-    input = ResetWhileReading.new(JSON.generate("username" => "late"), -> { reset({ "users" => [ { "username" => "fixture" } ] }) })
+    input = InterruptedBody.new(JSON.generate("username" => "late"), -> { reset({ "users" => [ { "username" => "fixture" } ] }) })
     env = Rack::MockRequest.env_for("/api/rest/v1/users", method: "POST", input:, "CONTENT_TYPE" => "application/json")
     status, _headers, body = app.call(env)
     payload = +""
@@ -331,9 +318,12 @@ class SimulationTest < Minitest::Test
     assert_equal [ "ready", "simulation", 1 ], ready.values_at("status", "mode", "contract_version")
     assert_match(/\A\h{64}\z/, ready["schema_sha256"])
     refute_empty ready["simulator_version"]
-    operation_ids = ready["operations"].map { |operation| operation["id"] }
-    assert_equal %w[users.create users.list users.find users.update users.delete], operation_ids
-    assert(ready["operations"].all? { |operation| operation["swagger_operation_id"].is_a?(String) })
+    operations = ready["operations"].to_h { |operation| [ operation["id"], operation["swagger_operation_id"] ] }
+    assert_equal %w[users.create users.list users.find users.update users.delete], operations.keys.first(5)
+    assert_equal({ "files.begin_upload" => "FileActionBeginUpload", "files.finalize_upload" => "PostFilesPath", "files.download" => "FileDownload", "files.metadata" => "FileActionFind" }, operations.drop(5).to_h)
+    assert_equal(%w[transfers.upload_part transfers.download], ready["transfers"]["operations"].map { |operation| operation["id"] })
+    assert_equal({ "http_method" => "PUT", "parallel_parts" => false, "retry_parts" => true, "partsize" => 1_048_576 }, ready["transfers"]["upload_parts"])
+    assert_equal [ 33_554_432, { "uploads" => 0, "files" => 0, "bytes_in_use" => 0 } ], [ ready["limits"]["max_transfer_bytes"], ready["transfers"]["state"] ]
   end
 
   def test_simulation_refuses_to_start_without_the_simulated_operations_in_its_schema

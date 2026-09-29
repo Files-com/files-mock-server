@@ -6,13 +6,16 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
+      optional :filter, type: Hash
     end
     get "/api/rest/v1/custom_domains" do
       status 200
-      [ { "id" => 1, "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "workspace_id" => 1, "available_to_all_workspaces" => false, "outbound_ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
+      optional :available_to_all_workspaces, type: Boolean
+      optional :workspace_id, type: Integer
       optional :destination, type: String
       optional :folder_behavior_id, type: Integer
       optional :ssl_certificate_id, type: Integer
@@ -20,7 +23,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/custom_domains" do
       status 201
-      { "id" => 1, "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "available_to_all_workspaces" => false, "outbound_ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -28,11 +31,13 @@ module FilesMockServer
     end
     get "/api/rest/v1/custom_domains/:id" do
       status 200
-      { "id" => 1, "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "available_to_all_workspaces" => false, "outbound_ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
       requires :id, type: Integer
+      optional :available_to_all_workspaces, type: Boolean
+      optional :workspace_id, type: Integer
       optional :destination, type: String
       optional :folder_behavior_id, type: Integer
       optional :ssl_certificate_id, type: Integer
@@ -40,7 +45,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/custom_domains/:id" do
       status 200
-      { "id" => 1, "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "available_to_all_workspaces" => false, "outbound_ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -57,7 +62,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/custom_domains/:id/allocate_ips" do
       status 200
-      { "id" => 1, "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "available_to_all_workspaces" => false, "outbound_ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "domain" => "files.example.com", "destination" => "site_alias", "dns_status" => "correct", "ssl_certificate_id" => 1, "brick_managed" => true, "folder_behavior_id" => 1, "ip_addresses" => [ "203.0.113.1", "203.0.113.2" ], "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
   end
 end

@@ -15,6 +15,8 @@ module FilesMockServer
 
     params do
       requires :path, type: String
+      optional :token, type: String
+      optional :expected_token, type: String
       optional :allow_access_by_any_user, type: Boolean
       optional :exclusive, type: Boolean
       optional :recursive, type: Boolean

@@ -6,6 +6,7 @@ module FilesMockServer
       optional :user_id, type: Integer
       optional :cursor, type: String
       optional :per_page, type: Integer
+      optional :sort_by, type: Hash
     end
     get "/api/rest/v1/user_sftp_client_uses" do
       status 200

@@ -15,7 +15,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/event_records" do
       status 200
-      [ { "id" => 1, "workspace_id" => 1, "event_uuid" => "example", "event_type" => "example", "severity" => "example", "source_type" => "example", "source_id" => 1, "occurred_at" => "2000-01-01T01:00:00Z", "human_title" => "example", "human_summary" => "example", "human_fields" => [ "example" ], "actor" => "example", "resources" => [ "example" ], "payload" => "example", "created_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "workspace_id" => 1, "event_uuid" => "example", "event_type" => "sync_run.failure.v1", "severity" => "example", "source_type" => "example", "source_id" => 1, "occurred_at" => "2000-01-01T01:00:00Z", "human_title" => "example", "human_summary" => "example", "human_fields" => [ "example" ], "actor" => "example", "resources" => [ "example" ], "payload" => "example", "created_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/event_records/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "event_uuid" => "example", "event_type" => "example", "severity" => "example", "source_type" => "example", "source_id" => 1, "occurred_at" => "2000-01-01T01:00:00Z", "human_title" => "example", "human_summary" => "example", "human_fields" => [ "example" ], "actor" => "example", "resources" => [ "example" ], "payload" => "example", "created_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "event_uuid" => "example", "event_type" => "sync_run.failure.v1", "severity" => "example", "source_type" => "example", "source_id" => 1, "occurred_at" => "2000-01-01T01:00:00Z", "human_title" => "example", "human_summary" => "example", "human_fields" => [ "example" ], "actor" => "example", "resources" => [ "example" ], "payload" => "example", "created_at" => "2000-01-01T01:00:00Z" }
     end
   end
 end

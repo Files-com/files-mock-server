@@ -3,7 +3,7 @@
   "format_version": 1,
   "swagger": {
     "name": "swagger_doc-production.json",
-    "sha256": "82149ea3d3af9ce7c8d7622d6818db9ab9e6135e5aee658f8aabee6d168be1b2"
+    "sha256": "eebfdd1febd8d7ee27f66f586da180f3c70d0dc1ad2cfbd6b1307effd9414b00"
   },
   "schema_sha256": "0c4c8e63b7e8ce08dc1cc94e4e616bd3ecb3bea61a97dbe62cfe4069780ba787",
   "simulator_version": "1.0",

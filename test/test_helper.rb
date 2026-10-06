@@ -1,14 +1,17 @@
 require "digest"
 require "erb"
+require "fileutils"
 require "io/wait"
 require "json"
 require "minitest/autorun"
 require "net/http"
+require "openssl"
 require "rack/lint"
 require "rack/mock_request"
 require "socket"
 require "tempfile"
 require "time"
+require "tmpdir"
 
 APP_ROOT = File.expand_path("..", __dir__)
 require File.join(APP_ROOT, "lib/simulation")
@@ -89,6 +92,55 @@ module SimulationRequests
   end
 end
 
+# Uploads, downloads and journal reads the way the SDKs and tests use them, for a test that
+# includes SimulationRequests.
+module FileRequests
+  # A path as the Go SDK puts it in a URL: each name percent-encoded, the slashes kept.
+  def route(path)
+    path.split("/", -1).map { |name| ERB::Util.url_encode(name) }.join("/")
+  end
+
+  def begin_upload(route, params = {}, to: app)
+    response = api("POST", "/file_actions/begin_upload/#{route}", params, to:)
+    assert_equal 200, response.status, response.body
+    assert_equal 1, response.json.size
+    response.json.first
+  end
+
+  # Returns the part's ETag without its quotes, as the SDKs list it.
+  def put_part(part, bytes)
+    response = transfer("PUT", part["upload_uri"], bytes)
+    assert_equal 200, response.status, response.body
+    response.headers["etag"].delete('"')
+  end
+
+  # Uploads parts in order through the protocol the SDKs use and returns the finalize response.
+  def upload(path, parts, route: route(path), finalize: {})
+    first = begin_upload(route)
+    etags = parts.each_with_index.map do |bytes, index|
+      part = index.zero? ? first : begin_upload(route, { "ref" => first["ref"], "part" => index + 1 })
+      { "etag" => put_part(part, bytes), "part" => index + 1 }
+    end
+    api("POST", "/files/#{route}", { "action" => "end", "ref" => first["ref"], "etags" => etags }.merge(finalize))
+  end
+
+  def download(path, env = {})
+    negotiated = api("GET", "/files/#{route(path)}")
+    return negotiated unless negotiated.status == 200
+
+    transfer("GET", negotiated.json["download_uri"], nil, env)
+  end
+
+  def journal
+    control("GET", "journal").json["entries"]
+  end
+
+  # The given fields of the journal entries for one operation, oldest first.
+  def journaled(operation, fields)
+    journal.select { |entry| entry["operation"] == operation }.map { |entry| entry.values_at(*fields) }
+  end
+end
+
 # A real `bundle exec puma` for this app, bound to an ephemeral loopback port.
 class ServerProcess
   TIMEOUT = 60
@@ -134,14 +186,20 @@ class ServerProcess
   end
 
   def wait_until_listening
+    @url = wait_for_output(/Listening on (http:\/\/127\.0\.0\.1:\d+)/)[1]
+  end
+
+  # Waits until Puma has printed a line matching pattern and returns the match. Puma prints one
+  # "Listening on" line per bind, in order, so a later bind's line can arrive after the first.
+  def wait_for_output(pattern)
     deadline = now + TIMEOUT
-    until (listening = output.match(/Listening on (http:\/\/127\.0\.0\.1:\d+)/))
-      raise "Puma exited before listening:\n#{output}" if exited?
-      raise "Puma did not listen within #{TIMEOUT}s:\n#{output}" if now > deadline
+    until (match = output.match(pattern))
+      raise "Puma exited before printing #{pattern.inspect}:\n#{output}" if exited?
+      raise "Puma did not print #{pattern.inspect} within #{TIMEOUT}s:\n#{output}" if now > deadline
 
       sleep 0.05
     end
-    @url = listening[1]
+    match
   end
 
   def wait_for_exit(timeout = TIMEOUT)

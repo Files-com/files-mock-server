@@ -37,12 +37,18 @@ class SimulationTest < Minitest::Test
     assert_equal [ [ "users.create", 1, 201 ], [ "users.update", 1, 200 ] ], journaled
   end
 
+  # The journal shows each request's paging as it was sent and each response's cursor headers, by
+  # JSON type and SHA-256 and never by value, beside the entry's other fields: each cursor a request
+  # sent is the next cursor of the page before, and the last page names none.
   def test_five_users_page_by_two_across_three_pages_exactly_once
     reset({ "users" => FIVE_USERS })
+    identity = { "HTTP_X_FILESAPI_KEY" => "synthetic-key-sentinel", "HTTP_USER_AGENT" => "paging journal probe" }
     pages = []
+    issued = []
     cursor = nil
     loop do
-      response = api("GET", "/users", { "per_page" => 2, "cursor" => cursor }.compact)
+      query = Rack::Utils.build_nested_query({ "per_page" => 2, "cursor" => cursor }.compact)
+      response = request(app, "GET", "/api/rest/v1/users?#{query}", nil, identity)
       assert_equal 200, response.status
       pages << response.json.map { |user| user["username"] }
       cursor = response.headers["x-files-cursor"]
@@ -51,9 +57,89 @@ class SimulationTest < Minitest::Test
         break
       end
       assert_equal cursor, response.headers["x-files-cursor-next"]
+      issued << cursor
       flunk "pagination did not end: #{pages.inspect}" if pages.size > 3
     end
     assert_equal [ %w[user1 user2], %w[user3 user4], %w[user5] ], pages
+
+    journal = control("GET", "journal")
+    entries = journal.json["entries"]
+    assert_equal [ true, 0, %w[users.list] * 3 ], [ journal.json["complete"], journal.json["dropped"], entries.map { |entry| entry["operation"] } ]
+    assert_equal([ [ 200, nil, { "api_key" => 1 }, "paging journal probe" ] ] * 3, entries.map { |entry| entry.values_at("status", "fault_id", "credentials", "user_agent") })
+    per_page = { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest("2"), "integer" => 2 }
+    assert_equal([ [ true, per_page, true, "selected-rack-response-before-delivery" ] ] * 3,
+                 entries.map { |entry| entry["paging"]["request"].values_at("available", "per_page") + entry["paging"]["response"].values_at("available", "basis") }
+                )
+    absent = { "present" => false, "wire_type" => nil, "sha256" => nil, "nonempty" => false }
+    cursors = issued.map { |value| { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest(value), "nonempty" => true } }
+    assert_equal([ absent, *cursors ], entries.map { |entry| entry["paging"]["request"]["cursor"] })
+    assert_equal([ *cursors, absent ].map { |headers| [ headers, headers ] }, entries.map { |entry| entry["paging"]["response"].values_at("cursor", "cursor_next") })
+    [ "synthetic-key-sentinel", *issued ].each { |value| refute_includes journal.body, value }
+  end
+
+  # Paging values a request left out, sent as another JSON type or empty, or sent in a body that
+  # could not be read, are journaled as exactly that, whatever the list then answered: never as the
+  # per_page or cursor it assumed. Only a page that continues has cursor headers.
+  def test_the_journal_types_missing_malformed_and_unreadable_paging_values
+    reset({ "users" => FIVE_USERS })
+    statuses = [
+      api("GET", "/users"),
+      api("GET", "/users", { "per_page" => "two" }),
+      request(app, "GET", "/api/rest/v1/users", JSON.generate("per_page" => 2)),
+      api("GET", "/users", { "per_page" => 2, "cursor" => "" }),
+      api("GET", "/users", { "cursor" => [ "a" ] }),
+      request(app, "GET", "/api/rest/v1/users", "{not json")
+    ].map(&:status)
+    assert_equal [ 200, 422, 200, 200, 422, 422 ], statuses
+
+    missing = { "present" => false, "wire_type" => nil, "sha256" => nil }
+    no_per_page = missing.merge("integer" => nil)
+    no_cursor = missing.merge("nonempty" => false)
+    two = { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest("2"), "integer" => 2 }
+    expected = [
+      [ true, no_per_page, no_cursor ],
+      [ true, { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest("two"), "integer" => nil }, no_cursor ],
+      [ true, { "present" => true, "wire_type" => "number", "sha256" => nil, "integer" => 2 }, no_cursor ],
+      [ true, two, { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest(""), "nonempty" => false } ],
+      [ true, no_per_page, { "present" => true, "wire_type" => "array", "sha256" => nil, "nonempty" => false } ],
+      [ false, no_per_page, no_cursor ]
+    ]
+    entries = control("GET", "journal").json["entries"]
+    assert_equal(expected, entries.map { |entry| entry["paging"]["request"].values_at("available", "per_page", "cursor") })
+    continues = [ false, false, true, true, false, false ].map { |present| [ true, present, present ] }
+    assert_equal(continues, entries.map { |entry| entry["paging"]["response"].then { |response| [ response["available"], response["cursor"]["present"], response["cursor_next"]["present"] ] } })
+  end
+
+  # The journal's paging response is the one this step selected after any fault rule: an empty
+  # page's cursor headers, which later requests send back as they got them (not as the simulator
+  # resolves them), an injected error's lack of any, and none at all for a connection dropped before
+  # the request was applied, which is no last page.
+  def test_the_journal_paging_response_is_the_one_a_fault_rule_selected
+    reset({ "users" => FIVE_USERS })
+    first = api("GET", "/users", { "per_page" => 2 })
+    add_fault({ "operation" => "users.list", "match" => { "continuation" => true }, "kind" => "empty_page" })
+    empty = api("GET", "/users", { "per_page" => 2, "cursor" => first.headers["x-files-cursor"] })
+    add_fault({ "operation" => "users.list", "match" => { "continuation" => true }, "status" => 503 })
+    failed = api("GET", "/users", { "per_page" => 2, "cursor" => empty.headers["x-files-cursor"] })
+    second = api("GET", "/users", { "per_page" => 2, "cursor" => empty.headers["x-files-cursor"] })
+    assert_equal [ [], 503, %w[user3 user4] ], [ empty.json, failed.status, second.json.map { |user| user["username"] } ]
+    add_fault({ "operation" => "users.list", "kind" => "drop_before" })
+    connection, client = Socket.pair(:UNIX, :STREAM)
+    query = Rack::Utils.build_nested_query({ "per_page" => 2, "cursor" => second.headers["x-files-cursor"] })
+    raw_request(app, "GET", "/api/rest/v1/users?#{query}", nil, { "rack.hijack?" => true, "rack.hijack" => -> { connection } })
+
+    absent = { "present" => false, "wire_type" => nil, "sha256" => nil, "nonempty" => false }
+    issued = [ first, empty, second ].map { |response| { "present" => true, "wire_type" => "string", "sha256" => Digest::SHA256.hexdigest(response.headers.fetch("x-files-cursor")), "nonempty" => true } }
+    entries = control("GET", "journal").json["entries"]
+    assert_equal([ absent, issued[0], issued[1], issued[1], issued[2] ], entries.map { |entry| entry["paging"]["request"]["cursor"] })
+    assert_equal([ [ 200, true, issued[0] ], [ 200, true, issued[1] ], [ 503, true, absent ], [ 200, true, issued[2] ], [ nil, false, absent ] ],
+                 entries.map { |entry| [ entry["status"], *entry["paging"]["response"].values_at("available", "cursor") ] }
+                )
+    assert_equal(entries.map { |entry| entry["paging"]["response"]["cursor"] }, entries.map { |entry| entry["paging"]["response"]["cursor_next"] })
+    assert_equal [ "empty_page", issued[0]["sha256"], issued[1]["sha256"] ], entries[1].values_at("fault_kind", "cursor_sha256", "next_cursor_sha256")
+    assert_equal "drop_before", entries[4]["fault_kind"]
+  ensure
+    [ connection, client ].each { |socket| socket&.close }
   end
 
   def test_users_created_or_deleted_during_a_traversal_are_neither_repeated_nor_lost
@@ -120,7 +206,7 @@ class SimulationTest < Minitest::Test
   def test_unmodeled_operations_and_parameters_fail_visibly_without_changes
     reset({ "users" => [ { "username" => "alice" } ] })
     responses = {
-      "other resource" => api("GET", "/groups"),
+      "another resource's action" => api("POST", "/automations/1/manual_run"),
       "user action" => api("POST", "/users/1/unlock"),
       "PUT update" => api("PUT", "/users/1", { "name" => "changed" }),
       "sorting" => api("GET", "/users", { "sort_by" => { "username" => "desc" } }),
@@ -128,7 +214,7 @@ class SimulationTest < Minitest::Test
       "group membership" => api("POST", "/users", { "username" => "bob", "group_id" => 1 }),
       "avatar" => api("PATCH", "/users/1", { "avatar_delete" => true }),
       "ownership transfer" => api("DELETE", "/users/1", { "new_owner_id" => 2 }),
-      "form body" => request(app, "POST", "/api/rest/v1/users", "username=bob", "CONTENT_TYPE" => "application/x-www-form-urlencoded"),
+      "text body" => request(app, "POST", "/api/rest/v1/users", "username=bob", "CONTENT_TYPE" => "text/plain"),
     }
     responses.each do |name, response|
       assert_equal [ 501, "simulation/not-supported" ], [ response.status, response.json["type"] ], name
@@ -315,15 +401,23 @@ class SimulationTest < Minitest::Test
 
   def test_readiness_identifies_the_simulator_and_its_operations
     ready = control("GET", "ready").json
-    assert_equal [ "ready", "simulation", 1 ], ready.values_at("status", "mode", "contract_version")
+    assert_equal [ "ready", "simulation", 3 ], ready.values_at("status", "mode", "contract_version")
     assert_match(/\A\h{64}\z/, ready["schema_sha256"])
     refute_empty ready["simulator_version"]
     operations = ready["operations"].to_h { |operation| [ operation["id"], operation["swagger_operation_id"] ] }
     assert_equal %w[users.create users.list users.find users.update users.delete], operations.keys.first(5)
-    assert_equal({ "files.begin_upload" => "FileActionBeginUpload", "files.finalize_upload" => "PostFilesPath", "files.download" => "FileDownload", "files.metadata" => "FileActionFind" }, operations.drop(5).to_h)
+    files = { "files.begin_upload" => "FileActionBeginUpload", "files.finalize_upload" => "PostFilesPath", "files.download" => "FileDownload", "files.metadata" => "FileActionFind",
+              "files.delete" => "DeleteFilesPath", "folders.create" => "PostFoldersPath", "folders.list" => "FolderListForPath" }
+    assert_equal files, operations.drop(5).first(7).to_h
+    # Record resources follow, each with the Swagger operation it answers.
+    assert_equal({ "groups.list" => "GetGroups", "groups.create" => "PostGroups" }, operations.slice("groups.list", "groups.create"))
     assert_equal(%w[transfers.upload_part transfers.download], ready["transfers"]["operations"].map { |operation| operation["id"] })
     assert_equal({ "http_method" => "PUT", "parallel_parts" => false, "retry_parts" => true, "partsize" => 1_048_576 }, ready["transfers"]["upload_parts"])
     assert_equal [ 33_554_432, { "uploads" => 0, "files" => 0, "bytes_in_use" => 0 } ], [ ready["limits"]["max_transfer_bytes"], ready["transfers"]["state"] ]
+    # What the simulator declares instead of answering like a particular real site.
+    assert_equal %w[listed omitted], ready["transfers"]["finalize_etags"]
+    assert_equal [ { "always_mkdir_parents" => true }, { "recursive" => true, "root" => false }, { "files" => 0, "folders" => 0, "cursors" => 0 } ], ready["namespace"].values_at("site_policy", "delete", "state")
+    assert_includes ready["real_only"], "authentication"
   end
 
   def test_simulation_refuses_to_start_without_the_simulated_operations_in_its_schema

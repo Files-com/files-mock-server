@@ -151,6 +151,50 @@ class ProcessTest < Minitest::Test
     server&.stop
   end
 
+  # Behind a TLS bind, upload and download URLs use https and the address the request arrived on.
+  def test_a_tls_bind_issues_https_transfer_urls
+    directory = Dir.mktmpdir
+    key = OpenSSL::PKey::RSA.new(2048)
+    certificate = OpenSSL::X509::Certificate.new
+    certificate.version = 2
+    certificate.serial = 1
+    certificate.subject = certificate.issuer = OpenSSL::X509::Name.parse("/CN=127.0.0.1")
+    certificate.public_key = key.public_key
+    certificate.not_before = Time.now - 60
+    certificate.not_after = Time.now + 3600
+    factory = OpenSSL::X509::ExtensionFactory.new(certificate, certificate)
+    certificate.add_extension(factory.create_extension("subjectAltName", "IP:127.0.0.1", false))
+    certificate.sign(key, OpenSSL::Digest.new("SHA256"))
+    File.write(File.join(directory, "key.pem"), key.to_pem)
+    File.write(File.join(directory, "cert.pem"), certificate.to_pem)
+    server = ServerProcess.start({ "FILES_MOCK_MODE" => "simulation" }, "-b", "ssl://127.0.0.1:0?key=#{directory}/key.pem&cert=#{directory}/cert.pem&verify_mode=none")
+    port = Integer(server.wait_for_output(/Listening on ssl:\/\/127\.0\.0\.1:(\d+)/)[1], 10)
+    https = Net::HTTP.new("127.0.0.1", port)
+    https.use_ssl = true
+    https.ca_file = File.join(directory, "cert.pem")
+    json = { "Content-Type" => "application/json" }
+    download = https.start do |http|
+      part = JSON.parse(http.post("/api/rest/v1/file_actions/begin_upload/t.bin", "{}", json).body).first
+      assert_equal "https://127.0.0.1:#{port}", part["upload_uri"][/\Ahttps:\/\/[^\/]+/]
+      assert_equal "200", http.send_request("PUT", URI(part["upload_uri"]).request_uri, "tls").code
+      finalize = { "action" => "end", "ref" => part["ref"], "etags" => [ { "etag" => Digest::SHA256.hexdigest("tls"), "part" => 1 } ] }
+      assert_equal "201", http.post("/api/rest/v1/files/t.bin", JSON.generate(finalize), json).code
+      assert_equal "201", http.post("/__files_mock/v1/faults", JSON.generate("operation" => "transfers.download", "kind" => "truncate", "bytes" => 2), json).code
+      JSON.parse(http.get("/api/rest/v1/files/t.bin").body)["download_uri"]
+    end
+    # A fault that writes to the connection itself works over TLS too.
+    received = +""
+    begin
+      https.start { |http| http.get(URI(download).request_uri) { |chunk| received << chunk } }
+    rescue EOFError, OpenSSL::SSL::SSLError
+      nil
+    end
+    assert_equal "tl", received
+  ensure
+    server&.stop
+    FileUtils.remove_entry(directory) if directory
+  end
+
   def test_invalid_mode_stops_startup_with_a_clear_error
     status, output = ServerProcess.run_to_exit({ "FILES_MOCK_MODE" => "simulate" })
     refute status.success?

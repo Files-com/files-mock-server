@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.summary     = "Files.com Mock API Server."
   s.description = "Mock Files.com Server API for your own Integration Testing."
   s.license     = "MIT"
-  s.required_ruby_version = ">= 3.2.2"
+  s.required_ruby_version = ">= 3.3.12"
   s.add_dependency 'activesupport', '~> 7.2', '>= 7.2.3.1'
   s.add_dependency 'grape', '~> 3.1.1'
   s.add_dependency 'puma', '~> 8.0', '>= 8.0.2'
   s.add_dependency 'rack', '~> 3.2', '>= 3.2.7'
-  s.add_dependency 'rubocop'
+  s.add_dependency 'rubocop', '= 1.91.0'
 
   s.files = `find *`.split("\n").uniq.sort.reject(&:empty?)
   s.metadata['rubygems_mfa_required'] = 'true'

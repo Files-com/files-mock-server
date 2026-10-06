@@ -1,6 +1,17 @@
+inherit_mode:
+  merge:
+    - Include
+
 AllCops:
-  TargetRubyVersion: 3.2
+  # The mock's minimum Ruby, as files.com-mock-server.gemspec declares it.
+  TargetRubyVersion: 3.3
   NewCops: enable
+  # Besides RuboCop's default Ruby files: setup.sh, test.sh and build.sh are Ruby scripts, and RuboCop
+  # finds a script by its shebang only when its name has no extension.
+  Include:
+    - setup.sh
+    - test.sh
+    - build.sh
 
 Layout/ArgumentAlignment:
   Enabled: false
@@ -76,7 +87,7 @@ Naming/HeredocDelimiterCase:
 Naming/MethodParameterName:
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 
 Security/YAMLLoad:

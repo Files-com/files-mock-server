@@ -28,9 +28,10 @@ module FilesMockServer
         "files.update" => %w[path custom_metadata provided_mtime priority_color],
       }.freeze
       # Parameters modeled when the schema declares them and absent from schemas that predate them:
-      # begin_upload's parts, and the download identity parameters (local export b8129459; not in the
-      # production pin).
-      OPTIONAL_PARAMS = { "files.begin_upload" => %w[parts], "files.download" => %w[with_download_identity expected_download_identity] }.freeze
+      # begin_upload's parts, the download identity parameters (local export b8129459; not in the
+      # production pin), and a folder listing's with_previews (see #list_folder).
+      OPTIONAL_PARAMS = { "files.begin_upload" => %w[parts], "files.download" => %w[with_download_identity expected_download_identity],
+                          "folders.list" => %w[with_previews] }.freeze
       # Modeled byte counts, which take the int64 range even where the schema documents them as int32:
       # the API reads an upload's size as a Ruby Integer, so the production schema's int32 format is
       # provenance, not a limit. Every other parameter converts at its schema's width, part numbers
@@ -525,12 +526,14 @@ module FilesMockServer
       end
 
       # Returns [ one page of the folder's files and folders, next cursor or nil ]; see Namespace#list.
+      # with_previews asks for each file's preview, which is not simulated, so a page that would hold a
+      # file is refused; folders have no previews, so a page of folders is the same either way.
       def list_folder(state, path, params)
         name, values = accepted("folders.list", path, params, root: true)
         folder = @namespace.find(state, name) || raise(Error.not_found)
         raise Error.not_supported("Listing a file's path is not simulated; list its folder") unless folder.is_a?(Namespace::Folder)
 
-        @namespace.list(state, folder.path, values["per_page"], values["cursor"])
+        @namespace.list(state, folder.path, values["per_page"], values["cursor"], folders_only: values["with_previews"] == true)
       end
 
       # Changes a file's or folder's provided_mtime, custom_metadata or priority_color (PATCH

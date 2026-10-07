@@ -1,0 +1,26 @@
+{
+  "name": "folder-list",
+  "description": "An owned parent folder holding five child folders, listed in path order two per page. Folders have no previews, so the listing is the same with or without with_previews.",
+  "reset": {
+    "fixtures": {
+      "folders": [
+        "shared-folder-list",
+        "shared-folder-list/alpha",
+        "shared-folder-list/bravo",
+        "shared-folder-list/charlie",
+        "shared-folder-list/delta",
+        "shared-folder-list/echo"
+      ]
+    }
+  },
+  "parent": "shared-folder-list",
+  "children": [
+    "shared-folder-list/alpha",
+    "shared-folder-list/bravo",
+    "shared-folder-list/charlie",
+    "shared-folder-list/delta",
+    "shared-folder-list/echo"
+  ],
+  "per_page": 2,
+  "journal_checks": [ "folders.list cursor chain" ]
+}

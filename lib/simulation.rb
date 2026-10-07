@@ -116,12 +116,17 @@ module FilesMockServer
     SCHEMA_PATH = File.expand_path("simulation/schema.json", __dir__)
     # Every operation in the Swagger document with how the simulator treats it, generated beside this file.
     INVENTORY_PATH = File.expand_path("simulation/inventory.json", __dir__)
+    # What FILES_MOCK_INSTANCE may set the instance to (App#validated_instance): 12 lowercase hex
+    # characters, the form of the random instance a server takes without it, since cursor tokens carry it.
+    INSTANCE_FORMAT = /\A[0-9a-f]{12}\z/
 
     # One simulator. Its state belongs to this instance alone, and every access to it holds @lock.
     class App
       # transfer_origin is FILES_MOCK_TRANSFER_ORIGIN: the origin clients reach this server at, for
-      # upload and download URLs, when it differs from the address the server listens on.
-      def initialize(limits: Limits.new, schema_path: SCHEMA_PATH, transfer_origin: nil)
+      # upload and download URLs, when it differs from the address the server listens on. instance is
+      # FILES_MOCK_INSTANCE: the instance readiness reports, which a launcher chooses to recognize the
+      # server it started; a random one when it is not set.
+      def initialize(limits: Limits.new, schema_path: SCHEMA_PATH, transfer_origin: nil, instance: nil)
         @limits = limits
         schema = JSON.parse(File.read(schema_path))
         require_complete(schema)
@@ -130,7 +135,7 @@ module FilesMockServer
         @file_action_fields = schema.fetch("entities").fetch("file_actions")
         @version = File.read(File.expand_path("../_VERSION", __dir__)).strip
         @transfer_origin = validated_origin(transfer_origin)
-        @instance = SecureRandom.hex(6)
+        @instance = validated_instance(instance)
         @lock = Mutex.new
         @files = Files.new(schema, limits:, instance: @instance, lock: @lock)
         @owners = record_owners(schema, limits)
@@ -759,6 +764,13 @@ module FilesMockServer
         raise ArgumentError, "FILES_MOCK_TRANSFER_ORIGIN=#{value.inspect} must be an http or https origin without a path, such as http://127.0.0.1:40410" unless origin
 
         value.delete_suffix("/")
+      end
+
+      def validated_instance(value)
+        return SecureRandom.hex(6) if value.nil? || value.empty?
+        raise ArgumentError, "FILES_MOCK_INSTANCE=#{value.inspect} must be 12 lowercase hex characters, such as 5f0c3a9e8d7b" unless value.match?(INSTANCE_FORMAT)
+
+        value
       end
 
       # Query parameters merged with the body's, the body's winning, the way the Go and Python SDKs

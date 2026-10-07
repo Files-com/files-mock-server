@@ -152,6 +152,30 @@ class FoldersTest < Minitest::Test
     assert_equal(listed.first(2).map(&:last), listed.drop(1).map { |entry| entry[1] })
   end
 
+  # with_previews asks for each file's preview, which is not simulated. Folders have none, so a page of
+  # folders is answered exactly as without it; a page that would hold a file is refused, .NET's "True"
+  # included, before a cursor is issued for it, and the same page without with_previews still lists.
+  def test_with_previews_lists_a_page_of_folders_and_refuses_a_page_holding_a_file
+    %w[p/a p/b p/c p/e].each { |path| assert_equal 201, api("POST", "/folders/#{path}", {}).status }
+    upload("p/d.bin", [ "d" ])
+
+    first = api("GET", "/folders/p", { "per_page" => 2, "with_previews" => true })
+    plain = api("GET", "/folders/p", { "per_page" => 2 })
+    assert_equal [ 200, %w[p/a p/b], %w[directory directory] ], [ first.status, first.json.map { |entry| entry["path"] }, first.json.map { |entry| entry["type"] } ]
+    assert_equal [ plain.json, plain.headers["x-files-cursor"] ], [ first.json, first.headers["x-files-cursor"] ]
+
+    cursor = first.headers["x-files-cursor"]
+    issued = control("GET", "ready").json.dig("namespace", "state", "cursors")
+    refused = api("GET", "/folders/p", { "per_page" => 2, "with_previews" => "True", "cursor" => cursor })
+    assert_equal [ 501, "simulation/not-supported" ], [ refused.status, refused.json["type"] ]
+    assert_equal issued, control("GET", "ready").json.dig("namespace", "state", "cursors")
+
+    rest = api("GET", "/folders/p", { "per_page" => 2, "with_previews" => false, "cursor" => cursor })
+    assert_equal [ 200, %w[p/c p/d.bin] ], [ rest.status, rest.json.map { |entry| entry["path"] } ]
+    refute_nil rest.headers["x-files-cursor"]
+    assert_equal [ [ 200, 2 ], [ 200, 2 ], [ 501, nil ], [ 200, 2 ] ], journaled("folders.list", %w[status items])
+  end
+
   def test_listing_and_deletes_refuse_what_is_not_simulated_or_out_of_bounds
     upload("f/file.bin", [ "x" ])
     {

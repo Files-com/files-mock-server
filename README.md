@@ -220,7 +220,7 @@ Everything below applies only when `FILES_MOCK_MODE=simulation`.
 | Area | Simulated | Refused (`501`) or not simulated |
 | ---- | --------- | -------------------------------- |
 | Records | List, create, find, update and delete of every resource with the regular `/{name}` and `/{name}/{id}` shape, records without an `id` kept under the parent they were created for, group memberships found by their own fields, lists scoped by path or owner, Style records keyed by path, log lists and delete-only resources filled by fixtures, configuration-dependent answers and a key lookup from fixtures, and the site singleton (`GET`/`PATCH /site`). Increasing IDs per resource, exact types, write-only secrets never returned, file parameters decoded, checked and reported. | Actions (such as `/users/{id}/unlock`), each with the decision or real owner it needs, filtering, sorting, search, uniqueness, foreign keys. `GET /__files_mock/v1/inventory` lists every operation and why. |
-| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, previews, `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
+| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, file previews (`with_previews` lists a page of folders only), `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
 | Locks | Advisory locks on paths, found as the model finds them (by byte prefix): created when both public flags are true, listed with the locks above that apply to subfolders and, on request, the path's range one level deep, as one sorted array, released with their token, exclusive conflicts with the model's message, expiry on a lock clock the tests move, and a separate cleanup of expired locks. | Refreshing a lock or anything else its internal parameters do, shared or owner-only locks, who may act on another user's lock, the real removal job's timing. |
 | Transfer profiles | Legacy (default), serial and parallel part rules, retries forbidden, advertised part sizes (hints) or variable part limits, scheduled part size changes for parts not yet issued, part offsets, target class, a shared part concurrency limit with `503` throttling, presigned URLs, the download identity contract, the historical download request status protocol (an ID on each successful storage response and a chosen status at the download URL joined with it), withheld download sizes, cursors with special characters. | Provider-specific limits beyond the profile, adaptive tuning or throughput claims. |
 | Faults | Deterministic and seeded random rules per operation, record, path, part, session and attempt: Files.com errors with chosen types and `data`, unstructured and web-tier answers, redirects, expired URLs, frontend HTML, empty pages, delays before or after a request is applied, dropped connections before or after a commit, truncated, short, padded and stalled bodies. | Faults outside the local HTTP server's reach, such as TLS handshake failures. |
@@ -844,6 +844,13 @@ simulator process and reset epoch it was issued for; anything else gets
 `422` with the type `bad-request/invalid-cursor`. Listing a folder that
 does not exist gets `404`.
 
+`with_previews` (when the Swagger document declares it) asks for each
+file's preview, which the simulator does not hold. Folders have no
+previews, so a page of folders is answered exactly as without it. A page
+that would hold a file gets `501` with the type `simulation/not-supported`
+before a cursor is issued for it; the same request without
+`with_previews`, or with it `false`, lists that page.
+
 `DELETE /api/rest/v1/files/{path}` deletes one file, or one empty folder,
 and returns `204`. A folder holding anything gets `422` with the type
 `processing-failure/folder-not-empty` unless `recursive=true`, which
@@ -1465,8 +1472,16 @@ the generator renders from the Swagger document; beside it,
 `lib/simulation/generation.json` records that document's name and SHA-256,
 the schema subset's SHA-256, the reported version, the generator checkout's
 commit and whether its generator and mock sources were clean, and the
-command; these are the generator's own statements). `instance` is different for
-every server process, and `epoch` counts resets. `records` summarizes the
+command; these are the generator's own statements). `instance` identifies
+the server process: a new random value (12 lowercase hex characters) for
+every process, unless `FILES_MOCK_INSTANCE` is set when it starts, which
+lets whoever starts the server recognize it here (as `with-scenario.rb`
+does with a new random value for each run). `FILES_MOCK_INSTANCE` must be
+12 lowercase hex characters; any other value stops startup with an error,
+and an empty value counts as unset. The instance is not a credential: any
+process of the same user can read it from the server's environment, and
+the simulator still accepts any credential. `epoch` counts resets.
+`records` summarizes the
 record resources and what they do not check. `transfers` lists the byte
 transfers to issued URLs, the current upload advertisement and transfer
 limits, the `FILES_MOCK_TRANSFER_ORIGIN` setting (`null` when URLs use the
@@ -1845,6 +1860,115 @@ would hold a separate copy of the state.
 The simulator has no authentication of its own. It listens on loopback
 by default, does not send CORS headers, and should only be reachable
 from the tests that own it.
+
+### Shared scenarios
+
+The SDKs and the CLI test common API behavior against this one server.
+`with-scenario.rb` runs one test command against a server of its own,
+loaded with a scenario from `scenarios/`; each language still makes its
+own SDK or CLI calls and asserts its own results:
+
+```bash
+ruby with-scenario.rb --scenario folder-list --out "$OUT" -- go test ./cmd -run TestFolders_ListFor_WithPreviews
+```
+
+Run it with plain `ruby`, from any directory; the server always uses
+this directory's `Gemfile`, even when the caller runs under another
+project's `bundle exec`. The launcher:
+
+1. starts `FILES_MOCK_MODE=simulation bundle exec puma` on a free port
+   of `127.0.0.1` (never another interface), with a new random
+   `FILES_MOCK_INSTANCE` for this run that it gives to no one else until
+   the server is ready;
+2. waits for readiness (`--startup-timeout`, 60 seconds by default) and
+   requires simulation mode, contract version 3, the expected
+   `schema_sha256` (`--schema-sha256`, else `FILES_MOCK_SCHEMA_SHA256`,
+   else `lib/simulation/generation.json`) and this run's instance, from a
+   server process that is still running, checked before each attempt and
+   again after the answer;
+3. resets the server with the scenario's `reset` body;
+4. runs the command, in a process group of its own, without a shell and
+   with no standard input (`--consumer-timeout`, 900 seconds by default),
+   with the variables below;
+5. then, however the run ended (the command passed, failed or timed out,
+   an error, or `INT`, `TERM` or `HUP`), cleans up in this order: it stops
+   whatever is left of the command's process group, its descendants
+   included; saves the journal and runs the scenario's journal checks,
+   if the server was ready; stops the server's process group; and writes
+   `run.json`.
+
+Each process group is stopped with `TERM`, then, after `--settle-timeout`
+(15 seconds by default), `KILL` and the same wait again; only the
+launcher's two groups are signalled, and a process that left its group
+(with `setsid`, for example) is not stopped. A group counts as stopped
+only when the system reports it has no process left; a group it cannot
+show to be empty, for example because a check is refused, is recorded as
+unsettled. Saving the journal is best effort and bounded (2 seconds to
+connect, 30 to answer): a journal that cannot be read, is incomplete or
+dropped entries is recorded as missing evidence and never replaces the
+run's own outcome. After `INT`, `TERM` or `HUP`, the launcher still ends
+by that signal once it has cleaned up.
+
+The free port is released before the server binds it, so another service
+on `127.0.0.1` could bind it first. A `200` readiness answer that is not
+a JSON object, or that reports another instance, mode, contract version
+or schema, ends the run with `3` at once, as does the server exiting
+before it is ready: the launcher does not keep polling another service,
+and neither the reset, the command nor a journal request reaches it. The
+instance only tells the launcher's own server apart; it is not
+authentication, and it is not hidden from other processes of the same
+user.
+
+| Variable | Value |
+| -------- | ----- |
+| `FILES_MOCK_SERVER_URL` | `http://127.0.0.1:PORT`, the only address the test may call |
+| `FILES_MOCK_SERVER_HOST`, `FILES_MOCK_SERVER_PORT` | The same address in parts |
+| `FILES_MOCK_API_KEY` | A placeholder key for this run: `filesmock` followed by the letters and digits of `RUN_ID`, with its `.`, `_` and `-` dropped. It holds only letters and digits, because SDKs such as Python accept nothing else. Never a real credential |
+| `FILES_MOCK_RUN_ID` | `--run-id`, or a new UTC time and random suffix |
+| `FILES_MOCK_INSTANCE`, `FILES_MOCK_SCHEMA_SHA256` | The running server's `instance` (the one this run chose) and schema SHA-256 |
+| `FILES_MOCK_SCENARIO`, `FILES_MOCK_SCENARIO_FILE` | The scenario's name and its JSON file, from which a test reads what to expect |
+| `FILES_MOCK_OUT` | The `--out` directory |
+
+`--out` must be a directory without an earlier `journal.json`. It
+receives `ready.json`, `reset.json`, `journal.json`, `server.log` and
+`run.json`. `run.json` records the run ID and placeholder key; the server
+(`url`, `instance`, `schema_sha256`, `contract_version`, `log`,
+`process_group`); the command (`argv`, `status`, `timed_out`,
+`process_group`); the journal (`complete`, `dropped`, `entries`) and each
+journal check's result; `setup_error`; `interrupted` (the signal, such as
+`SIGTERM`, or the error that ended the run, else `null`);
+`missing_evidence`; and `unsettled_process_groups` (`server`, `consumer`
+or both). The exit status is the command's when it failed (`124` when it
+timed out, `127` when it could not be started); `3` when the server could
+not start, was not ready, reported another schema or instance (such as
+another service answering its port) or refused the scenario (the command
+is then not run); `4` when the command passed but evidence is missing or a journal check failed; `5` when everything else passed but
+a process group is unsettled; `2` for a usage error; and `0` otherwise.
+
+A scenario is a JSON object with a `name`, a `description`, the `reset`
+body, and what its tests need in order to check their own results.
+`journal_checks` names checks the launcher runs on the journal; they see
+only what the server received and never stand in for a test's own
+assertions. Parallel runs each get their own server, port and run ID.
+
+`folder-list` holds the folder `shared-folder-list` with five child
+folders. Its `children` are in listing order and `per_page` is the page
+size its tests should ask for; the children are folders, so a listing
+with `with_previews` is the same. Its check, `folders.list cursor
+chain`, follows the listings of `shared-folder-list` in order (by the
+journal's cursor SHA-256s): each traversal starts without a cursor and
+continues with exactly the cursor its previous page returned, a new
+traversal starts only after the one before it reached its last page, and
+the last traversal must reach its last page. Several complete traversals
+pass, so a test should finish every traversal it starts.
+
+A shared scenario adds coverage; it does not replace a language's own
+tests. The SDKs keep their existing tests, for example Python's malformed,
+empty, repeated and cyclic cursor, list-context and early-stop tests and
+the CLI's folder preview test. Once a target's CI job provisions this
+server from the same schema, its own test entry points (Python's
+`tasks.py`, the CLI's `test.sh`) run the shared scenario as a required
+test, never one that is normally skipped.
 
 ### Not yet simulated
 

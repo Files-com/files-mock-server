@@ -151,6 +151,33 @@ class ProcessTest < Minitest::Test
     server&.stop
   end
 
+  # with-scenario.rb recognizes the server it started by the instance it gives it, so readiness must report
+  # exactly that instance, a server started without one must still choose its own, and a malformed one must
+  # stop startup.
+  def test_instance_setting_is_validated_at_startup_and_reported_by_readiness
+    status, output = ServerProcess.run_to_exit({ "FILES_MOCK_MODE" => "simulation", "FILES_MOCK_INSTANCE" => "5F0C3A9E8D7B" })
+    refute status.success?
+    assert_includes output, "FILES_MOCK_INSTANCE"
+    refute_includes output, "Listening on"
+
+    named = ServerProcess.start({ "FILES_MOCK_MODE" => "simulation", "FILES_MOCK_INSTANCE" => "5f0c3a9e8d7b" })
+    unnamed = ServerProcess.start({ "FILES_MOCK_MODE" => "simulation" })
+    assert_equal([ 200, "5f0c3a9e8d7b" ], named.json("GET", "/__files_mock/v1/ready").then { |code, ready| [ code, ready["instance"] ] })
+    instance = unnamed.json("GET", "/__files_mock/v1/ready").last["instance"]
+    assert_match(/\A[0-9a-f]{12}\z/, instance)
+    refute_equal "5f0c3a9e8d7b", instance
+
+    # Cursor tokens carry the instance, so a cursor from the named server is still its own.
+    [ named, unnamed ].each { |server| assert_equal 200, server.request("POST", "/__files_mock/v1/reset", FIXTURES).code.to_i }
+    cursor = named.request("GET", "/api/rest/v1/users?per_page=2")["X-Files-Cursor"]
+    refute_nil cursor
+    assert_equal 200, named.request("GET", "/api/rest/v1/users?per_page=2&cursor=#{cursor}").code.to_i
+    assert_equal 422, unnamed.request("GET", "/api/rest/v1/users?per_page=2&cursor=#{cursor}").code.to_i
+  ensure
+    named&.stop
+    unnamed&.stop
+  end
+
   # Behind a TLS bind, upload and download URLs use https and the address the request arrived on.
   def test_a_tls_bind_issues_https_transfer_urls
     directory = Dir.mktmpdir

@@ -140,13 +140,16 @@ module FilesMockServer
       # Returns [ one page of the folder's files and folders in path order, cursor for the next page
       # or nil ]. A cursor continues after the last entry its page returned, so entries created during
       # a traversal appear on later pages when they sort after it, entries deleted before they are
-      # reached are skipped, and no entry is returned twice. The last page names no cursor.
-      def list(state, folder, per_page, cursor)
+      # reached are skipped, and no entry is returned twice. The last page names no cursor. With
+      # folders_only, a page that would hold a file is refused before a cursor is issued for it.
+      def list(state, folder, per_page, cursor, folders_only: false)
         per_page = page_size(per_page)
         after = continuation(state, cursor, folder, per_page) unless cursor.nil? || cursor == ""
         entries = children(state, folder).sort_by { |record| sort_key(record) }
         entries = entries.drop_while { |record| (sort_key(record) <=> after) <= 0 } if after
         page = entries.first(per_page)
+        raise Error.not_supported("with_previews is simulated only for a page of folders; file previews are not simulated") if folders_only && !page.all?(Folder)
+
         [ page, (issue_cursor(state, folder, per_page, sort_key(page.last)) if entries.size > per_page) ]
       end
 

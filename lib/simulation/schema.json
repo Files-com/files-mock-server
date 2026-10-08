@@ -14206,6 +14206,10 @@
               "type": "boolean",
               "required": false
             },
+            "s3_kms_key_id": {
+              "type": "string",
+              "required": false
+            },
             "s3_region": {
               "type": "string",
               "required": false
@@ -14612,6 +14616,10 @@
               "type": "boolean",
               "required": false
             },
+            "s3_kms_key_id": {
+              "type": "string",
+              "required": false
+            },
             "s3_region": {
               "type": "string",
               "required": false
@@ -14766,6 +14774,9 @@
           "type": "string"
         },
         "s3_region": {
+          "type": "string"
+        },
+        "s3_kms_key_id": {
           "type": "string"
         },
         "aws_access_key": {

@@ -16,9 +16,11 @@ module FilesMockServer
     params do
       requires :name, type: String
       optional :workspace_id, type: Integer
-      requires :public_certificate, type: String
-      requires :private_key, type: String
+      optional :public_certificate, type: String
+      optional :private_key, type: String
       optional :private_key_password, type: String
+      optional :pkcs12, type: String
+      optional :pkcs12_password, type: String
     end
     post "/api/rest/v1/as2_stations" do
       status 201
@@ -39,6 +41,8 @@ module FilesMockServer
       optional :public_certificate, type: String
       optional :private_key, type: String
       optional :private_key_password, type: String
+      optional :pkcs12, type: String
+      optional :pkcs12_password, type: String
     end
     patch "/api/rest/v1/as2_stations/:id" do
       status 200

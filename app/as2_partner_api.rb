@@ -25,7 +25,9 @@ module FilesMockServer
       requires :as2_station_id, type: Integer
       requires :name, type: String
       requires :uri, type: String
-      requires :public_certificate, type: String
+      optional :public_certificate, type: String
+      optional :pkcs12, type: String
+      optional :pkcs12_password, type: String
     end
     post "/api/rest/v1/as2_partners" do
       status 201
@@ -53,6 +55,8 @@ module FilesMockServer
       optional :name, type: String
       optional :uri, type: String
       optional :public_certificate, type: String
+      optional :pkcs12, type: String
+      optional :pkcs12_password, type: String
     end
     patch "/api/rest/v1/as2_partners/:id" do
       status 200

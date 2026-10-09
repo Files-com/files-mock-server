@@ -3170,7 +3170,15 @@
             },
             "public_certificate": {
               "type": "string",
-              "required": true
+              "required": false
+            },
+            "pkcs12": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12_password": {
+              "type": "string",
+              "required": false
             }
           }
         },
@@ -3241,6 +3249,14 @@
               "required": false
             },
             "public_certificate": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12_password": {
               "type": "string",
               "required": false
             }
@@ -3402,13 +3418,21 @@
             },
             "public_certificate": {
               "type": "string",
-              "required": true
+              "required": false
             },
             "private_key": {
               "type": "string",
-              "required": true
+              "required": false
             },
             "private_key_password": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12_password": {
               "type": "string",
               "required": false
             }
@@ -3437,6 +3461,14 @@
               "required": false
             },
             "private_key_password": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12": {
+              "type": "string",
+              "required": false
+            },
+            "pkcs12_password": {
               "type": "string",
               "required": false
             }

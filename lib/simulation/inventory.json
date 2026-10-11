@@ -1,12 +1,12 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "a9878e8727beeb925a66a3faec6d47dda5d61f74086777030227e2f921ca1bda",
+  "swagger_sha256": "a47ef3f4081da32c13951596062c75e198a7f02d5c86876d9bfb7edccc6db878",
   "models": 145,
-  "operations": 396,
+  "operations": 397,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 28,
+    "gap": 29,
     "path-record": 3,
     "real-only": 5,
     "record": 318,
@@ -1456,6 +1456,17 @@
       "shape": "path-keyed",
       "disposition": "specialized",
       "simulator_operation": "files.zip_list"
+    },
+    {
+      "model": "File",
+      "method": "begin_delete",
+      "operation_id": "FileActionBeginDelete",
+      "verb": "POST",
+      "path": "/file_actions/delete/{path}",
+      "shape": "path-keyed",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "A path-keyed resource other than files and folders, which the simulator does not model"
     },
     {
       "model": "File",

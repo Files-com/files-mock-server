@@ -44,6 +44,15 @@ module FilesMockServer
 
     params do
       requires :path, type: String
+      optional :recursive, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/delete/:path" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :path, type: String
       requires :destination, type: String
       optional :copy_behaviors, type: Boolean
       optional :structure, type: Boolean

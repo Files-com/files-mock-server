@@ -1,7 +1,7 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "a9481338acfda0341cc0e5462976de9c3ce01cccad3ad349392dace0064975f8",
+  "swagger_sha256": "c58f2a5128d55009b0315a95a42261996f685deba2f39d0063a39d1085118944",
   "models": 145,
   "operations": 397,
   "dispositions": {

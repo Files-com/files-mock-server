@@ -7041,6 +7041,10 @@
           "type": "int64",
           "format": "int64"
         },
+        "activity_notification_batch_id": {
+          "type": "int64",
+          "format": "int64"
+        },
         "workspace_id": {
           "type": "int64",
           "format": "int64"
@@ -8745,6 +8749,10 @@
               "type": "string",
               "required": null
             },
+            "require_complete_metadata_capture": {
+              "type": "boolean",
+              "required": null
+            },
             "workspace_id": {
               "type": "int64",
               "format": "int32",
@@ -8780,6 +8788,10 @@
             },
             "title": {
               "type": "string",
+              "required": null
+            },
+            "require_complete_metadata_capture": {
+              "type": "boolean",
               "required": null
             },
             "workspace_id": {
@@ -8825,6 +8837,9 @@
         },
         "title": {
           "type": "string"
+        },
+        "require_complete_metadata_capture": {
+          "type": "boolean"
         },
         "form_layout": {
           "type": "array(int64)"
@@ -19821,6 +19836,10 @@
               "format": "int32",
               "required": false
             },
+            "file_activity_events_enabled": {
+              "type": "boolean",
+              "required": false
+            },
             "username_display": {
               "type": "string",
               "required": false
@@ -20647,6 +20666,9 @@
           "type": "boolean"
         },
         "disable_notifications": {
+          "type": "boolean"
+        },
+        "file_activity_events_enabled": {
           "type": "boolean"
         },
         "disable_password_reset": {

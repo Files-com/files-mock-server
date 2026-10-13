@@ -20153,6 +20153,10 @@
               "type": "boolean",
               "required": false
             },
+            "child_site_folder_admins_can_see_parent_site_directory": {
+              "type": "boolean",
+              "required": false
+            },
             "bundle_recipient_blacklist_free_email_domains": {
               "type": "boolean",
               "required": false
@@ -20578,6 +20582,9 @@
           "type": "boolean"
         },
         "calculate_file_checksums_sha256": {
+          "type": "boolean"
+        },
+        "child_site_folder_admins_can_see_parent_site_directory": {
           "type": "boolean"
         },
         "uploads_via_email_authentication": {

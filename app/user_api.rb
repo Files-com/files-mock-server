@@ -14,6 +14,7 @@ module FilesMockServer
       optional :filter_lteq, type: Hash
       optional :ids, type: String
       optional :include_parent_site_users, type: Boolean
+      optional :include_default_workspace_users, type: Boolean
       optional :search, type: String
     end
     get "/api/rest/v1/users" do

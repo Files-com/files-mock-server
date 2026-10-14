@@ -10,6 +10,7 @@ module FilesMockServer
       optional :filter_prefix, type: Hash
       optional :ids, type: String
       optional :include_parent_site_groups, type: Boolean
+      optional :include_default_workspace_groups, type: Boolean
     end
     get "/api/rest/v1/groups" do
       status 200

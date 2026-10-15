@@ -8,8 +8,8 @@
   "schema_sha256": "9e25dee8317a3d939b817568879dfa7d3c8d65d10189ac934158d4f0d3e74277",
   "simulator_version": "1.0",
   "generator": {
-    "commit": "05ba029fc05aa20771ab66dd233cc3c725e4e92d",
-    "tree": "442ad4302fac1c04175862e6e0c18bb5bec50f6e",
+    "commit": "fc403f8289ef0a7fa1c25815832bc49c819843ad",
+    "tree": "b7d28a234e5529eb9886da953ec30a6a0bb9fe2d",
     "clean": true
   },
   "command": "ruby files-sdk-generator.rb --target mock-server --file swagger_doc-production.json"

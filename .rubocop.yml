@@ -40,23 +40,9 @@ Layout/RescueEnsureAlignment:
 Layout/SpaceInsideArrayLiteralBrackets:
   EnforcedStyle: space
 
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-Lint/AmbiguousOperator:
-  Enabled: false
-
-Lint/AssignmentInCondition:
-  Enabled: false
-
-Lint/FormatParameterMismatch:
-  Enabled: false
-
-Lint/IneffectiveAccessModifier:
-  Enabled: false
-
-Lint/UriEscapeUnescape:
-  Enabled: false
+# Disabled by default since RuboCop 1.76; this server kept it enabled.
+Lint/ShadowingOuterLocalVariable:
+  Enabled: true
 
 Metrics/AbcSize:
   Enabled: false
@@ -88,9 +74,6 @@ Naming/MethodParameterName:
   Enabled: false
 
 Naming/PredicatePrefix:
-  Enabled: false
-
-Security/YAMLLoad:
   Enabled: false
 
 Style/AccessModifierDeclarations:

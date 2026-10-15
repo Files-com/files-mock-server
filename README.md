@@ -1987,8 +1987,9 @@ example responses for them.
 
 ## Checking This Server
 
-`./test.sh` checks the server's code with its own RuboCop and runs the
-server's own tests. The tests start real servers on free loopback ports, and
+`./test.sh` checks the server's code with its own RuboCop (`./lint.sh`, which
+also fails when RuboCop finds no files to check) and runs the server's own
+tests. The tests start real servers on free loopback ports, and
 neither step modifies any files. Run `bundle install` first, or run
 `./test.sh true` to install dependencies and then test.
 

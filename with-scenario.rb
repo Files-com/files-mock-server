@@ -249,6 +249,8 @@ class ScenarioRun
       if response&.code == "200"
         ready = check_ready(response.body)
         check_server
+        raise SetupError, "the server was not ready within #{@opts[:startup]} s; see #{log_path}" if clock >= deadline
+
         return ready
       end
       sleep 0.2
@@ -531,10 +533,12 @@ class ScenarioRun
   def say(message) = warn("with-scenario: #{message}")
 end
 
-begin
-  exit ScenarioRun.new(ScenarioRun.parse(ARGV)).run
-rescue ScenarioRun::UsageError => e
-  warn "with-scenario: #{e.message}"
-  warn ScenarioRun::USAGE
-  exit 2
+if $PROGRAM_NAME == __FILE__
+  begin
+    exit ScenarioRun.new(ScenarioRun.parse(ARGV)).run
+  rescue ScenarioRun::UsageError => e
+    warn "with-scenario: #{e.message}"
+    warn ScenarioRun::USAGE
+    exit 2
+  end
 end

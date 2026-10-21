@@ -14,5 +14,10 @@ if FilesMockServer.mode == "simulation"
 else
   require 'files-mock-server'
 
-  run FilesMockServer::API
+  map "/__files_mock/download" do
+    run ->(_env) { [ 200, { "content-type" => "application/octet-stream" }, [ "\x00\xffmock file\n".b ] ] }
+  end
+  map "/" do
+    run FilesMockServer::API
+  end
 end

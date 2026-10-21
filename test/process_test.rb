@@ -22,6 +22,13 @@ class ProcessTest < Minitest::Test
     assert_equal 200, status
     refute_equal server.json("GET", "/api/rest/v1/automations/1").last, authoring_schema
     assert_equal "404", server.request("GET", "/__files_mock/v1/ready").code
+
+    file = server.json("GET", "/api/rest/v1/files/file-path").last
+    assert_equal "#{server.url}/__files_mock/download", file.fetch("download_uri")
+    download = server.request("GET", URI(file.fetch("download_uri")).request_uri)
+    assert_equal [ "200", "application/octet-stream" ], [ download.code, download["content-type"] ]
+    assert_equal "\x00\xffmock file\n".b, download.body.b
+    assert_equal download.body.bytesize, file.fetch("size")
   ensure
     server&.stop
   end

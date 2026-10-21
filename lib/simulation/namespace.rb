@@ -40,13 +40,15 @@ module FilesMockServer
         @instance = instance
       end
 
-      # The name a request's path gives, after checking it: "/" names the root where `root` allows it.
+      # The name a request's path gives, after checking it: "/" names the root where `root` allows it,
+      # and so does the empty path where `empty_root` allows it too (only the api_scenarios profile's
+      # root listing, Files#list_folder, does).
       # `route` also applies the API's request-path rules (GeneralHelpers#path) to a route's path:
       # :folder on the folders endpoints, which check every name of it, and :file on any other route,
       # which checks the names above the last. It is nil for a path no route names, such as a
       # fixture's, a destination or a ZIP selection, which those rules do not read.
-      def request_path(path, root: false, route: nil)
-        return ROOT if root && path == ROOT_SPELLING
+      def request_path(path, root: false, route: nil, empty_root: false)
+        return ROOT if root && (path == ROOT_SPELLING || (empty_root && path == ROOT))
 
         check_path(path, route)
         path

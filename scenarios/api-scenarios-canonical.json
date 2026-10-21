@@ -1,0 +1,13 @@
+{
+  "name": "api-scenarios-canonical",
+  "description": "An empty simulator under the api_scenarios profile, for a client that runs the generator's shared API scenarios (verification/scenarios/api.json, SHA-256 below): the root's metadata lookup is refused 422 bad-request/request-params-required and GET /folders/ lists the root, as that definition's namespace.open expects. Each scenario makes everything it uses in a folder of its own and deletes it. A client whose upload parts are larger than 1 MiB needs FILES_MOCK_MAX_BODY_BYTES at least as large.",
+  "reset": {
+    "profile": {
+      "api_scenarios": {
+        "format": "files-api-scenarios",
+        "format_version": 1,
+        "definition_sha256": "5d9b8eff0ef0724a68a458db77dc85784bb7d24436f104b98c2a2fe67086bbe0"
+      }
+    }
+  }
+}

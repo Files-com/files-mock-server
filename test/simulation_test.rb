@@ -439,4 +439,71 @@ class SimulationTest < Minitest::Test
       assert_raises(ArgumentError, value) { FilesMockServer::Simulation::Limits.from_env("FILES_MOCK_MAX_RECORDS" => value) }
     end
   end
+
+  # The shared API scenarios definition (verification/scenarios/api.json) a reset's profile may name.
+  API_SCENARIOS = { "format" => "files-api-scenarios", "format_version" => 1, "definition_sha256" => "5d9b8eff0ef0724a68a458db77dc85784bb7d24436f104b98c2a2fe67086bbe0" }.freeze
+
+  # Only the exact identity is accepted: its three members with their own JSON types. Anything else is
+  # refused like any invalid control request, and the epoch, profile and records stay as they were.
+  def test_a_reset_refuses_any_api_scenarios_identity_but_the_exact_one_without_changing_the_state
+    reset({ "users" => [ { "username" => "kept" } ] })
+    before = control("GET", "ready").json.values_at("epoch", "profile", "state")
+    digest = API_SCENARIOS["definition_sha256"]
+    {
+      "a string" => "files-api-scenarios",
+      "null" => nil,
+      "no digest" => API_SCENARIOS.except("definition_sha256"),
+      "an extra member" => API_SCENARIOS.merge("profile" => "canonical"),
+      "another format" => API_SCENARIOS.merge("format" => "files-api-scenario"),
+      "a version of 1.0" => API_SCENARIOS.merge("format_version" => 1.0),
+      "a version string" => API_SCENARIOS.merge("format_version" => "1"),
+      "another version" => API_SCENARIOS.merge("format_version" => 2),
+      "an uppercase digest" => API_SCENARIOS.merge("definition_sha256" => digest.upcase),
+      "a short digest" => API_SCENARIOS.merge("definition_sha256" => digest[0, 63]),
+      "a digest and a newline" => API_SCENARIOS.merge("definition_sha256" => "#{digest}\n"),
+      "a number for a digest" => API_SCENARIOS.merge("definition_sha256" => 5),
+    }.each do |name, identity|
+      response = control("POST", "reset", { "profile" => { "api_scenarios" => identity } })
+      assert_equal [ 400, "simulation/invalid-control-request" ], [ response.status, response.json["type"] ], name
+    end
+    assert_equal before, control("GET", "ready").json.values_at("epoch", "profile", "state")
+    assert_equal %w[kept], usernames
+  end
+
+  # An api_scenarios reset answers with this instance and the exact identity it chose, whatever order the
+  # request gave its members in, and the epoch's journal and readiness name the same until the next reset.
+  def test_an_api_scenarios_epoch_names_its_instance_and_identity_in_reset_journal_and_readiness
+    before = control("GET", "ready").json
+    entered = control("POST", "reset", { "profile" => { "api_scenarios" => API_SCENARIOS.to_a.reverse.to_h } })
+    epoch = before["epoch"] + 1
+    assert_equal [ 200, { "epoch" => epoch, "instance" => before["instance"], "api_scenarios" => API_SCENARIOS } ], [ entered.status, entered.json ]
+
+    assert_equal 200, api("GET", "/users").status
+    journal = control("GET", "journal").json
+    assert_equal [ epoch, before["instance"], API_SCENARIOS, %w[users.list] ],
+                 [ journal["epoch"], journal["instance"], journal["api_scenarios"], journal["entries"].map { |entry| entry["operation"] } ]
+    ready = control("GET", "ready").json
+    assert_equal [ epoch, before["instance"], API_SCENARIOS, 3 ], [ ready["epoch"], ready["instance"], ready.dig("profile", "api_scenarios"), ready["contract_version"] ]
+    assert_includes ready["profile_basis"].keys, "api_scenarios"
+    assert_equal before["profile_choices"], ready["profile_choices"]
+  end
+
+  # The default profile's control answers are the same before an api_scenarios epoch and after the {}
+  # reset that ends it: a reset answers with its epoch alone, readiness has the default profile and
+  # basis, and the journal and fault reports keep their keys and values. {} chooses the default profile
+  # and an empty state; it does not restore whatever came before.
+  def test_a_default_reset_answers_alike_before_and_after_an_api_scenarios_epoch
+    reset_with = ->(body) { control("POST", "reset", body).then { |response| [ response.status, response.json ] } }
+    reports = -> { %w[ready journal faults].map { |name| control("GET", name).json.except("epoch") } }
+    assert_equal [ 200, { "epoch" => 1 } ], reset_with.call({})
+    default = reports.call
+    ready, journal, = default
+    refute ready["profile"].key?("api_scenarios")
+    assert_equal FilesMockServer::Simulation::Profile::BASIS, ready["profile_basis"]
+    assert_equal %w[entries limit dropped complete upload_parts], journal.keys
+
+    assert_equal 200, reset_with.call({ "profile" => { "api_scenarios" => API_SCENARIOS } }).first
+    assert_equal [ 200, { "epoch" => 3 } ], reset_with.call({})
+    assert_equal default, reports.call
+  end
 end

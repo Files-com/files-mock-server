@@ -344,7 +344,13 @@ module FilesMockServer
       end
 
       def metadata(state, path, params, accept_language: nil)
-        name, = accepted("files.metadata", path, params, root: true)
+        # Under the api_scenarios profile the root has no metadata: its lookup, with the path empty or "/"
+        # (as %2F arrives), is refused as a missing path, as the shared definition's namespace.open expects.
+        # Under any other profile the root is found as a folder, as before.
+        api_scenarios = state.profile.api_scenarios?
+        raise Error.request_params_required("path") if api_scenarios && [ Namespace::ROOT, Namespace::ROOT_SPELLING ].include?(path)
+
+        name, = accepted("files.metadata", path, params, root: !api_scenarios)
         @namespace.find(state, name) || raise(Error.not_found_for(accept_language))
       end
 
@@ -529,7 +535,7 @@ module FilesMockServer
       # with_previews asks for each file's preview, which is not simulated, so a page that would hold a
       # file is refused; folders have no previews, so a page of folders is the same either way.
       def list_folder(state, path, params)
-        name, values = accepted("folders.list", path, params, root: true)
+        name, values = accepted("folders.list", path, params, root: true, empty_root: state.profile.api_scenarios?)
         folder = @namespace.find(state, name) || raise(Error.not_found)
         raise Error.not_supported("Listing a file's path is not simulated; list its folder") unless folder.is_a?(Namespace::Folder)
 
@@ -1178,7 +1184,7 @@ module FilesMockServer
       # A required parameter left out fails the API's parameter validation, whose errors it answers as a
       # bare bad-request with Grape's message ("destination is missing"). Grape checks only that the
       # parameter is there: one sent null or empty passes, and the operation judges it after the path.
-      def accepted(operation, path, params, root: false)
+      def accepted(operation, path, params, root: false, empty_root: false)
         supplied = params.slice(*declared_names(operation)).compact
         unmodeled = supplied.keys - MODELED_PARAMS.fetch(operation) { ZIP_PARAMS.fetch(operation) } - OPTIONAL_PARAMS.fetch(operation, [])
         raise Error.not_supported("Simulation does not support these parameters: #{unmodeled.join(", ")}") if unmodeled.any?
@@ -1191,7 +1197,7 @@ module FilesMockServer
         raise Error.bad_request("#{missing.first} is missing") if missing
         raise Error.bad_request("path must match the path in the URL") if values.key?("path") && values["path"] != path
 
-        name = @namespace.request_path(path, root:, route: FOLDER_ROUTES.include?(operation) ? :folder : :file) unless path.nil?
+        name = @namespace.request_path(path, root:, empty_root:, route: FOLDER_ROUTES.include?(operation) ? :folder : :file) unless path.nil?
         [ name, values ]
       end
 

@@ -9,7 +9,7 @@ module FilesMockServer
       # {"status": "pending", "file_migration_id"} and is applied only when its FileMigration is
       # polled to completion (see Files#migration).
       FILE_ACTIONS = %w[completed pending].freeze
-      FIELDS = %w[file_actions upload download signed_urls list_cursors site_policy].freeze
+      FIELDS = %w[file_actions upload download signed_urls list_cursors site_policy api_scenarios].freeze
       # list_cursors: "opaque" cursors are hexadecimal; "special-characters" cursors start with
       # SPECIAL_CURSOR, which holds a space, +, &, =, a percent escape and #, so a client that
       # re-encodes or decodes a cursor more than once sends one the list refuses (422 invalid-cursor).
@@ -39,6 +39,19 @@ module FilesMockServer
       # presigned storage URL is. Its lifetime is advertised, not enforced; expired_url faults expire URLs.
       SIGNED_URL_FIELDS = %w[lifetime].freeze
       MAX_URL_LIFETIME = 604_800
+      # api_scenarios: the shared API scenarios definition (verification/scenarios/api.json) a reset serves,
+      # named exactly by its format, format version and SHA-256. Chosen, the root answers as that definition's
+      # namespace.open expects: a metadata lookup with an empty, "/" or "%2F" path is refused 422
+      # bad-request/request-params-required, and GET /folders/ lists the root as GET /folders/%2F does.
+      # Unchosen (the default), the root answers as older simulators did; it is never inferred.
+      API_SCENARIOS_FIELDS = %w[format format_version definition_sha256].freeze
+      API_SCENARIOS_FORMAT = "files-api-scenarios".freeze
+      API_SCENARIOS_FORMAT_VERSION = 1
+      # Where the api_scenarios choice comes from, reported beside BASIS only while a reset has chosen it.
+      API_SCENARIOS_BASIS = {
+        "api_scenarios" => "the root contract the shared API scenarios definition (verification/scenarios/api.json, namespace.open) states for the clients that run it: " \
+                           "a local simulator contract, not evidence of what a deployed Files.com site answers",
+      }.freeze
 
       # How uploads advertise and check their parts.
       #
@@ -250,7 +263,7 @@ module FilesMockServer
         end
       end
 
-      attr_reader :file_actions, :upload, :download, :url_lifetime, :list_cursors, :site_policy
+      attr_reader :file_actions, :upload, :download, :url_lifetime, :list_cursors, :site_policy, :api_scenarios
 
       # context: { part_fields:, default_partsize:, max_body_bytes: } from the server's schema and limits.
       def self.default(**)
@@ -270,6 +283,7 @@ module FilesMockServer
         @download = Download.new(spec.fetch("download", {}))
         @site_policy = SitePolicy.new(spec.fetch("site_policy", {}))
         @url_lifetime = signed_urls(spec["signed_urls"]) if spec.key?("signed_urls")
+        @api_scenarios = validated_api_scenarios(spec["api_scenarios"]) if spec.key?("api_scenarios")
         @list_cursors = spec.fetch("list_cursors", "opaque")
         raise Error.invalid_control("profile.list_cursors must be one of: #{LIST_CURSORS.join(", ")}") unless LIST_CURSORS.include?(@list_cursors)
         raise Error.invalid_control("profile.signed_urls cannot be combined with part_offset_query: a presigned storage URL signs its whole query") if @url_lifetime && @upload.part_offset_query
@@ -277,6 +291,16 @@ module FilesMockServer
 
       def signed_urls?
         !@url_lifetime.nil?
+      end
+
+      def api_scenarios?
+        !@api_scenarios.nil?
+      end
+
+      # What readiness reports as profile_basis: BASIS itself, with the api_scenarios basis beside it only
+      # while a reset has chosen that contract.
+      def basis
+        api_scenarios? ? BASIS.merge(API_SCENARIOS_BASIS) : BASIS
       end
 
       # The cursor a list sends for a handle, and the handle a received cursor carries (nil when it
@@ -293,7 +317,7 @@ module FilesMockServer
 
       def as_json
         { "file_actions" => @file_actions, "upload" => @upload.as_json, "download" => @download.as_json, "signed_urls" => ({ "lifetime" => @url_lifetime } if signed_urls?),
-          "list_cursors" => @list_cursors, "site_policy" => @site_policy.as_json }.compact
+          "list_cursors" => @list_cursors, "site_policy" => @site_policy.as_json, "api_scenarios" => @api_scenarios }.compact
       end
 
       private
@@ -308,6 +332,19 @@ module FilesMockServer
         raise Error.invalid_control("profile.signed_urls.lifetime must be a whole number of seconds from 1 to #{MAX_URL_LIFETIME}") unless lifetime.is_a?(Integer) && lifetime.between?(1, MAX_URL_LIFETIME)
 
         lifetime
+      end
+
+      # The exact identity, with its own JSON types (1.0 is not 1), its members in one order and frozen, so
+      # nothing later changes what the reset chose. Anything else is refused before the reset changes any state.
+      def validated_api_scenarios(spec)
+        raise Error.invalid_control("profile.api_scenarios must be a JSON object with exactly #{API_SCENARIOS_FIELDS.join(", ")}") unless spec.is_a?(Hash) && spec.keys.sort == API_SCENARIOS_FIELDS.sort
+        raise Error.invalid_control("profile.api_scenarios.format must be #{API_SCENARIOS_FORMAT.inspect}") unless spec["format"] == API_SCENARIOS_FORMAT
+        raise Error.invalid_control("profile.api_scenarios.format_version must be the integer #{API_SCENARIOS_FORMAT_VERSION}") unless spec["format_version"].is_a?(Integer) && spec["format_version"] == API_SCENARIOS_FORMAT_VERSION
+
+        digest = spec["definition_sha256"]
+        raise Error.invalid_control("profile.api_scenarios.definition_sha256 must be 64 lowercase hexadecimal characters") unless digest.is_a?(String) && digest.match?(/\A[0-9a-f]{64}\z/)
+
+        { "format" => API_SCENARIOS_FORMAT, "format_version" => API_SCENARIOS_FORMAT_VERSION, "definition_sha256" => digest.dup.freeze }.freeze
       end
     end
   end

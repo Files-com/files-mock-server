@@ -233,6 +233,57 @@ class FoldersTest < Minitest::Test
     assert_equal [ 400, "profile.site_policy.always_mkdir_parents must be true or false" ], [ invalid.status, invalid.json["error"] ]
   end
 
+  # The shared API scenarios definition (verification/scenarios/api.json) a reset's profile may name.
+  API_SCENARIOS = { "format" => "files-api-scenarios", "format_version" => 1, "definition_sha256" => "5d9b8eff0ef0724a68a458db77dc85784bb7d24436f104b98c2a2fe67086bbe0" }.freeze
+
+  # The default profile answers for the root as older simulators did: its metadata is a folder with an
+  # empty path, "/" lists it, and an empty path is not simulated. An api_scenarios epoch answers as the
+  # shared definition expects: every spelling of the root's metadata lookup is refused as a missing path,
+  # and every spelling lists the root. A {} reset afterwards answers as the default again.
+  def test_the_root_answers_as_the_profile_of_its_epoch_chose
+    spellings = { "%2F" => "%2F", "//" => "/", "(empty)" => "" }
+    root_answers = lambda do
+      assert_equal 201, api("POST", "/folders/owned", {}).status
+      spellings.each_with_object({}) do |(name, suffix), answers|
+        metadata = api("GET", "/file_actions/metadata/#{suffix}")
+        answers["metadata #{name}"] = metadata.status == 200 ? [ 200, *metadata.json.values_at("path", "type") ] : [ metadata.status, metadata.json["type"] ]
+        listing = api("GET", "/folders/#{suffix}")
+        answers["list #{name}"] = listing.status == 200 ? [ 200, listing.json.map { |entry| entry["path"] } ] : [ listing.status, listing.json["type"] ]
+      end
+    end
+
+    default = root_answers.call
+    not_simulated = [ 501, "simulation/not-supported" ]
+    assert_equal({ "metadata %2F" => [ 200, "", "directory" ], "metadata //" => [ 200, "", "directory" ], "metadata (empty)" => not_simulated,
+                   "list %2F" => [ 200, %w[owned] ], "list //" => [ 200, %w[owned] ], "list (empty)" => not_simulated }, default
+    )
+
+    assert_equal 200, control("POST", "reset", { "profile" => { "api_scenarios" => API_SCENARIOS } }).status
+    refused = [ 422, "bad-request/request-params-required" ]
+    assert_equal({ "metadata %2F" => refused, "metadata //" => refused, "metadata (empty)" => refused,
+                   "list %2F" => [ 200, %w[owned] ], "list //" => [ 200, %w[owned] ], "list (empty)" => [ 200, %w[owned] ] }, root_answers.call
+    )
+    assert_equal([ 200, "owned", "directory" ], api("GET", "/file_actions/metadata/owned").then { |response| [ response.status, *response.json.values_at("path", "type") ] })
+
+    assert_equal([ 200, { "epoch" => 2 } ], control("POST", "reset", {}).then { |response| [ response.status, response.json ] })
+    assert_equal default, root_answers.call
+  end
+
+  # Only those two reads take an empty path, and only under the api_scenarios profile: every other file
+  # and folder operation's empty path stays not simulated, whichever profile the epoch chose.
+  def test_no_other_operation_takes_an_empty_path_under_either_profile
+    empty_paths = [ [ "POST", "/folders/", {} ], [ "GET", "/files/", nil ], [ "DELETE", "/files/", nil ], [ "PATCH", "/files/", {} ], [ "POST", "/files/", {} ],
+                    [ "POST", "/file_actions/begin_upload/", {} ], [ "POST", "/file_actions/copy/", { "destination" => "copied" } ],
+                    [ "POST", "/file_actions/move/", { "destination" => "moved" } ] ]
+    [ {}, { "profile" => { "api_scenarios" => API_SCENARIOS } } ].each do |body|
+      assert_equal 200, control("POST", "reset", body).status
+      empty_paths.each do |method, path, params|
+        response = api(method, path, params)
+        assert_equal [ 501, "simulation/not-supported" ], [ response.status, response.json["type"] ], "#{method} #{path} after a reset with #{body.inspect}"
+      end
+    end
+  end
+
   private
 
   def stat(path, to: app)

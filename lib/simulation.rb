@@ -47,6 +47,9 @@ module FilesMockServer
     TRANSFER_PREFIX = "/__files_mock/transfer".freeze
     # Operations with dedicated owners. "fault_match" names the request values a fault rule may match
     # on. Record resources generated into schema.json add their own operations (see App#record_operations).
+    # "empty_path" marks the two reads that answer for the root with an empty {path} while the reset's profile
+    # chooses api_scenarios (GET /file_actions/metadata/ refuses it, GET /folders/ lists it); otherwise, and
+    # for every other operation, an empty {path} is not routed, as before (App#route).
     OPERATIONS = [
       { "id" => "users.create", "method" => "POST", "path" => "/users", "fault_match" => "username" },
       { "id" => "users.list", "method" => "GET", "path" => "/users", "fault_match" => "continuation" },
@@ -56,10 +59,10 @@ module FilesMockServer
       { "id" => "files.begin_upload", "method" => "POST", "path" => "/file_actions/begin_upload/{path}", "fault_match" => "path" },
       { "id" => "files.finalize_upload", "method" => "POST", "path" => "/files/{path}", "fault_match" => "path" },
       { "id" => "files.download", "method" => "GET", "path" => "/files/{path}", "fault_match" => "path" },
-      { "id" => "files.metadata", "method" => "GET", "path" => "/file_actions/metadata/{path}", "fault_match" => "path" },
+      { "id" => "files.metadata", "method" => "GET", "path" => "/file_actions/metadata/{path}", "fault_match" => "path", "empty_path" => true },
       { "id" => "files.delete", "method" => "DELETE", "path" => "/files/{path}", "fault_match" => "path" },
       { "id" => "folders.create", "method" => "POST", "path" => "/folders/{path}", "fault_match" => "path" },
-      { "id" => "folders.list", "method" => "GET", "path" => "/folders/{path}", "fault_match" => %w[path continuation] },
+      { "id" => "folders.list", "method" => "GET", "path" => "/folders/{path}", "fault_match" => %w[path continuation], "empty_path" => true },
       { "id" => "files.copy", "method" => "POST", "path" => "/file_actions/copy/{path}", "fault_match" => "path" },
       { "id" => "files.move", "method" => "POST", "path" => "/file_actions/move/{path}", "fault_match" => "path" },
       { "id" => "file_migrations.find", "method" => "GET", "path" => "/file_migrations/{id}", "fault_match" => "id" },
@@ -97,7 +100,9 @@ module FilesMockServer
     # request path, slashes included; the others take one segment.
     def self.routes(prefix, operations)
       operations.map do |operation|
-        pattern = Regexp.escape(prefix + operation["path"]).gsub(/\\\{(\w+)\\\}/) { "(?<#{$1}>#{$1 == "path" ? ".+" : "[^/]+"})" }
+        # An "empty_path" operation's {path} may also be empty; App#route routes that only under the api_scenarios profile.
+        path = operation["empty_path"] ? ".*" : ".+"
+        pattern = Regexp.escape(prefix + operation["path"]).gsub(/\\\{(\w+)\\\}/) { "(?<#{$1}>#{$1 == "path" ? path : "[^/]+"})" }
         [ operation["method"], Regexp.new("\\A#{pattern}\\z"), operation["id"] ]
       end
     end
@@ -254,8 +259,8 @@ module FilesMockServer
       # the response is delivered does so after the step (Delivery).
       def simulate(request)
         arrived = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-        arrival_epoch, request_status = @lock.synchronize { [ @state.epoch, @state.profile.download.request_status? ] }
-        operation, target = route(request, arrival_epoch, request_status:)
+        arrival_epoch, request_status, empty_root = @lock.synchronize { [ @state.epoch, @state.profile.download.request_status?, @state.profile.api_scenarios? ] }
+        operation, target = route(request, arrival_epoch, request_status:, empty_root:)
         begin
           input = read_input(request, operation, target, arrival_epoch) if operation
         rescue Error => e
@@ -451,10 +456,13 @@ module FilesMockServer
       # UTF-8), a file path decoded exactly once, and the upload or version number in a handle this
       # simulator issued in the epoch the request arrived in (else nil), with the download URL token
       # itself. The download status route counts only while the reset's profile selects request_status.
-      def route(request, epoch, request_status: false)
+      def route(request, epoch, request_status: false, empty_root: false)
         @routes.each do |method, pattern, operation|
           next unless method == request.request_method && (match = pattern.match(request.path_info))
           next if operation == DOWNLOAD_STATUS_OPERATION["id"] && !request_status
+          # An empty {path} names the root only while the arrival epoch's profile chooses api_scenarios;
+          # otherwise the request goes on to the next route, as when {path} had to hold a name.
+          next if !empty_root && match.names.include?("path") && match["path"].empty?
 
           return [ operation, route_target(match.named_captures, epoch, string_id: @string_id_operations.include?(operation)) ]
         end
@@ -850,7 +858,7 @@ module FilesMockServer
         case "#{request.request_method} #{request.path_info.delete_prefix(CONTROL_PREFIX)}"
         when "GET /ready" then json(200, @lock.synchronize { readiness })
         when "POST /reset" then reset(control_body(request))
-        when "GET /journal" then json(200, @lock.synchronize { { "epoch" => @state.epoch }.merge(@state.journal.as_json, "upload_parts" => upload_parts) })
+        when "GET /journal" then json(200, @lock.synchronize { { "epoch" => @state.epoch }.merge(@state.journal.as_json, "upload_parts" => upload_parts).merge(api_scenarios_echo(@state)) })
         when "POST /faults" then add_fault(control_body(request))
         when "GET /faults" then json(200, @lock.synchronize { { "epoch" => @state.epoch }.merge(@state.faults.as_json, "holding" => @holding) })
         when "GET /inventory" then inventory
@@ -902,8 +910,15 @@ module FilesMockServer
           loaded.update(@files.load_fixtures(state, fixtures.fetch("folders", []), fixtures.fetch("files", []), replacing: @state).slice(*fixtures.keys))
           @files.discard(@state)
           @state = state
-          json(200, { "epoch" => state.epoch }.merge(loaded))
+          json(200, { "epoch" => state.epoch }.merge(loaded).merge(api_scenarios_echo(state)))
         end
+      end
+
+      # What a reset or journal response adds while the state's profile chooses api_scenarios: this
+      # instance and the exact identity the epoch serves, so a runner can join both to readiness. Under
+      # any other profile it adds nothing, and those responses keep their keys and values.
+      def api_scenarios_echo(state)
+        state.profile.api_scenarios? ? { "instance" => @instance, "api_scenarios" => state.profile.api_scenarios } : {}
       end
 
       # Returns the ids a resource's fixtures got (their number, for a resource without ids), or true for a singleton.
@@ -980,7 +995,7 @@ module FilesMockServer
           "fixture_responses" => @responses.keys,
           "scoped_lists" => @scoped.transform_values { |_, rule| rule.slice("resource", "field", "scope", "values", "ancestors").compact },
           "profile" => @state.profile.as_json,
-          "profile_basis" => Profile::BASIS,
+          "profile_basis" => @state.profile.basis,
           "profile_choices" => { "file_actions" => Profile::FILE_ACTIONS, "list_cursors" => Profile::LIST_CURSORS,
                                  "upload" => { "mode" => Profile::Upload::MODES, "upload_target_class" => Profile::Upload::TARGET_CLASSES },
                                  "download" => { "identity" => Profile::Download::IDENTITIES, "request_status" => { "status" => Profile::Download::REQUEST_STATUSES, "header_on_failure" => [ false, true ] },

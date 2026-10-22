@@ -65,6 +65,7 @@
 # process group, each within the settle timeout, and writes run.json. A signal
 # that interrupted it still ends it as that signal, after this cleanup.
 
+require "bundler"
 require "fileutils"
 require "json"
 require "net/http"
@@ -83,11 +84,8 @@ class ScenarioRun
   RUN_ID = /\A[A-Za-z0-9._-]{1,64}\z/
   SHA256 = /\A[0-9a-f]{64}\z/
   SIGNALS = %w[INT TERM HUP].freeze
-  # Unsetting RUBYOPT and the Bundler variables keeps a caller's own bundle
-  # (such as `bundle exec` in the generator checkout) out of the mock's.
   SERVER_ENV = {
-    "FILES_MOCK_MODE" => "simulation", "BUNDLE_GEMFILE" => File.join(MOCK_DIR, "Gemfile"),
-    "RUBYOPT" => nil, "BUNDLER_SETUP" => nil, "BUNDLE_BIN_PATH" => nil, "BUNDLER_VERSION" => nil
+    "FILES_MOCK_MODE" => "simulation", "BUNDLE_GEMFILE" => File.join(MOCK_DIR, "Gemfile")
   }.freeze
   USAGE = "usage: ruby with-scenario.rb --scenario NAME_OR_PATH --out DIR [--run-id ID] [--schema-sha256 HEX]\n         " \
           "[--startup-timeout S] [--consumer-timeout S] [--settle-timeout S] -- COMMAND [ARGS...]"
@@ -226,11 +224,15 @@ class ScenarioRun
     # This run's instance, given only to the server until it is ready.
     @instance = SecureRandom.hex(6)
     say("starting the simulation server on #{HOST}:#{@port}")
-    @server_pid = Process.spawn(SERVER_ENV.merge("FILES_MOCK_INSTANCE" => @instance),
-                                "bundle", "exec", "puma", "-b", "tcp://#{HOST}:#{@port}",
-                                chdir: MOCK_DIR, pgroup: true, in: File::NULL,
-                                [ :out, :err ] => [ log_path, "a" ]
-    )
+    # Like setup.sh and test.sh, restore the caller's original gem paths before selecting the mock's bundle.
+    # The consumer keeps its own environment; only the server uses this bundle boundary.
+    Bundler.with_original_env do
+      @server_pid = Process.spawn(SERVER_ENV.merge("FILES_MOCK_INSTANCE" => @instance),
+                                  "bundle", "exec", "puma", "-b", "tcp://#{HOST}:#{@port}",
+                                  chdir: MOCK_DIR, pgroup: true, in: File::NULL,
+                                  [ :out, :err ] => [ log_path, "a" ]
+      )
+    end
     @server_pgid = own_group(@server_pid)
   rescue SystemCallError => e
     raise SetupError, "could not start the server: #{e.message}"

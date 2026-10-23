@@ -58,7 +58,8 @@ module FilesMockServer
       # upload of known size, omitted so that the parts the upload received are used.
       FINALIZE_ETAGS = %w[listed omitted].freeze
       # Advertised size of each upload part, lowered to FILES_MOCK_MAX_BODY_BYTES when that is smaller.
-      # Clients may send parts of any size; only the body limit bounds them.
+      # Clients may send parts of any size; only the body limit bounds them, unless the upload profile's
+      # fixed_part_length binds the parts of an upload begun with its size (#fixed_length).
       PARTSIZE = 5 * 1024 * 1024
       # Advertised to clients by the legacy upload profile: send one part at a time, in order, and send
       # a failed part again. The legacy profile does not enforce the order or one-at-a-time sending;
@@ -246,12 +247,17 @@ module FilesMockServer
       # Binds the length of a part body read in full when no Content-Length gave it earlier (a
       # chunked body), under a serial or parallel profile. A body the transport cut short is never
       # read in full, so its prefix binds nothing. Raises when the part was first sent with another
-      # length: a part keeps its intended length through faults, retries and renewed URLs.
+      # length: a part keeps its intended length through faults, retries and renewed URLs. A length
+      # fixed_part_length gave the part is checked first, before anything binds, so a refused send
+      # leaves the part free for its own bytes.
       def bind_length(state, received)
         upload = received.upload
         return unless upload && !state.profile.upload.legacy?
 
         length = received.bytes.bytesize
+        fixed = fixed_length(upload, state.profile.upload, received.part)
+        raise Error.profile_violation(422, wrong_length(received.part, fixed, "holds", length)) if fixed && length != fixed
+
         intended = upload.lengths[received.part] ||= length
         raise Error.profile_violation(409, changed_length(received.part, intended, length)) unless intended == length
       end
@@ -277,6 +283,10 @@ module FilesMockServer
 
         limits = state.profile.upload.variable_part_limits
         raise Error.profile_violation(422, "Part #{number} holds #{received.bytes.bytesize} bytes; the upload profile allows at most #{limits["max_part_bytes"]} per part") if limits && received.bytes.bytesize > limits["max_part_bytes"]
+
+        # Whatever way the body arrived, a part fixed_part_length bound is stored only with its length.
+        fixed = fixed_length(upload, state.profile.upload, number)
+        raise Error.profile_violation(422, wrong_length(number, fixed, "holds", received.bytes.bytesize)) if fixed && received.bytes.bytesize != fixed
 
         @bytes_in_use -= received.reserved - received.bytes.bytesize
         received.stored = true
@@ -769,6 +779,9 @@ module FilesMockServer
         scheduled = upload.offsets[number]
         raise Error.profile_violation(409, "Part #{number} was first sent with part_offset #{scheduled.inspect}; every send of a part must name the same offset") if upload.sends[number].positive? && scheduled != offset
 
+        fixed = fixed_length(upload, profile, number)
+        raise Error.profile_violation(422, wrong_length(number, fixed, "declares", declared)) if fixed && declared && declared != fixed
+
         intended = upload.lengths[number]
         raise Error.profile_violation(409, changed_length(number, intended, declared)) if intended && declared && intended != declared
 
@@ -780,20 +793,42 @@ module FilesMockServer
         "Part #{number} was first sent with #{intended} bytes and is now sent with #{length}; every send of a part must carry the same bytes"
       end
 
+      # verb: "declares" for a Content-Length checked before the body is read, "holds" for a body read in full.
+      def wrong_length(number, fixed, verb, length)
+        "Part #{number} must hold exactly #{fixed} bytes, as the Content-Length in its headers says; this send #{verb} #{length}"
+      end
+
       # The partsize a part is issued with: the upload's binding when begin_upload already issued it,
       # else the profile's (partsize, changed for later parts by partsize_changes).
       def planned_partsize(upload, profile, number)
         upload.plan[number] || profile.partsize_for(number)
       end
 
+      # The exact length part `number` of an upload must have under a fixed_part_length profile: its
+      # planned partsize, less whatever of it lies past the size begin_upload was given, so the part
+      # that reaches that size holds the remainder, and an empty file's part, or any part that starts at
+      # or past the size, holds 0. The parts before it count with their planned partsizes, so every
+      # issue and every send of the part finds the same length. nil for an upload begun without size,
+      # which binds no length, and under any other profile.
+      def fixed_length(upload, profile, number)
+        return unless profile.fixed_part_length && upload.declared_size
+
+        offset = (1...number).sum { |earlier| planned_partsize(upload, profile, earlier) }
+        (upload.declared_size - offset).clamp(0, planned_partsize(upload, profile, number))
+      end
+
       # Checks the parts a finalize joins, in part number order, against the upload profile: their
       # sizes against variable_part_limits when the profile sets them, and their offsets when any part
       # named one. The partsize a part was issued with is a hint, as next_partsize is: a part of
       # another size is not refused for it, and its body is bounded like any other
-      # (FILES_MOCK_MAX_BODY_BYTES, FILES_MOCK_MAX_TRANSFER_BYTES).
+      # (FILES_MOCK_MAX_BODY_BYTES, FILES_MOCK_MAX_TRANSFER_BYTES). Under fixed_part_length, whose
+      # parts were each stored with their exact length, the parts of an upload begun with its size
+      # must together hold that size, so leaving out a bound part does not publish a shorter file.
       def check_profile_parts(profile, upload, numbers)
         parts = numbers.map { |number| upload.parts.fetch(number) }
         sizes = parts.map { |part| part.bytes.bytesize }
+        raise Error.profile_violation(422, "The parts hold #{sizes.sum} bytes; this upload was begun with size #{upload.declared_size}, and its parts must hold all of it") if profile.fixed_part_length && upload.declared_size && sizes.sum != upload.declared_size
+
         if (limits = profile.variable_part_limits)
           raise Error.profile_violation(422, "The upload has #{parts.size} parts; the upload profile allows at most #{limits["max_parts"]}") if parts.size > limits["max_parts"]
           raise Error.profile_violation(422, "The parts hold #{sizes.sum} bytes; the upload profile allows at most #{limits["max_file_bytes"]} per file") if sizes.sum > limits["max_file_bytes"]
@@ -1327,7 +1362,10 @@ module FilesMockServer
 
       # A part's FileUploadPart. Under a serial or parallel profile its partsize is bound the first time
       # it is issued, so renewing its URL never changes it, and next_partsize announces the partsize of
-      # the next part, which partsize_changes may make different.
+      # the next part, which partsize_changes may make different. Under fixed_part_length a part of an
+      # upload begun with its size also carries headers giving the Content-Length it must have
+      # (#fixed_length), the same each time it is issued; the profile requires the schema to declare
+      # FileUploadPart headers, so the field slice keeps them.
       def upload_part(state, upload, number, origin)
         ref = Token.encode("upload", @instance, state.epoch, upload.id)
         upload_profile = state.profile.upload
@@ -1335,6 +1373,8 @@ module FilesMockServer
         unless upload_profile.legacy?
           profile["partsize"] = upload.plan[number] ||= upload_profile.partsize_for(number)
           profile["next_partsize"] = planned_partsize(upload, upload_profile, number + 1)
+          length = fixed_length(upload, upload_profile, number)
+          profile["headers"] = { "Content-Length" => length.to_s } if length
         end
         profile.merge(
           "ref" => ref, "part_number" => number, "next_partsize" => profile.fetch("next_partsize", profile["partsize"]),

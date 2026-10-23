@@ -63,19 +63,32 @@ module FilesMockServer
       # Retry-After, as a throttling provider does). Both check retry_parts, part sizes against
       # variable_part_limits when it is set, and part offsets when part_offset_query is on.
       # partsize and partsize_changes only choose the partsize and next_partsize parts are issued
-      # with: hints a client may follow, never sizes its parts must hold.
+      # with: hints a client may follow, never sizes its parts must hold, unless fixed_part_length
+      # binds them.
+      #
+      # fixed_part_length (false by default; serial or parallel only) binds each part of an upload
+      # begun with its size to one exact length, given in the part's FileUploadPart headers as
+      # Content-Length, the header's existing public use: its partsize, the remainder for the part
+      # that reaches the size, and 0 for an empty file's part or a part that starts at or past the
+      # size. Every issue of a part (a batch, a renewal) gives the same length. A send of another
+      # length is refused, before its body is read when it declares a Content-Length and once it is
+      # read when it does not, and a finalize must join all the bytes the upload was begun with. An
+      # upload begun without size has no length to bind, so its parts are sized as above. This is
+      # simulation policy, not a claim that a deployed storage provider fixes part lengths.
       class Upload
         MODES = %w[legacy serial parallel].freeze
-        FIELDS = %w[mode retry_parts partsize partsize_changes variable_part_limits part_offset_query upload_target_class max_concurrent_parts throttle_retry_after].freeze
+        FIELDS = %w[mode retry_parts partsize partsize_changes variable_part_limits part_offset_query upload_target_class max_concurrent_parts throttle_retry_after
+                    fixed_part_length].freeze
         LIMITS = %w[min_nonfinal_bytes max_part_bytes max_parts max_file_bytes].freeze
         TARGET_CLASSES = %w[s3 agent_fiw generic].freeze
         # FileUploadPart fields a setting is advertised in; the server's schema must declare them.
-        ADVERTISED_IN = { "variable_part_limits" => "variable_part_limits", "part_offset_query" => "part_offset_query", "upload_target_class" => "upload_target_class" }.freeze
+        ADVERTISED_IN = { "variable_part_limits" => "variable_part_limits", "part_offset_query" => "part_offset_query", "upload_target_class" => "upload_target_class",
+                          "fixed_part_length" => "headers" }.freeze
         MAX_CONCURRENT_PARTS = 64
         MAX_RETRY_AFTER = 60
 
         attr_reader :mode, :retry_parts, :partsize, :partsize_changes, :variable_part_limits, :part_offset_query, :upload_target_class, :max_concurrent_parts,
-                    :throttle_retry_after
+                    :throttle_retry_after, :fixed_part_length
 
         def initialize(spec, part_fields:, default_partsize:, max_body_bytes:)
           raise Error.invalid_control("profile.upload must be a JSON object") unless spec.is_a?(Hash)
@@ -97,6 +110,9 @@ module FilesMockServer
 
           @partsize_changes = changes(spec.fetch("partsize_changes", []), max_body_bytes)
           @variable_part_limits = limits(spec["variable_part_limits"], max_body_bytes) if spec.key?("variable_part_limits")
+          @fixed_part_length = boolean(spec, "fixed_part_length", false)
+          raise Error.invalid_control("profile.upload.fixed_part_length cannot be combined with variable_part_limits, which lets a client size its own parts") if @fixed_part_length && @variable_part_limits
+
           @upload_target_class = spec["upload_target_class"]
           raise Error.invalid_control("profile.upload.upload_target_class must be one of: #{TARGET_CLASSES.join(", ")}") unless @upload_target_class.nil? || TARGET_CLASSES.include?(@upload_target_class)
 
@@ -126,7 +142,8 @@ module FilesMockServer
         def as_json
           { "mode" => @mode, "retry_parts" => @retry_parts, "partsize" => @partsize, "partsize_changes" => (@partsize_changes unless @partsize_changes.empty?),
             "variable_part_limits" => @variable_part_limits, "part_offset_query" => @part_offset_query,
-            "upload_target_class" => @upload_target_class, "max_concurrent_parts" => @max_concurrent_parts, "throttle_retry_after" => (@throttle_retry_after if @max_concurrent_parts) }.compact
+            "upload_target_class" => @upload_target_class, "max_concurrent_parts" => @max_concurrent_parts, "throttle_retry_after" => (@throttle_retry_after if @max_concurrent_parts),
+            "fixed_part_length" => (true if @fixed_part_length) }.compact
         end
 
         private

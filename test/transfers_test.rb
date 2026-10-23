@@ -110,6 +110,28 @@ class TransfersTest < Minitest::Test
     assert_equal [ [ 300, Digest::SHA256.hexdigest(SOURCE), 201 ], [ 0, Digest::SHA256.hexdigest(""), 201 ] ], journaled("files.finalize_upload", %w[bytes sha256 status])
   end
 
+  # The canonical preset, on this server's own schema, fixes the part lengths of an upload begun with
+  # its size: a local file of 6 MiB + 3 bytes goes as the 5 MiB partsize and its 1 MiB + 3 byte
+  # remainder, two real parts, where a client sizing its own 8 MiB parts would send one. That whole-file
+  # part is refused before its body is read, holding nothing.
+  def test_the_canonical_preset_fixes_the_part_lengths_of_a_sized_upload
+    @app = new_app(max_body_bytes: 8 * 1024 * 1024, max_transfer_bytes: 32 * 1024 * 1024)
+    preset = JSON.parse(File.read(File.join(APP_ROOT, "scenarios/api-scenarios-canonical.json")))
+    assert_equal 200, control("POST", "reset", preset.fetch("reset")).status
+    size = (6 * 1024 * 1024) + 3
+    content = Random.new(16).bytes(size)
+    batch = begin_batch("large.bin", { "size" => size, "parts" => 2 })
+    assert_equal([ [ 1, 5_242_880, { "Content-Length" => "5242880" } ], [ 2, 5_242_880, { "Content-Length" => "1048579" } ] ],
+                 batch.map { |part| part.values_at("part_number", "partsize", "headers") }
+                )
+    whole = transfer("PUT", batch[0]["upload_uri"], content)
+    assert_equal [ 422, "simulation/profile-violation", 0 ], [ whole.status, whole.json["type"], bytes_in_use ]
+    etags = batch.zip([ content.byteslice(0, 5_242_880), content.byteslice(5_242_880..) ]).map { |part, bytes| { "etag" => put_part(part, bytes), "part" => part["part_number"] } }
+    assert_equal 201, api("POST", "/files/large.bin", { "action" => "end", "ref" => batch.first["ref"], "etags" => etags, "size" => size }).status
+    assert_equal content, download("large.bin").body
+    assert_equal [ [ 1, 422 ], [ 1, 200 ], [ 2, 200 ] ], journaled("transfers.upload_part", %w[part status])
+  end
+
   def test_finalizing_without_etags_refuses_what_the_received_parts_cannot_establish
     assert_equal 201, upload("kept.bin", [ "original" ]).status
     unsent = begin_upload("kept.bin")

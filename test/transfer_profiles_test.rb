@@ -264,6 +264,79 @@ class TransferProfilesTest < Minitest::Test
     assert_equal [ 422, "Part 1 declares 7 bytes; the upload profile allows at most 6 per part" ], [ large.status, large.json["error"] ]
   end
 
+  # fixed_part_length binds each part of an upload begun with its size to one length, which the part's
+  # headers give as Content-Length: its partsize (partsize_changes included), the remainder for the
+  # part that reaches the size, and 0 past it, the same in a batch and a renewal. A send of another
+  # length is refused before its body is read when it declares the length, and once it is read when it
+  # does not; neither binds anything, so the part's own bytes still go, through a retry too. A
+  # finalize must join every byte the upload was begun with.
+  def test_fixed_part_length_binds_each_part_of_a_sized_upload_to_its_grant
+    @app = headers_app
+    profile_reset({ "upload" => { "mode" => "serial", "partsize" => 4, "partsize_changes" => [ { "from_part" => 3, "partsize" => 6 } ], "fixed_part_length" => true } })
+    assert_equal true, control("GET", "ready").json.dig("profile", "upload", "fixed_part_length")
+    lengths = ->(parts) { parts.map { |part| [ part["part_number"], part["partsize"], part["headers"] ] } }
+    batch = api("POST", "/file_actions/begin_upload/f.bin", { "size" => 13, "parts" => 5 }).json
+    assert_equal [ [ 1, 4, { "Content-Length" => "4" } ], [ 2, 4, { "Content-Length" => "4" } ], [ 3, 6, { "Content-Length" => "5" } ], [ 4, 6, { "Content-Length" => "0" } ],
+                   [ 5, 6, { "Content-Length" => "0" } ] ], lengths.call(batch)
+    renewed = api("POST", "/file_actions/begin_upload/f.bin", { "ref" => batch.first["ref"], "part" => 2, "parts" => 2 }).json
+    assert_equal lengths.call(batch[1, 2]), lengths.call(renewed), "a renewal issues each part with the length it had"
+
+    declared = transfer("PUT", batch[0]["upload_uri"], "abc")
+    assert_equal [ 422, "simulation/profile-violation", "Part 1 must hold exactly 4 bytes, as the Content-Length in its headers says; this send declares 3" ],
+                 [ declared.status, *declared.json.values_at("type", "error") ]
+    unsized = raw_request(app, "PUT", URI(batch[0]["upload_uri"]).request_uri, UnsizedBody.new("abcde"), {})
+    assert_equal [ 422, "Part 1 must hold exactly 4 bytes, as the Content-Length in its headers says; this send holds 5" ], [ unsized.status, unsized.json["error"] ]
+    etags = [ { "etag" => put_part(batch[0], "abcd"), "part" => 1 } ]
+    add_fault({ "operation" => "transfers.upload_part", "match" => { "part" => 2 }, "status" => 503 })
+    assert_equal 503, transfer("PUT", renewed[0]["upload_uri"], "efgh").status
+    etags << { "etag" => put_part(renewed[0], "efgh"), "part" => 2 }
+    short = api("POST", "/files/f.bin", { "action" => "end", "ref" => batch.first["ref"], "etags" => etags })
+    assert_equal [ 422, "The parts hold 8 bytes; this upload was begun with size 13, and its parts must hold all of it" ], [ short.status, short.json["error"] ]
+    etags << { "etag" => put_part(renewed[1], "ijklm"), "part" => 3 }
+    past_end = transfer("PUT", batch[3]["upload_uri"], "n")
+    assert_equal [ 422, "Part 4 must hold exactly 0 bytes, as the Content-Length in its headers says; this send declares 1" ], [ past_end.status, past_end.json["error"] ]
+    assert_equal 201, api("POST", "/files/f.bin", { "action" => "end", "ref" => batch.first["ref"], "etags" => etags, "size" => 13 }).status
+    assert_equal "abcdefghijklm", download("f.bin").body
+    assert_equal [ [ 1, 422 ], [ 1, 422 ], [ 1, 200 ], [ 2, 503 ], [ 2, 200 ], [ 3, 200 ], [ 4, 422 ] ], journaled("transfers.upload_part", %w[part status])
+  end
+
+  # Only a size gives lengths to bind: an upload begun without one carries no headers and keeps parts
+  # of any length, while an empty file's one part is bound to 0 bytes. Without the setting, in serial or
+  # legacy mode, nothing is bound. The setting needs serial or parallel mode, a schema that declares
+  # FileUploadPart headers, and no variable_part_limits.
+  def test_fixed_part_length_binds_nothing_without_a_size_and_only_where_it_is_chosen
+    @app = headers_app
+    profile_reset({ "upload" => { "mode" => "serial", "partsize" => 4, "fixed_part_length" => true } })
+    refute begin_upload("unsized.bin").key?("headers"), "an upload begun without size binds no length"
+    assert_equal 201, upload("any.bin", %w[abcdefg h]).status
+    assert_equal "abcdefgh", download("any.bin").body
+    empty = begin_upload("empty.bin", { "size" => 0 })
+    assert_equal({ "Content-Length" => "0" }, empty["headers"])
+    finalized = api("POST", "/files/empty.bin", { "action" => "end", "ref" => empty["ref"], "size" => 0, "etags" => [ { "etag" => put_part(empty, ""), "part" => 1 } ] })
+    assert_equal [ 201, "" ], [ finalized.status, download("empty.bin").body ]
+
+    [ { "mode" => "serial", "partsize" => 4 }, { "mode" => "legacy" } ].each do |unbound|
+      profile_reset({ "upload" => unbound })
+      refute begin_upload("f.bin", { "size" => 13 }).key?("headers"), unbound.inspect
+    end
+
+    @app = schema_app { |part_fields| part_fields | ADAPTIVE_PART_FIELDS | %w[headers] }
+    limits = { "min_nonfinal_bytes" => 3, "max_part_bytes" => 6, "max_parts" => 3, "max_file_bytes" => 12 }
+    {
+      { "mode" => "legacy", "fixed_part_length" => true } => "profile.upload settings other than mode need mode serial or parallel",
+      { "mode" => "serial", "fixed_part_length" => "yes" } => "profile.upload.fixed_part_length must be true or false",
+      { "mode" => "parallel", "fixed_part_length" => true, "variable_part_limits" => limits } =>
+        "profile.upload.fixed_part_length cannot be combined with variable_part_limits, which lets a client size its own parts",
+    }.each do |upload_profile, error|
+      refused = control("POST", "reset", { "profile" => { "upload" => upload_profile } })
+      assert_equal [ 400, error ], [ refused.status, refused.json["error"] ], upload_profile.inspect
+    end
+    @app = schema_app { |part_fields| part_fields - %w[headers] }
+    refused = control("POST", "reset", { "profile" => { "upload" => { "mode" => "serial", "fixed_part_length" => true } } })
+    assert_equal 400, refused.status
+    assert_match(/does not declare FileUploadPart headers/, refused.json["error"])
+  end
+
   def test_download_identity_follows_the_contract_under_its_profile
     upload("f.bin", [ "abc" ])
     legacy = api("GET", "/files/f.bin", { "with_download_identity" => true })
@@ -570,6 +643,12 @@ class TransferProfilesTest < Minitest::Test
   # the combined adaptive schema does, whichever schema this server was generated from.
   def adaptive_app
     schema_app { |part_fields| part_fields | ADAPTIVE_PART_FIELDS }
+  end
+
+  # A simulator whose schema declares FileUploadPart headers, the field fixed_part_length gives each
+  # part's length in, whichever schema this server was generated from.
+  def headers_app
+    schema_app { |part_fields| part_fields | %w[headers] }
   end
 
   # A simulator whose schema.json has the FileUploadPart fields the block returns, and with

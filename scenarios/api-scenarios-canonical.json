@@ -1,12 +1,16 @@
 {
   "name": "api-scenarios-canonical",
-  "description": "An empty simulator under the api_scenarios profile, for a client that runs the generator's shared API scenarios (verification/scenarios/api.json, SHA-256 below): the root's metadata lookup is refused 422 bad-request/request-params-required and GET /folders/ lists the root, as that definition's namespace.open expects. Each scenario makes everything it uses in a folder of its own and deletes it. A client whose upload parts are larger than 1 MiB needs FILES_MOCK_MAX_BODY_BYTES at least as large.",
+  "description": "An empty simulator under the api_scenarios profile, for a client that runs the generator's shared API scenarios (verification/scenarios/api.json, SHA-256 below): the root's metadata lookup is refused 422 bad-request/request-params-required and GET /folders/ lists the root, as that definition's namespace.open expects. Each scenario makes everything it uses in a folder of its own and deletes it. Uploads follow the serial upload profile with fixed_part_length: parts are admitted one at a time, in order, and each part of an upload begun with its size is granted, in its FileUploadPart headers, the exact Content-Length it must hold (the simulator's partsize, 5 MiB or FILES_MOCK_MAX_BODY_BYTES when that is smaller; the remainder for the last part; 0 for an empty file), and a part of another length is refused. With FILES_MOCK_MAX_BODY_BYTES of at least 5 MiB, a 6 MiB + 3 byte local file therefore goes as parts of 5,242,880 and 1,048,579 bytes. This is simulation policy for the grant's public headers field, not a claim about what deployed storage issues. An upload begun without size keeps parts the client sizes, so a client whose upload parts are larger than 1 MiB needs FILES_MOCK_MAX_BODY_BYTES at least as large.",
   "reset": {
     "profile": {
       "api_scenarios": {
         "format": "files-api-scenarios",
         "format_version": 1,
         "definition_sha256": "5d9b8eff0ef0724a68a458db77dc85784bb7d24436f104b98c2a2fe67086bbe0"
+      },
+      "upload": {
+        "mode": "serial",
+        "fixed_part_length": true
       }
     }
   }

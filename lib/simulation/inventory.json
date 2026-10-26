@@ -1,15 +1,15 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "210cb2cb2310e1a6af2a8c1352386b2c6a0cee82e25d30fd362c2cd1bc9fb70e",
+  "swagger_sha256": "620bd60cba56d9cb460f9cbe9526fa3faf817443d633838610f5b75161a6dd0e",
   "models": 145,
-  "operations": 398,
+  "operations": 399,
   "dispositions": {
     "fixture-response": 10,
     "gap": 30,
     "path-record": 3,
     "real-only": 5,
-    "record": 318,
+    "record": 319,
     "scoped-list": 8,
     "singleton": 2,
     "specialized": 22
@@ -275,6 +275,16 @@
       "shape": "collection",
       "disposition": "record",
       "simulator_operation": "as2_incoming_messages.list"
+    },
+    {
+      "model": "As2IncomingMessage",
+      "method": "find",
+      "operation_id": "GetAs2IncomingMessagesId",
+      "verb": "GET",
+      "path": "/as2_incoming_messages/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "as2_incoming_messages.find"
     },
     {
       "model": "As2IncomingMessage",

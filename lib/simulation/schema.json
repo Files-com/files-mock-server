@@ -2759,6 +2759,18 @@
               "required": false
             }
           }
+        },
+        "find": {
+          "operation_id": "GetAs2IncomingMessagesId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
         }
       },
       "properties": {

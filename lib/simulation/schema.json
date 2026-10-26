@@ -2766,6 +2766,10 @@
           "type": "int64",
           "format": "int64"
         },
+        "replayed_from_message_id": {
+          "type": "int64",
+          "format": "int64"
+        },
         "workspace_id": {
           "type": "int64",
           "format": "int64"

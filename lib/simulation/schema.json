@@ -19911,6 +19911,10 @@
               "type": "boolean",
               "required": false
             },
+            "enforce_parent_site_user_ip_restrictions": {
+              "type": "boolean",
+              "required": false
+            },
             "disallowed_countries": {
               "type": "string",
               "required": false
@@ -20500,6 +20504,9 @@
         },
         "allowed_ips": {
           "type": "string"
+        },
+        "enforce_parent_site_user_ip_restrictions": {
+          "type": "boolean"
         },
         "always_mkdir_parents": {
           "type": "boolean"

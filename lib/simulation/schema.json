@@ -277,10 +277,6 @@
           "format": "int32",
           "required": false
         },
-        "subscribe_to_newsletter": {
-          "type": "boolean",
-          "required": false
-        },
         "require_2fa": {
           "type": "string",
           "required": false,
@@ -669,10 +665,6 @@
         "sso_strategy_id": {
           "type": "int64",
           "format": "int32",
-          "required": false
-        },
-        "subscribe_to_newsletter": {
-          "type": "boolean",
           "required": false
         },
         "require_2fa": {
@@ -1282,7 +1274,6 @@
       "skip_welcome_screen",
       "ssl_required",
       "sso_strategy_id",
-      "subscribe_to_newsletter",
       "externally_managed",
       "tags",
       "time_zone",

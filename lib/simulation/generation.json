@@ -3,13 +3,13 @@
   "format_version": 1,
   "swagger": {
     "name": "swagger_doc-production.json",
-    "sha256": "469907133146a11b6b62c584c7bd4fce36f5d5fd0e94680181a1f20f0a9e72b9"
+    "sha256": "04f322c686a819d1188f49d7534efc2d3aba368d308f720871495c7962843848"
   },
-  "schema_sha256": "9e25dee8317a3d939b817568879dfa7d3c8d65d10189ac934158d4f0d3e74277",
+  "schema_sha256": "a19fcfa1833027f9a693e6ecc3abf56ce7ae7257ddd8980d69d23cbe3c35b970",
   "simulator_version": "1.0",
   "generator": {
-    "commit": "5ed6c73e9344776caf7c97f7736e86efe419b5ce",
-    "tree": "813e141b7878aec82689ba857fc63589859a9b9f",
+    "commit": "4960a6144314c7c1b84e9f4b8f330daaf944c64a",
+    "tree": "3521a5cc2ad154359b36577d2ec88a2f9aa16a2b",
     "clean": true
   },
   "command": "ruby files-sdk-generator.rb --target mock-server --file swagger_doc-production.json"

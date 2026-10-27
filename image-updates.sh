@@ -1,7 +1,7 @@
 #!/bin/sh
 # Security fixes the Docker image applies on top of its pinned base image, each pinned by version and SHA-256
 # (see README, "Docker Image Usage"):
-# - Debian 12's OpenSSL 3.0.22-1~deb12u1 (DLA-4795-1) for libssl3, libssl-dev and openssl, and libde265-0
+# - Debian 12's OpenSSL 3.0.22-1~deb12u2 (DLA-4859-1) for libssl3, libssl-dev and openssl, and libde265-0
 #   1.0.11-1+deb12u3 (DLA-4789-1), from Debian's security archive;
 # - json 2.19.9 (CVE-2026-54696), which replaces Ruby 3.4.11's default json 2.9.1 for Ruby run outside the bundle.
 #   The server keeps the json version its Gemfile.lock names.
@@ -15,9 +15,9 @@ set -eu
 
 # SHA-256, file name and HTTPS source of each update. The Debian files are the amd64 builds; installing without a
 # DIRECTORY takes the same versions for the image's own architecture, authenticated by Debian's signed archive.
-UPDATES='f0a8aa8429209e556c278a9936bbd5f7d2cdb9f7e4e23b1e43ed399217ba80c1 libssl3_3.0.22-1~deb12u1_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/libssl3_3.0.22-1~deb12u1_amd64.deb
-67033caa8a90696856c2967fbdae51e62b85878f055e01f03b0c732158c1682e libssl-dev_3.0.22-1~deb12u1_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/libssl-dev_3.0.22-1~deb12u1_amd64.deb
-6f43fb5e9f3ceb0e36c91d0a148282a8eaf174b441c17d3665b6ba049b33d2c2 openssl_3.0.22-1~deb12u1_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/openssl_3.0.22-1~deb12u1_amd64.deb
+UPDATES='cb4784740daa9b3b0eaea2b444bbefa686794afbbf3d678d238c1fd9875f2efd libssl3_3.0.22-1~deb12u2_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/libssl3_3.0.22-1~deb12u2_amd64.deb
+c5f948bf6cd6e8e6e8539364bed3280ff67bc2e058de484a1f6cce8d5afcc90e libssl-dev_3.0.22-1~deb12u2_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/libssl-dev_3.0.22-1~deb12u2_amd64.deb
+5cdf0b735b1c8a96ae0bf83ed328c83c2170f8320dedb035e98705b60b2d0cfe openssl_3.0.22-1~deb12u2_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/o/openssl/openssl_3.0.22-1~deb12u2_amd64.deb
 72c3edb400c3494974181e9ca75a11d859c715c9685c38fb251783c7c8841afe libde265-0_1.0.11-1+deb12u3_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/libd/libde265/libde265-0_1.0.11-1+deb12u3_amd64.deb
 9b9025b7cdddafa38d316eca0b2358488e42d417045c1b90d216a9fefe46b79a json-2.19.9.gem https://rubygems.org/downloads/json-2.19.9.gem'
 JSON_VERSION=2.19.9

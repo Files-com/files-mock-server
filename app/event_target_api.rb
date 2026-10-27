@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/event_targets" do
       status 200
-      [ { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "name" => "example", "target_type" => "webhook", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => { "url" => "https://example.com/files-events", "headers" => { "X-Example" => "value" }, "use_dedicated_ips" => false }, "delivery_policy" => { "max_attempts" => 3, "retry_delay_minutes" => [ 1, 10 ] }, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -24,7 +24,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/event_targets" do
       status 201
-      { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "name" => "example", "target_type" => "webhook", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => { "url" => "https://example.com/files-events", "headers" => { "X-Example" => "value" }, "use_dedicated_ips" => false }, "delivery_policy" => { "max_attempts" => 3, "retry_delay_minutes" => [ 1, 10 ] }, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -32,7 +32,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/event_targets/:id" do
       status 200
-      { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "name" => "example", "target_type" => "webhook", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => { "url" => "https://example.com/files-events", "headers" => { "X-Example" => "value" }, "use_dedicated_ips" => false }, "delivery_policy" => { "max_attempts" => 3, "retry_delay_minutes" => [ 1, 10 ] }, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -46,7 +46,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/event_targets/:id" do
       status 200
-      { "id" => 1, "name" => "example", "target_type" => "example", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => "example", "delivery_policy" => "example", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "name" => "example", "target_type" => "webhook", "workspace_id" => 1, "apply_to_all_workspaces" => true, "enabled" => true, "config" => { "url" => "https://example.com/files-events", "headers" => { "X-Example" => "value" }, "use_dedicated_ips" => false }, "delivery_policy" => { "max_attempts" => 3, "retry_delay_minutes" => [ 1, 10 ] }, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do

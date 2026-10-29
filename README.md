@@ -37,7 +37,7 @@ To run this server with Ruby ([Local Ruby Usage](#local-ruby-usage)):
 
 To run it in Docker ([Docker Image Usage](#docker-image-usage)), you need
 only Docker: the image brings its own Ruby (this directory's Dockerfile
-uses Ruby 3.4.11).
+uses Ruby 4.0.9).
 
 ## Generating This Server
 
@@ -107,8 +107,8 @@ The server in the image is this directory's, so its generation receipt
 (`lib/simulation/generation.json`) and its readiness report (below) say
 which schema it was generated from; check them before you rely on a run.
 
-The image starts from the official `ruby:3.4.11-bookworm` image (Ruby
-3.4.11 on Debian 12), pinned by its digest, and keeps that image's
+The image starts from the official `ruby:4.0.9-bookworm` image (Ruby
+4.0.9 on Debian 12), pinned by its digest, and keeps that image's
 RubyGems. It installs the Bundler that `Gemfile.lock` names (4.0.21), then
 exactly the locked gems, frozen: a `Gemfile` that disagrees with
 `Gemfile.lock` fails the build instead of changing the lock. The pin stops
@@ -120,7 +120,7 @@ Before the gems, the build applies the security fixes the pinned base does
 not have yet. `image-updates.sh` pins each one by version and SHA-256:
 Debian 12's OpenSSL 3.0.22 (`libssl3`, `libssl-dev`, `openssl`) and
 libde265 1.0.11-1+deb12u3 from Debian's security archive, and json 2.19.9
-from rubygems.org. json 2.19.9 replaces Ruby 3.4.11's default json 2.9.1
+from rubygems.org. json 2.19.9 replaces Ruby 4.0.9's default json 2.18.0
 (CVE-2026-54696), whose files the build removes, so Ruby run outside the
 bundle loads the fixed version; the server itself runs with the json
 `Gemfile.lock` names. When Debian replaces these package versions with

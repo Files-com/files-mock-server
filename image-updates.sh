@@ -3,7 +3,7 @@
 # (see README, "Docker Image Usage"):
 # - Debian 12's OpenSSL 3.0.22-1~deb12u2 (DLA-4859-1) for libssl3, libssl-dev and openssl, and libde265-0
 #   1.0.11-1+deb12u3 (DLA-4789-1), from Debian's security archive;
-# - json 2.19.9 (CVE-2026-54696), which replaces Ruby 3.4.11's default json 2.9.1 for Ruby run outside the bundle.
+# - json 2.19.9 (CVE-2026-54696), which replaces Ruby 4.0.9's default json 2.18.0 for Ruby run outside the bundle.
 #   The server keeps the json version its Gemfile.lock names.
 #
 #   sh image-updates.sh fetch DIRECTORY      downloads each file below into DIRECTORY and checks its SHA-256
@@ -21,7 +21,7 @@ c5f948bf6cd6e8e6e8539364bed3280ff67bc2e058de484a1f6cce8d5afcc90e libssl-dev_3.0.
 72c3edb400c3494974181e9ca75a11d859c715c9685c38fb251783c7c8841afe libde265-0_1.0.11-1+deb12u3_amd64.deb https://deb.debian.org/debian-security/pool/updates/main/libd/libde265/libde265-0_1.0.11-1+deb12u3_amd64.deb
 9b9025b7cdddafa38d316eca0b2358488e42d417045c1b90d216a9fefe46b79a json-2.19.9.gem https://rubygems.org/downloads/json-2.19.9.gem'
 JSON_VERSION=2.19.9
-DEFAULT_JSON=2.9.1
+DEFAULT_JSON=2.18.0
 
 fail() {
   echo "image-updates.sh: $*" >&2

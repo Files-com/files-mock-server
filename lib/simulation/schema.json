@@ -14318,6 +14318,10 @@
               ],
               "required": false
             },
+            "site_admin_access": {
+              "type": "boolean",
+              "required": false
+            },
             "sharepoint_client_id": {
               "type": "string",
               "required": false
@@ -14728,6 +14732,10 @@
               ],
               "required": false
             },
+            "site_admin_access": {
+              "type": "boolean",
+              "required": false
+            },
             "sharepoint_client_id": {
               "type": "string",
               "required": false
@@ -14892,6 +14900,16 @@
             "linode",
             "files_com"
           ]
+        },
+        "site_admin_access": {
+          "type": "boolean"
+        },
+        "effective_site_admin_access": {
+          "type": "boolean"
+        },
+        "user_id": {
+          "type": "int64",
+          "format": "int64"
         },
         "workspace_id": {
           "type": "int64",
@@ -19863,6 +19881,10 @@
               "type": "string",
               "required": false
             },
+            "integration_centric_remote_server_admin_access": {
+              "type": "string",
+              "required": false
+            },
             "session_expiry_minutes": {
               "type": "int64",
               "format": "int32",
@@ -20796,6 +20818,15 @@
         "immutable_files_set_at": {
           "type": "date-time",
           "format": "date-time"
+        },
+        "integration_centric_remote_server_admin_access": {
+          "type": "string",
+          "enum": [
+            "always_visible",
+            "never_visible",
+            "user_choice_default_visible",
+            "user_choice_default_personal"
+          ]
         },
         "include_password_in_welcome_email": {
           "type": "boolean"

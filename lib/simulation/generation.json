@@ -3,9 +3,9 @@
   "format_version": 1,
   "swagger": {
     "name": "swagger_doc-production.json",
-    "sha256": "9928f876df74de2a1ecb047ee907b295644085588b42b0190e2d81037f0dba3b"
+    "sha256": "8953466ec4d464e126ab8a839eb683cf53581b8f1306d4a2767343334f4c3d8e"
   },
-  "schema_sha256": "90085c97bc5dfaf99acfc9f717421e3830eb789cce4e6beb49bce5d27e16fa40",
+  "schema_sha256": "74acadf04407b423fdaa64d2d39a1d6c1c8d13eee20ec54e6e8d2d5918ba6148",
   "simulator_version": "1.0",
   "generator": {
     "commit": "9a67ebda7b7f42d9c2192a78db1c1bff0f4366e1",

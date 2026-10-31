@@ -8456,6 +8456,10 @@
           "type": "int64",
           "format": "int64"
         },
+        "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
         "event_type": {
           "type": "string",
           "enum": [

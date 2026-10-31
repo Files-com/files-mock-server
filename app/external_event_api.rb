@@ -14,7 +14,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/external_events" do
       status 200
-      [ { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" } ]
+      [ { "id" => 1, "workspace_id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" } ]
     end
 
     params do
@@ -23,7 +23,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/external_events" do
       status 201
-      { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
+      { "id" => 1, "workspace_id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
     end
 
     params do
@@ -31,7 +31,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/external_events/:id" do
       status 200
-      { "id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
+      { "id" => 1, "workspace_id" => 1, "event_type" => "example", "status" => "example", "body" => "example", "created_at" => "2000-01-01T01:00:00Z", "body_url" => "example" }
     end
   end
 end

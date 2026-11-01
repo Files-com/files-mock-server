@@ -19890,6 +19890,10 @@
               "format": "int32",
               "required": false
             },
+            "legacy_pairing_enabled": {
+              "type": "boolean",
+              "required": false
+            },
             "ssl_required": {
               "type": "boolean",
               "required": false
@@ -20701,6 +20705,13 @@
         },
         "legacy_checksums_mode": {
           "type": "boolean"
+        },
+        "legacy_pairing_enabled": {
+          "type": "boolean"
+        },
+        "last_pairing_at": {
+          "type": "date-time",
+          "format": "date-time"
         },
         "migrate_remote_server_sync_to_sync": {
           "type": "boolean"

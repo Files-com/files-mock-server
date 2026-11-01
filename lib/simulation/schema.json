@@ -20335,75 +20335,6 @@
               "type": "string",
               "required": false
             },
-            "ldap_enabled": {
-              "type": "boolean",
-              "required": false
-            },
-            "ldap_type": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_host": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_host_2": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_host_3": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_port": {
-              "type": "int64",
-              "format": "int32",
-              "required": false
-            },
-            "ldap_secure": {
-              "type": "boolean",
-              "required": false
-            },
-            "ldap_server_certificate": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_username": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_username_field": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_domain": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_user_action": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_group_action": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_user_include_groups": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_group_exclusion": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_group_inclusion": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_base_dn": {
-              "type": "string",
-              "required": false
-            },
             "uploads_via_email_authentication": {
               "type": "boolean",
               "required": false
@@ -20470,14 +20401,6 @@
             },
             "disable_2fa_with_delay": {
               "type": "boolean",
-              "required": false
-            },
-            "ldap_password_change": {
-              "type": "string",
-              "required": false
-            },
-            "ldap_password_change_confirmation": {
-              "type": "string",
               "required": false
             },
             "redirect_old_subdomain": {
@@ -20843,58 +20766,6 @@
           "type": "boolean"
         },
         "language": {
-          "type": "string"
-        },
-        "ldap_base_dn": {
-          "type": "string"
-        },
-        "ldap_domain": {
-          "type": "string"
-        },
-        "ldap_enabled": {
-          "type": "boolean"
-        },
-        "ldap_group_action": {
-          "type": "string"
-        },
-        "ldap_group_exclusion": {
-          "type": "string"
-        },
-        "ldap_group_inclusion": {
-          "type": "string"
-        },
-        "ldap_host": {
-          "type": "string"
-        },
-        "ldap_host_2": {
-          "type": "string"
-        },
-        "ldap_host_3": {
-          "type": "string"
-        },
-        "ldap_port": {
-          "type": "int64",
-          "format": "int64"
-        },
-        "ldap_secure": {
-          "type": "boolean"
-        },
-        "ldap_server_certificate": {
-          "type": "string"
-        },
-        "ldap_type": {
-          "type": "string"
-        },
-        "ldap_user_action": {
-          "type": "string"
-        },
-        "ldap_user_include_groups": {
-          "type": "string"
-        },
-        "ldap_username": {
-          "type": "string"
-        },
-        "ldap_username_field": {
           "type": "string"
         },
         "login_help_text": {

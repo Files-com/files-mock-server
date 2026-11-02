@@ -16,6 +16,7 @@ module FilesMockServer
     params do
       requires :paths, type: [ String ]
       requires :destination, type: String
+      optional :archive_format, type: String
       optional :overwrite, type: Boolean
     end
     post "/api/rest/v1/file_actions/zip" do

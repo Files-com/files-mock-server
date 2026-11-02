@@ -1113,6 +1113,16 @@
           "type": "string",
           "required": true
         },
+        "archive_format": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "zip",
+            "tar",
+            "tar.gz",
+            "tgz"
+          ]
+        },
         "overwrite": {
           "type": "boolean",
           "required": false

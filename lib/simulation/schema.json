@@ -4282,6 +4282,10 @@
             "v2"
           ]
         },
+        "converted_automation_id": {
+          "type": "int64",
+          "format": "int64"
+        },
         "deleted": {
           "type": "boolean"
         },
@@ -4333,6 +4337,10 @@
         },
         "name": {
           "type": "string"
+        },
+        "original_automation_id": {
+          "type": "int64",
+          "format": "int64"
         },
         "overwrite_files": {
           "type": "boolean"

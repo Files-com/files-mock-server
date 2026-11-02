@@ -1,12 +1,12 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "2999e474c1816c2ec85216a2d5db152bb77f93764c7ebd8c503459748b22b557",
+  "swagger_sha256": "ee87e85b3b1e47845bf9a5ad356efe747333e3765dd5eba5a70aa4e5c4ab5886",
   "models": 145,
-  "operations": 399,
+  "operations": 400,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 30,
+    "gap": 31,
     "path-record": 3,
     "real-only": 5,
     "record": 319,
@@ -3396,6 +3396,17 @@
       "shape": "action",
       "disposition": "fixture-response",
       "simulator_operation": "site.get_usage"
+    },
+    {
+      "model": "Site",
+      "method": "extend_automation_migration_window",
+      "operation_id": "PostSiteExtendAutomationMigrationWindow",
+      "verb": "POST",
+      "path": "/site/extend_automation_migration_window",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
     },
     {
       "model": "Site",

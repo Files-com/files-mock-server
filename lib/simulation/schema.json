@@ -272,6 +272,15 @@
             "never_require"
           ]
         },
+        "ftp_tls_session_reuse_required": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "use_system_setting",
+            "always_require",
+            "never_require"
+          ]
+        },
         "sso_strategy_id": {
           "type": "int64",
           "format": "int32",
@@ -654,6 +663,15 @@
           "required": false
         },
         "ssl_required": {
+          "type": "string",
+          "required": false,
+          "enum": [
+            "use_system_setting",
+            "always_require",
+            "never_require"
+          ]
+        },
+        "ftp_tls_session_reuse_required": {
           "type": "string",
           "required": false,
           "enum": [
@@ -1282,6 +1300,7 @@
       "workspace_id",
       "default_workspace_id",
       "skip_welcome_screen",
+      "ftp_tls_session_reuse_required",
       "ssl_required",
       "sso_strategy_id",
       "externally_managed",
@@ -19916,6 +19935,10 @@
               "type": "boolean",
               "required": false
             },
+            "ftp_tls_session_reuse_required": {
+              "type": "boolean",
+              "required": false
+            },
             "sftp_insecure_ciphers": {
               "type": "boolean",
               "required": false
@@ -19972,6 +19995,10 @@
               "required": false
             },
             "allow_user_level_ssl_override": {
+              "type": "boolean",
+              "required": false
+            },
+            "allow_user_level_ftp_tls_session_reuse_override": {
               "type": "boolean",
               "required": false
             },
@@ -20481,6 +20508,9 @@
           "type": "boolean"
         },
         "allow_user_level_allowed_ip_override": {
+          "type": "boolean"
+        },
+        "allow_user_level_ftp_tls_session_reuse_override": {
           "type": "boolean"
         },
         "allow_user_level_ssl_override": {
@@ -20994,6 +21024,9 @@
           "format": "int64"
         },
         "snapshot_sharing_enabled": {
+          "type": "boolean"
+        },
+        "ftp_tls_session_reuse_required": {
           "type": "boolean"
         },
         "ssl_required": {

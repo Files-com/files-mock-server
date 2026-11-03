@@ -1,0 +1,20 @@
+{
+  "name": "users-find",
+  "description": "One user, the only record after the reset, so its ID is 1. Finding that ID returns expected_user.",
+  "reset": {
+    "fixtures": {
+      "users": [
+        {
+          "username": "docker-fixture-user",
+          "name": "Docker Fixture"
+        }
+      ]
+    }
+  },
+  "expected_user": {
+    "id": 1,
+    "username": "docker-fixture-user",
+    "name": "Docker Fixture"
+  },
+  "journal_checks": []
+}

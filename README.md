@@ -1808,8 +1808,9 @@ transfer profile is the fixed setting for transfers that should
 succeed: `FILES_MOCK_MAX_BODY_BYTES=8388608` (8 MiB), under which the
 advertised `partsize` is 5 MiB and a 5 MiB + 257 byte upload fits in two
 parts without client overrides, within the default
-`FILES_MOCK_MAX_TRANSFER_BYTES`. Readiness `limits` shows which limits a
-server runs with.
+`FILES_MOCK_MAX_TRANSFER_BYTES`. The scenario catalogue runner starts its
+simulators with it under `--limits transfer`; readiness `limits` shows
+which one a server runs with.
 
 `FILES_MOCK_MAX_TRANSFER_BYTES` counts all the file content the
 simulator holds: uploaded parts, files, a part body from the moment the
@@ -1962,6 +1963,23 @@ traversal starts only after the one before it reached its last page, and
 the last traversal must reach its last page. Several complete traversals
 pass, so a test should finish every traversal it starts.
 
+`users-find` holds one user, `docker-fixture-user` named `Docker
+Fixture`. It is the only record, so its ID is 1. `expected_user` is that
+user as `users.find` (`GET /api/rest/v1/users/1`) returns it, for a test
+of any consumer (an SDK, the CLI or the MCP server) that finds a user:
+
+```bash
+ruby with-scenario.rb --scenario users-find --out "$OUT" -- COMMAND
+```
+
+The test finds the user with ID `expected_user.id`, calling
+`FILES_MOCK_SERVER_URL` with `FILES_MOCK_API_KEY`, and checks the result
+against `expected_user`. The scenario has no journal checks, so the
+launcher requires only a complete journal with nothing dropped; the test
+asserts its own request and result. COMMAND has no standard input, so a
+test that speaks to its consumer over STDIO starts that consumer itself,
+with its own pipes.
+
 A shared scenario adds coverage; it does not replace a language's own
 tests. The SDKs keep their existing tests, for example Python's malformed,
 empty, repeated and cyclic cursor, list-context and early-stop tests and
@@ -1984,6 +2002,29 @@ depends on who is authenticated (sessions, the current API key) are
 and sorting and foreign keys are not simulated either. Requests for these
 return `501` in simulation mode. Use legacy mode for tests that only need
 example responses for them.
+
+### Scenario catalogue
+
+The generator repository's `verification/catalogue` holds a versioned
+scenario catalogue shared by the simulator, SDK adapters and paired real
+runs, and a runner that needs no Files.com credentials:
+
+```bash
+ruby verification/catalogue/run.rb --server generated/mock-server --tls --suite --out catalogue-report
+```
+
+It starts this server on loopback ports, runs the catalogue's raw-HTTP
+recipes and the server's own tests, and writes `report.json` and
+`report.md` with every row's state. `--limits transfer` starts both
+simulators with the transfer profile's 8 MiB body limit (see
+[Limits](#limits)) instead of the 1 MiB default. `--own-tests` also runs the runner's
+own tests, and `--qualify` requires every declared check and the exact
+source, schema, catalogue and package joins. `--adapter` also runs an SDK's
+journeys through an installed package (`javascript`, `python`, or a
+prepared build of the `dotnet` consumer), bound to that package's
+descriptor with `--candidate`; see `verification/catalogue/README.md` for
+each adapter's prerequisites and commands. None of it needs Files.com
+credentials: every request goes to this server on loopback.
 
 ## Checking This Server
 

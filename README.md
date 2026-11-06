@@ -50,6 +50,8 @@ shasum -a 256 public.json          # compare with the SHA-256 you pinned
 ruby files-sdk-generator.rb --target mock-server --file public.json
 ```
 
+Generation installs dependencies without running the formatter. `./test.sh` checks generated code as emitted with syntax/defect lint and the runtime suite. Release preparation (`./build.sh`, also called by the release hook) applies safe formatting corrections and requires the full lint check to pass.
+
 The server records what it was generated from in
 `lib/simulation/generation.json`: the Swagger document's SHA-256, the
 generator's commit and whether its sources were clean, and the SHA-256 of
@@ -240,6 +242,7 @@ native check; a pass here never stands in for it.
 | `users.update` | `PATCH /api/rest/v1/users/{id}`   | `200` and the updated user       |
 | `users.delete` | `DELETE /api/rest/v1/users/{id}`  | `204` with an empty body         |
 | `files.begin_upload` | `POST /api/rest/v1/file_actions/begin_upload/{path}` | `200` and an array of upload parts, one unless `parts` asks for more |
+| `files.finalize_upload` (legacy start) | `POST /api/rest/v1/files/{path}` with `action: "put"` | `200` and one upload part, or an array when `parts` is supplied; `ref` with `part` resumes the same upload |
 | `files.finalize_upload` | `POST /api/rest/v1/files/{path}` with `action: "end"` | `201` and the new file, `200` when it replaces one |
 | `files.download` | `GET /api/rest/v1/files/{path}` | `200` and the file with a `download_uri`; with `action=stat`, the file or folder without one |
 | `files.metadata` | `GET /api/rest/v1/file_actions/metadata/{path}` | `200` and the file or folder |

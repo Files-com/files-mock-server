@@ -509,8 +509,13 @@ module FilesMockServer
           part = @files.store_part(state, target, input)
           [ [ 200, { "etag" => %("#{part.etag}") }, [] ], { "bytes" => part.bytes.bytesize, "sha256" => part.etag } ]
         when "files.finalize_upload"
-          status, upload, version = @files.finalize_upload(state, target["path"], input)
-          [ json(status, @files.present(version, state:)), { "upload" => upload.id, "version" => version.number, "bytes" => version.size, "sha256" => version.sha256 } ]
+          if input["action"] == "put"
+            upload, descriptor = @files.begin_legacy_upload(state, target["path"], input, transfer_origin(request))
+            [ json(200, descriptor), { "upload" => upload.id } ]
+          else
+            status, upload, version = @files.finalize_upload(state, target["path"], input)
+            [ json(status, @files.present(version, state:)), { "upload" => upload.id, "version" => version.number, "bytes" => version.size, "sha256" => version.sha256 } ]
+          end
         when "files.download"
           entry, download_uri, identity = @files.download(state, target["path"], input, transfer_origin(request))
           body = @files.present(entry, download_uri, state:)

@@ -30,6 +30,31 @@ class TransfersTest < Minitest::Test
     assert_equal({ "content-type" => "application/octet-stream", "content-length" => "300", "accept-ranges" => "bytes", "etag" => %("#{Digest::SHA256.hexdigest(SOURCE)}") }, downloaded.headers.slice("content-type", "content-length", "accept-ranges", "etag"))
   end
 
+  # Java's File.create starts an upload through the older route; its parts and finalization use the same state.
+  def test_legacy_upload_start_and_resume_return_the_requested_shape_and_publish_the_original_bytes
+    started = api("POST", "/files/#{route(PATH)}", { "action" => "put", "ref" => "ignored-without-part", "size" => SOURCE.bytesize, "mkdir_parents" => true })
+    assert_equal 200, started.status, started.body
+    first = started.json
+    assert_kind_of Hash, first
+    assert_equal [ PATH, 1 ], first.values_at("path", "part_number")
+    assert_equal 404, api("GET", "/file_actions/metadata/#{route(PATH)}").status
+
+    resumed = api("POST", "/files/#{route(PATH)}", { "action" => "put", "ref" => first.fetch("ref"), "part" => 2, "parts" => 1 })
+    assert_equal 200, resumed.status, resumed.body
+    assert_equal 1, resumed.json.size
+    second = resumed.json.first
+    assert_equal [ first.fetch("ref"), 2 ], second.values_at("ref", "part_number")
+    etags = [ first, second ].zip([ SOURCE.byteslice(0, 150), SOURCE.byteslice(150, 150) ]).map do |part, bytes|
+      { "part" => part.fetch("part_number"), "etag" => put_part(part, bytes) }
+    end
+    completed = api("POST", "/files/#{route(PATH)}", { "action" => "end", "ref" => first.fetch("ref"), "etags" => etags, "size" => SOURCE.bytesize })
+    assert_equal [ 201, SOURCE.bytesize ], [ completed.status, completed.json["size"] ]
+    assert_equal SOURCE, download(PATH).body
+    calls = journal.select { |entry| entry["operation"] == "files.finalize_upload" }
+    assert_equal([ 200, 200, 201 ], calls.map { |entry| entry["status"] })
+    assert_equal([ nil, nil, 1 ], calls.map { |entry| entry["version"] })
+  end
+
   def test_parts_are_joined_in_part_number_order_and_committed_once
     first = begin_upload("a.bin")
     profile = { "part_number" => 1, "partsize" => 1_048_576, "next_partsize" => 1_048_576, "parallel_parts" => false, "retry_parts" => true, "http_method" => "PUT", "path" => "a.bin" }

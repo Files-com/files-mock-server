@@ -1,14 +1,16 @@
 #!/usr/bin/env ruby
-# Checks this generated mock server with its own RuboCop, as test.sh does, without modifying its files, and
-# fails on any offense. Like setup.sh, it uses this app's own bundle, not the generator's that `bundle exec`
-# passes down, and keeps the caller's own Bundler settings.
+# Prepares generated code for release: install this app's bundle, apply safe formatting corrections, then require
+# the full lint check to pass. Test-only generation uses setup.sh and never runs the formatter.
 require "bundler"
 require "English"
 
 Bundler.with_original_env do
   ENV["BUNDLE_GEMFILE"] = File.expand_path("Gemfile", __dir__)
   Dir.chdir(__dir__) do
-    [ %w[bundle install], [ File.join(__dir__, "lint.sh") ] ].each do |step|
+    steps = [ %w[bundle install --quiet],
+              %w[bundle exec rubocop --cache false --format simple -a --ignore-parent-exclusion --fail-level error],
+              [ File.join(__dir__, "lint.sh") ] ]
+    steps.each do |step|
       next if system(*step)
 
       exit($CHILD_STATUS.exitstatus || 1)

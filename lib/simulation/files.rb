@@ -189,6 +189,20 @@ module FilesMockServer
       # is checked before any folder, upload or part plan changes.
       def begin_upload(state, path, params, origin)
         _, values = accepted("files.begin_upload", path, params)
+        plan_upload(state, path, values, origin)
+      end
+
+      # The older POST /files action=put uses the same upload protocol. It returns one part unless the caller
+      # explicitly asks for parts, in which case it returns an array, as FilesHelpers' legacy adapters do.
+      def begin_legacy_upload(state, path, params, origin)
+        modeled = %w[path action mkdir_parents part parts ref size with_direct_connection_info]
+        _, values = accepted("files.finalize_upload", path, params, modeled:)
+        values.delete("ref") unless values.key?("part")
+        upload, parts = plan_upload(state, path, values, origin)
+        [ upload, values.key?("parts") ? parts : parts.first ]
+      end
+
+      def plan_upload(state, path, values, origin)
         count = values.fetch("parts", 1)
         raise Error.bad_request("parts is invalid") unless count.positive?
 
@@ -1219,9 +1233,10 @@ module FilesMockServer
       # A required parameter left out fails the API's parameter validation, whose errors it answers as a
       # bare bad-request with Grape's message ("destination is missing"). Grape checks only that the
       # parameter is there: one sent null or empty passes, and the operation judges it after the path.
-      def accepted(operation, path, params, root: false, empty_root: false)
+      def accepted(operation, path, params, root: false, empty_root: false, modeled: nil)
         supplied = params.slice(*declared_names(operation)).compact
-        unmodeled = supplied.keys - MODELED_PARAMS.fetch(operation) { ZIP_PARAMS.fetch(operation) } - OPTIONAL_PARAMS.fetch(operation, [])
+        modeled ||= MODELED_PARAMS.fetch(operation) { ZIP_PARAMS.fetch(operation) }
+        unmodeled = supplied.keys - modeled - OPTIONAL_PARAMS.fetch(operation, [])
         raise Error.not_supported("Simulation does not support these parameters: #{unmodeled.join(", ")}") if unmodeled.any?
 
         values = supplied.to_h { |key, value| [ key, convert(operation, key, value) ] }

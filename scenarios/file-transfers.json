@@ -1,0 +1,21 @@
+{
+  "name": "file-transfers",
+  "description": "One UTF-8 text file, test.txt, on an otherwise empty site that uploads may add to. expected_download is that file as a download must return it: its text, whose UTF-8 bytes are size bytes long with this SHA-256. A test may reset to this body for an epoch of its own.",
+  "reset": {
+    "fixtures": {
+      "files": [
+        {
+          "path": "test.txt",
+          "text": "Files.com download fixture\nUTF-8: café, naïve, 日本語, 🚀\nThe last line ends with a newline.\n"
+        }
+      ]
+    }
+  },
+  "expected_download": {
+    "path": "test.txt",
+    "text": "Files.com download fixture\nUTF-8: café, naïve, 日本語, 🚀\nThe last line ends with a newline.\n",
+    "size": 100,
+    "sha256": "e6882e26afd886fd28793980eedc52fe12c75d1c97c298647f0a79aff23ed39c"
+  },
+  "journal_checks": []
+}

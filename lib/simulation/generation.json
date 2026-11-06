@@ -6,10 +6,10 @@
     "sha256": "ec8c3ced6df05b14358e07a447296b8c599fbe11c3bbbeaf05cf8e88a852c084"
   },
   "schema_sha256": "a4c2deeba97812d8263782dbc95973c90276228543d3f0983ecd99049389637f",
-  "simulator_version": "1.0.745",
+  "simulator_version": "1.0.746",
   "generator": {
-    "commit": "706e60854f0257c9d281ec29134253c4ea7f1e1f",
-    "tree": "821fe5aa5bcbe4f32fb363e3fcc8426f8b812568",
+    "commit": "1b1968bebbd5531f9b8aae71e739be329e17f3a6",
+    "tree": "1d66c841087af0f80ab1ed5fc41d7fc30cf81cf5",
     "clean": true
   },
   "command": "ruby files-sdk-generator.rb --target mock-server --file swagger_doc-production.json"

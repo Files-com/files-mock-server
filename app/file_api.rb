@@ -3,6 +3,17 @@ module FilesMockServer
     format :json
 
     params do
+      requires :paths, type: [ String ]
+      requires :destination, type: String
+      optional :archive_format, type: String
+      optional :overwrite, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/zip" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
       requires :path, type: String
       requires :destination, type: String
       optional :filename, type: String
@@ -14,14 +25,11 @@ module FilesMockServer
     end
 
     params do
-      requires :paths, type: [ String ]
-      requires :destination, type: String
-      optional :archive_format, type: String
-      optional :overwrite, type: Boolean
+      requires :path, type: String
     end
-    post "/api/rest/v1/file_actions/zip" do
-      status 201
-      { "status" => "pending", "file_migration_id" => 1 }
+    get "/api/rest/v1/file_actions/zip_list/:path" do
+      status 200
+      [ { "path" => "example", "size" => 1 } ]
     end
 
     params do
@@ -37,17 +45,14 @@ module FilesMockServer
 
     params do
       requires :path, type: String
+      requires :destination, type: String
+      optional :gpg_key_ids, type: [ Integer ]
+      optional :gpg_key_partner_id, type: Integer
+      optional :signing_key_id, type: Integer
+      optional :armor, type: Boolean
+      optional :overwrite, type: Boolean
     end
-    get "/api/rest/v1/file_actions/zip_list/:path" do
-      status 200
-      [ { "path" => "example", "size" => 1 } ]
-    end
-
-    params do
-      requires :path, type: String
-      optional :recursive, type: Boolean
-    end
-    post "/api/rest/v1/file_actions/delete/:path" do
+    post "/api/rest/v1/file_actions/gpg_encrypt/:path" do
       status 201
       { "status" => "pending", "file_migration_id" => 1 }
     end
@@ -55,21 +60,13 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
-      optional :copy_behaviors, type: Boolean
-      optional :structure, type: Boolean
+      optional :gpg_key_ids, type: [ Integer ]
+      optional :gpg_key_partner_id, type: Integer
+      optional :use_all_private_keys, type: Boolean
+      optional :ignore_mdc_error, type: Boolean
       optional :overwrite, type: Boolean
     end
-    post "/api/rest/v1/file_actions/copy/:path" do
-      status 201
-      { "status" => "pending", "file_migration_id" => 1 }
-    end
-
-    params do
-      requires :path, type: String
-      requires :destination, type: String
-      optional :overwrite, type: Boolean
-    end
-    post "/api/rest/v1/file_actions/move/:path" do
+    post "/api/rest/v1/file_actions/gpg_decrypt/:path" do
       status 201
       { "status" => "pending", "file_migration_id" => 1 }
     end
@@ -92,13 +89,9 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
-      optional :gpg_key_ids, type: [ Integer ]
-      optional :gpg_key_partner_id, type: Integer
-      optional :use_all_private_keys, type: Boolean
-      optional :ignore_mdc_error, type: Boolean
       optional :overwrite, type: Boolean
     end
-    post "/api/rest/v1/file_actions/gpg_decrypt/:path" do
+    post "/api/rest/v1/file_actions/move/:path" do
       status 201
       { "status" => "pending", "file_migration_id" => 1 }
     end
@@ -106,13 +99,20 @@ module FilesMockServer
     params do
       requires :path, type: String
       requires :destination, type: String
-      optional :gpg_key_ids, type: [ Integer ]
-      optional :gpg_key_partner_id, type: Integer
-      optional :signing_key_id, type: Integer
-      optional :armor, type: Boolean
+      optional :copy_behaviors, type: Boolean
+      optional :structure, type: Boolean
       optional :overwrite, type: Boolean
     end
-    post "/api/rest/v1/file_actions/gpg_encrypt/:path" do
+    post "/api/rest/v1/file_actions/copy/:path" do
+      status 201
+      { "status" => "pending", "file_migration_id" => 1 }
+    end
+
+    params do
+      requires :path, type: String
+      optional :recursive, type: Boolean
+    end
+    post "/api/rest/v1/file_actions/delete/:path" do
       status 201
       { "status" => "pending", "file_migration_id" => 1 }
     end

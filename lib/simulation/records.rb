@@ -26,6 +26,10 @@ module FilesMockServer
       # API never returns: it is type-checked, then never stored, returned or journaled.
       WRITE_ONLY = /password|passphrase|secret|private_key|token|api_key|access_key|key_id|credentials_json|client_certificate|application_key/
       PAGINATION_PARAMS = %w[cursor per_page].freeze
+      # Lists whose user_id may be 0, which the schema documents as "the current session's user". The simulator
+      # models no sessions or owners: the requester's own records are those created without a user_id, so 0
+      # selects them. Any other user_id selects by owner, which is filtering and stays not simulated.
+      REQUESTER_LISTS = { "api_keys" => "user_id" }.freeze
       # Files.com API list page sizes.
       DEFAULT_PER_PAGE = 1_000
       MAX_PER_PAGE = 10_000
@@ -156,11 +160,23 @@ module FilesMockServer
       def list(state, params, instance)
         declared = declared("list")
         structural = declared.keys & (@scope + @parent_fields + Array(@key_fields))
-        unsupported = (params.keys & declared.keys) - PAGINATION_PARAMS - structural
+        requester = requester_param(declared, params)
+        unsupported = (params.keys & declared.keys) - PAGINATION_PARAMS - structural - [ requester ]
         raise Error.not_supported("Simulation does not support filtering or sorting; unsupported list parameters: #{unsupported.join(", ")}") if unsupported.any?
 
         wanted = checked(declared.slice(*structural), params.slice(*structural))
-        page(state, params, instance, selection_scope(wanted)) { |attributes| matches?(attributes, wanted) }
+        return page(state, params, instance, selection_scope(wanted)) { |attributes| matches?(attributes, wanted) } unless requester
+
+        page(state, params, instance, "#{selection_scope(wanted)}@requester") { |attributes| matches?(attributes, wanted) && value_of(attributes, requester).nil? }
+      end
+
+      # The list's requester parameter (REQUESTER_LISTS) when it is sent as 0, after its type check (422 for a value
+      # that is not a whole number); nil otherwise, which leaves any other value to be refused as filtering.
+      def requester_param(declared, params)
+        name = REQUESTER_LISTS[@resource]
+        return nil unless name && declared.key?(name) && params.key?(name) && !params[name].nil?
+
+        checked(declared.slice(name), params.slice(name))[name].zero? ? name : nil
       end
 
       # Whether the list is declared to answer one entity instead of an array ("array": false), which

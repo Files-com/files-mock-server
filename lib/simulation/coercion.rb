@@ -35,10 +35,11 @@ module FilesMockServer
       DATE = /\A\d{4}-\d\d-\d\d\z/
       INVALID = Object.new.freeze
       BOOLEANS = { true => true, false => false, "true" => true, "false" => false }.freeze
-      # Also "True" and "False", which .NET's Boolean.ToString() writes and the API's parameter
-      # coercion (dry-types Params::Bool) reads as booleans. Only the operations in
-      # Files::DOTNET_BOOLEAN_OPERATIONS take them, wherever the request carries the parameter.
-      DOTNET_BOOLEANS = BOOLEANS.merge("True" => true, "False" => false).freeze
+      # Also the other forms SDKs write booleans in a query string, which the API's parameter coercion
+      # (dry-types Params::Bool) reads as booleans: "True" and "False" (.NET's Boolean.ToString()) and "1"
+      # and "0" (PHP's http_build_query). Only the operations in Files::QUERY_BOOLEAN_OPERATIONS take them,
+      # wherever the request carries the parameter.
+      QUERY_BOOLEANS = BOOLEANS.merge("True" => true, "False" => false, "1" => true, "0" => false).freeze
       DATE_TIME = /\A\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)\z/
       UTC_DATE_TIME = /\A\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)?\z/
       # The UTC form .NET's DateTime.ToString("u") writes, such as "2026-09-24 00:00:00Z".
@@ -106,10 +107,10 @@ module FilesMockServer
         BOOLEANS.fetch(value, INVALID)
       end
 
-      # A boolean parameter of one of Files::DOTNET_BOOLEAN_OPERATIONS, from its query string or
+      # A boolean parameter of one of Files::QUERY_BOOLEAN_OPERATIONS, from its query string or
       # its JSON body alike.
-      def dotnet_boolean(value)
-        DOTNET_BOOLEANS.fetch(value, INVALID)
+      def query_boolean(value)
+        QUERY_BOOLEANS.fetch(value, INVALID)
       end
 
       def int32(value)

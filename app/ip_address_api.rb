@@ -15,7 +15,7 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
     end
-    get "/api/rest/v1/ip_addresses/smartfile-reserved" do
+    get "/api/rest/v1/ip_addresses/reserved" do
       status 200
       [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => true, "sftp_enabled" => true } ]
     end
@@ -33,7 +33,7 @@ module FilesMockServer
       optional :cursor, type: String
       optional :per_page, type: Integer
     end
-    get "/api/rest/v1/ip_addresses/reserved" do
+    get "/api/rest/v1/ip_addresses/smartfile-reserved" do
       status 200
       [ { "ip_address" => "1.1.1.1", "server_name" => "server-1", "ftp_enabled" => true, "sftp_enabled" => true } ]
     end

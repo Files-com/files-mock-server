@@ -32,17 +32,17 @@ module FilesMockServer
 
     params do
       requires :pairing_key, type: String
+      optional :partner_id, type: Integer
     end
-    post "/api/rest/v1/partner_site_requests/reject" do
+    post "/api/rest/v1/partner_site_requests/approve" do
       status 204
       body false
     end
 
     params do
       requires :pairing_key, type: String
-      optional :partner_id, type: Integer
     end
-    post "/api/rest/v1/partner_site_requests/approve" do
+    post "/api/rest/v1/partner_site_requests/reject" do
       status 204
       body false
     end

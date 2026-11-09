@@ -12,9 +12,9 @@ module FilesMockServer
     end
 
     params do
+      requires :path, type: String
       optional :cursor, type: String
       optional :per_page, type: Integer
-      requires :path, type: String
     end
     get "/api/rest/v1/file_comments/files/:path" do
       status 200

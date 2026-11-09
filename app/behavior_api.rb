@@ -42,11 +42,11 @@ module FilesMockServer
     end
 
     params do
+      requires :path, type: String
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :filter, type: Hash
-      requires :path, type: String
       optional :ancestor_behaviors, type: Boolean
     end
     get "/api/rest/v1/behaviors/folders/:path" do
@@ -55,7 +55,7 @@ module FilesMockServer
     end
 
     params do
-      requires :id, type: Integer
+      requires :id, type: [ Hash, String, Integer ]
     end
     get "/api/rest/v1/behaviors/:id" do
       status 200
@@ -70,7 +70,7 @@ module FilesMockServer
       optional :recursive, type: Boolean
       optional :name, type: String
       optional :description, type: String
-      optional :attachment_delete, type: [ Hash, String, Integer ]
+      optional :attachment_delete, type: Boolean
     end
     patch "/api/rest/v1/behaviors/:id" do
       status 200

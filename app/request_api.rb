@@ -26,11 +26,11 @@ module FilesMockServer
     end
 
     params do
+      requires :path, type: String
       optional :cursor, type: String
       optional :per_page, type: Integer
       optional :sort_by, type: Hash
       optional :mine, type: Boolean
-      requires :path, type: String
     end
     get "/api/rest/v1/requests/folders/:path" do
       status 200

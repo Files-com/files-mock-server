@@ -36,8 +36,8 @@ module FilesMockServer
     # looked up at, counters, request sequence, journal and fault rules.
     class State
       attr_reader :epoch, :started, :records, :last_ids, :singletons, :path_records, :responses, :uploads, :files, :folders, :cursors, :cursor_aliases,
-                  :migrations, :file_metadata, :locks, :download_requests, :download_transfers, :journal, :faults, :most_parts_in_flight
-      attr_accessor :profile, :last_upload_id, :commits, :last_cursor_id, :last_migration_id, :last_lock_id, :lock_clock, :last_download_request_id,
+                  :migrations, :file_metadata, :previews, :locks, :download_requests, :download_transfers, :journal, :faults, :most_parts_in_flight
+      attr_accessor :profile, :last_upload_id, :last_preview_id, :commits, :last_cursor_id, :last_migration_id, :last_lock_id, :lock_clock, :last_download_request_id,
                     :request_count
 
       def initialize(epoch, limits, fault_match_keys, profile)
@@ -50,6 +50,8 @@ module FilesMockServer
         @path_records = {} # resource => { path => attributes }, such as styles
         @responses = {} # fixture response operation => { key => answer }
         @file_metadata = {} # path => { "custom_metadata", "priority_color" } a file or folder was given
+        @previews = {} # file version number => the id of its text preview, made by its first read with_previews
+        @last_preview_id = 0
         @uploads = {} # upload number => Files::Upload not yet finalized
         @most_parts_in_flight = 0 # the most parts holding a place at once in this state (Files#admit)
         @last_upload_id = 0

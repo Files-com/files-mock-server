@@ -360,6 +360,20 @@ class RecordsTest < Minitest::Test
     assert_equal [ { "id" => 1, "name" => "admins" } ], api("GET", "/groups").json
   end
 
+  # user_id 0 on the API key list names the requester, whose keys are those created without a user_id; any other
+  # user_id would filter by owner and stays refused. Its cursors are its own.
+  def test_the_api_key_list_takes_user_id_zero_as_the_requesters_own_keys
+    reset({ "api_keys" => [ { "name" => "mine" }, { "name" => "theirs", "user_id" => 2 }, { "name" => "also mine" } ] })
+    assert_equal([ "mine", "also mine" ], api("GET", "/api_keys", { "user_id" => 0 }).json.map { |key| key["name"] })
+    assert_equal(%w[mine theirs], api("GET", "/api_keys", { "per_page" => 2 }).json.map { |key| key["name"] })
+    first = api("GET", "/api_keys", { "user_id" => "0", "per_page" => 1 })
+    cursor = first.headers["x-files-cursor"]
+    assert_equal([ [ "mine" ], [ "also mine" ] ], [ first.json, api("GET", "/api_keys", { "user_id" => 0, "per_page" => 1, "cursor" => cursor }).json ].map { |page| page.map { |key| key["name"] } })
+    assert_equal([ 422, "bad-request/invalid-cursor" ], api("GET", "/api_keys", { "per_page" => 1, "cursor" => cursor }).then { |response| [ response.status, response.json["type"] ] })
+    assert_equal([ 501, "simulation/not-supported" ], api("GET", "/api_keys", { "user_id" => 2 }).then { |response| [ response.status, response.json["type"] ] })
+    assert_equal([ 422, "user_id is invalid" ], api("GET", "/api_keys", { "user_id" => "me" }).then { |response| [ response.status, response.json["error"] ] })
+  end
+
   def test_write_only_secrets_are_checked_but_never_stored_returned_or_journaled
     secret = "never-returned-#{SecureRandom.hex(4)}"
     created = api("POST", "/siem_http_destinations", { "name" => "splunk", "destination_type" => "splunk", "splunk_token" => secret })

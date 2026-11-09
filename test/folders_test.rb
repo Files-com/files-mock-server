@@ -269,10 +269,11 @@ class FoldersTest < Minitest::Test
     assert_equal default, root_answers.call
   end
 
-  # Only those two reads take an empty path, and only under the api_scenarios profile: every other file
-  # and folder operation's empty path stays not simulated, whichever profile the epoch chose.
+  # Only those two reads and creating a folder (see the root's spellings below) take an empty path, and only
+  # under the api_scenarios profile: every other file and folder operation's empty path stays not simulated,
+  # whichever profile the epoch chose.
   def test_no_other_operation_takes_an_empty_path_under_either_profile
-    empty_paths = [ [ "POST", "/folders/", {} ], [ "GET", "/files/", nil ], [ "DELETE", "/files/", nil ], [ "PATCH", "/files/", {} ], [ "POST", "/files/", {} ],
+    empty_paths = [ [ "GET", "/files/", nil ], [ "DELETE", "/files/", nil ], [ "PATCH", "/files/", {} ], [ "POST", "/files/", {} ],
                     [ "POST", "/file_actions/begin_upload/", {} ], [ "POST", "/file_actions/copy/", { "destination" => "copied" } ],
                     [ "POST", "/file_actions/move/", { "destination" => "moved" } ] ]
     [ {}, { "profile" => { "api_scenarios" => API_SCENARIOS } } ].each do |body|
@@ -282,6 +283,25 @@ class FoldersTest < Minitest::Test
         assert_equal [ 501, "simulation/not-supported" ], [ response.status, response.json["type"] ], "#{method} #{path} after a reset with #{body.inspect}"
       end
     end
+  end
+
+  # The root always exists, so creating it is refused as the API refused the PHP SDK's Folder::create('.'), under
+  # each spelling: %2F, ".", and the empty path libcurl leaves of ".", with "." in the body, which only an
+  # api_scenarios epoch routes. Nothing is created, and the parameters are still checked first.
+  def test_creating_the_root_under_any_spelling_finds_that_it_exists
+    exists = [ 422, "processing-failure/destination-exists", "Destination Exists", "The destination exists." ]
+    answer = ->(response) { [ response.status, *response.json.values_at("type", "title", "error") ] }
+    spellings = { "%2F" => [ "%2F", {} ], "." => [ ".", { "path" => "." } ] }
+    spellings.each { |name, (suffix, body)| assert_equal exists, answer.call(api("POST", "/folders/#{suffix}", body)), name }
+    assert_equal([ 501, "simulation/not-supported" ], api("POST", "/folders/", { "path" => "." }).then { |response| [ response.status, response.json["type"] ] })
+
+    assert_equal 200, control("POST", "reset", { "profile" => { "api_scenarios" => API_SCENARIOS } }).status
+    spellings.merge("empty, . in the body" => [ "", { "path" => "." } ], "empty" => [ "", {} ]).each do |name, (suffix, body)|
+      assert_equal exists, answer.call(api("POST", "/folders/#{suffix}", body)), name
+    end
+    assert_equal([ 422, "path must match the path in the URL" ], api("POST", "/folders/", { "path" => "other" }).then { |response| [ response.status, response.json["error"] ] })
+    assert_equal([ 422, "mkdir_parents is invalid" ], api("POST", "/folders/", { "path" => ".", "mkdir_parents" => "sometimes" }).then { |response| [ response.status, response.json["error"] ] })
+    assert_equal([ 200, [] ], api("GET", "/folders/").then { |response| [ response.status, response.json ] })
   end
 
   private

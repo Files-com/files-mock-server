@@ -18,8 +18,8 @@ module FilesMockServer
       MODELED_PARAMS = {
         "files.begin_upload" => %w[path mkdir_parents part ref size with_direct_connection_info],
         "files.finalize_upload" => %w[path action etags mkdir_parents provided_mtime ref size with_direct_connection_info],
-        "files.download" => %w[path action with_direct_connection_info],
-        "files.metadata" => %w[path],
+        "files.download" => %w[path action with_direct_connection_info with_previews with_priority_color],
+        "files.metadata" => %w[path with_previews with_priority_color],
         "files.delete" => %w[path recursive],
         "folders.create" => %w[path mkdir_parents provided_mtime],
         "folders.list" => %w[path cursor per_page],
@@ -47,13 +47,22 @@ module FilesMockServer
       NUMBERED_EXTENSION = /(.+?)(\.[^.\\:*?"<>|\r\n]+)\z/
       # A download identity token as Files.com issues them: fdi1. and URL-safe Base64, at most 4096 bytes.
       IDENTITY_TOKEN = /\Afdi1\.[A-Za-z0-9_-]{1,4091}\z/
-      # The operations the .NET SDK sends with booleans in its query string. Their boolean
-      # parameters also take "True" and "False" (Coercion::DOTNET_BOOLEANS), however they arrive;
-      # no other operation does.
-      DOTNET_BOOLEAN_OPERATIONS = %w[files.download files.metadata files.delete folders.list].freeze
+      # The operations the .NET and PHP SDKs send with booleans in a query string. Their boolean
+      # parameters also take "True", "False", "1" and "0" (Coercion::QUERY_BOOLEANS), however they
+      # arrive; no other operation does.
+      QUERY_BOOLEAN_OPERATIONS = %w[files.download files.metadata files.delete folders.list].freeze
       # The folders endpoints (/api/rest/v1/folders/...), whose whole path the API's path helper
       # checks; every other route's path it checks above the last name (Namespace#request_path).
       FOLDER_ROUTES = %w[folders.create folders.list].freeze
+      # How a folder create may name the root, which exists, so the API answers 422 destination-exists with "The
+      # destination exists." (the answer the PHP SDK's testErrors recorded for Folder.create('.')): "/", ".", and an
+      # empty URL path, which is how "." arrives from a client that removes dot segments (libcurl), with the
+      # body's path ".". Only the api_scenarios profile routes an empty path (App#route).
+      ROOT_FOLDER_SPELLINGS = [ Namespace::ROOT, Namespace::ROOT_SPELLING, "." ].freeze
+      # The extensions Files.com previews as text (Preview::TEXT_PREVIEW_EXTENSIONS), whose preview a read with_previews
+      # answers at once: nothing is rendered. Other preview types and which files have none are outside this model,
+      # so with_previews refuses those files.
+      TEXT_PREVIEW_EXTENSIONS = %w[csv txt xml md markdown mdown mkdn].freeze
       # How files.finalize_upload may name the upload's parts: listed in etags, or, for a sequential
       # upload of known size, omitted so that the parts the upload received are used.
       FINALIZE_ETAGS = %w[listed omitted].freeze
@@ -354,6 +363,8 @@ module FilesMockServer
         entry = @namespace.find(state, name) || raise(Error.not_found)
         raise Error.identity_parameter(expected == true ? "with_download_identity" : "expected_download_identity") if expected && (values["action"].to_s != "" || entry.is_a?(Namespace::Folder))
 
+        refuse_unsimulated_preview(entry, values)
+
         case values["action"]
         when "stat" then [ entry, nil, nil ]
         when nil, ""
@@ -374,8 +385,23 @@ module FilesMockServer
         api_scenarios = state.profile.api_scenarios?
         raise Error.request_params_required("path") if api_scenarios && [ Namespace::ROOT, Namespace::ROOT_SPELLING ].include?(path)
 
-        name, = accepted("files.metadata", path, params, root: !api_scenarios)
-        @namespace.find(state, name) || raise(Error.not_found_for(accept_language))
+        name, values = accepted("files.metadata", path, params, root: !api_scenarios)
+        entry = @namespace.find(state, name) || raise(Error.not_found_for(accept_language))
+        refuse_unsimulated_preview(entry, values)
+        entry
+      end
+
+      # with_previews on a file whose preview is not text, before anything is issued for the request.
+      def refuse_unsimulated_preview(entry, values)
+        return unless values["with_previews"] == true && !entry.is_a?(Namespace::Folder) && !text_preview?(entry)
+
+        raise Error.not_supported("with_previews is simulated only for files previewed as text (#{TEXT_PREVIEW_EXTENSIONS.join(", ")}); " \
+                                  "other preview types are not simulated"
+                                 )
+      end
+
+      def text_preview?(entry)
+        TEXT_PREVIEW_EXTENSIONS.include?(File.extname(entry.path).delete_prefix(".").downcase)
       end
 
       # Deletes the file, or the folder, at path and returns [ it, what was removed inside it ]. A
@@ -550,6 +576,10 @@ module FilesMockServer
 
       # Creates exactly this folder, and any missing parents, and returns it.
       def create_folder(state, path, params)
+        if ROOT_FOLDER_SPELLINGS.include?(path) && ROOT_FOLDER_SPELLINGS.include?(params.fetch("path", path))
+          path = Namespace::ROOT_SPELLING
+          params = params.merge("path" => path) if params.key?("path")
+        end
         name, values = accepted("folders.create", path, params, root: true)
         refuse_missing_parents(state, @namespace.missing_parents(state, name), values) unless name == Namespace::ROOT
         @namespace.create_folder(state, name, values["provided_mtime"])
@@ -589,9 +619,11 @@ module FilesMockServer
       end
 
       # A file's or folder's File object, with a file's download URL when it has one and what
-      # files.update set on it (given `state`). Fields the simulator does not model, such as creators,
-      # permissions and locks, are left out.
-      def present(entry, download_uri = nil, state: nil)
+      # files.update set on it (given `state`). priority_color is answered only when the request asks for it
+      # (priority_color: true): an update that sends one, or a read with_priority_color (#read_fields); it is then
+      # null until one is set. Fields the simulator does not model, such as creators, permissions and locks, are
+      # left out.
+      def present(entry, download_uri = nil, state: nil, priority_color: false)
         fields = if entry.is_a?(Namespace::Folder)
                    { "path" => entry.path, "display_name" => entry.path.split("/").last.to_s, "type" => "directory",
                      "mtime" => entry.mtime, "provided_mtime" => entry.provided_mtime }
@@ -599,7 +631,27 @@ module FilesMockServer
                    { "path" => entry.path, "display_name" => entry.path.split("/").last, "type" => "file", "size" => entry.size,
                      "mtime" => entry.mtime, "provided_mtime" => entry.provided_mtime, "download_uri" => download_uri }
                  end
-        fields.compact.merge(state&.file_metadata&.fetch(entry.path, nil).to_h).slice(*@file_fields)
+        metadata = state&.file_metadata&.fetch(entry.path, nil).to_h
+        metadata = priority_color ? { "priority_color" => nil }.merge(metadata) : metadata.except("priority_color")
+        fields.compact.merge(metadata).slice(*@file_fields)
+      end
+
+      # What with_previews and with_priority_color add to a file read's File object, once #download or #metadata
+      # has admitted them. A file previewed as text gets its preview, as Files.com answers one: preview_id and the
+      # Preview (the same id, status complete, type text, no download_uri, size small), made by the version's first
+      # read with_previews and the same on every later one; nothing is rendered. A folder gets none, as a folder
+      # listing with_previews answers it (#list_folder), and other files were refused (#refuse_unsimulated_preview).
+      # with_priority_color adds priority_color, null until files.update sets one. Without them, or with them false,
+      # the object is unchanged.
+      def read_fields(operation, entry, params, state)
+        wanted = params.slice("with_previews", "with_priority_color").compact.to_h { |key, value| [ key, convert(operation, key, value) ] }
+        fields = {}
+        if wanted["with_previews"] == true && !entry.is_a?(Namespace::Folder)
+          id = state.previews[entry.number] ||= (state.last_preview_id += 1)
+          fields.update("preview_id" => id, "preview" => { "id" => id, "status" => "complete", "download_uri" => nil, "type" => "text", "size" => "small" })
+        end
+        fields["priority_color"] = state.file_metadata.dig(entry.path, "priority_color") if wanted["with_priority_color"] == true
+        fields.slice(*@file_fields)
       end
 
       # The current version with the given number, or nil.
@@ -861,7 +913,7 @@ module FilesMockServer
 
       # True when the request asks for a download identity, the expected identity token when it names
       # one, else nil. with_download_identity takes "True" and "False" too, as files.download's other
-      # boolean parameters do (DOTNET_BOOLEAN_OPERATIONS), which is how the Python SDK sends it in a
+      # boolean parameters do (QUERY_BOOLEAN_OPERATIONS), which is how the Python SDK sends it in a
       # query string. A malformed token, or with_download_identity=false beside a token, is refused
       # with 400 as Files.com refuses it. Under the "absent" profile the site's download identity
       # setting is off: with_download_identity gets an ordinary download, and a declared
@@ -875,7 +927,7 @@ module FilesMockServer
         expected = params["expected_download_identity"]
         raise Error.identity_parameter("expected_download_identity") unless expected.nil? || (expected.is_a?(String) && expected.match?(IDENTITY_TOKEN))
 
-        requested = params.key?("with_download_identity") ? Coercion.dotnet_boolean(params["with_download_identity"]) : nil
+        requested = params.key?("with_download_identity") ? Coercion.query_boolean(params["with_download_identity"]) : nil
         raise Error.identity_parameter("with_download_identity") if requested.equal?(Coercion::INVALID) || (expected && requested == false)
         raise Error.download_identity_unavailable if expected && state.profile.download.identity == "absent"
         return if state.profile.download.identity == "absent"
@@ -1258,7 +1310,7 @@ module FilesMockServer
         when "custom_metadata" then custom_metadata_param(value)
         else
           converter = Coercion.for(@declared.fetch(operation).fetch(name))
-          converter = :dotnet_boolean if converter == :boolean && DOTNET_BOOLEAN_OPERATIONS.include?(operation)
+          converter = :query_boolean if converter == :boolean && QUERY_BOOLEAN_OPERATIONS.include?(operation)
           converter = :int64 if converter == :int32 && BYTE_COUNTS.fetch(operation, []).include?(name)
           Coercion.public_send(converter, Coercion.request_array(converter, value))
         end

@@ -94,7 +94,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/syncs/:id/dry_run" do
+    post "/api/rest/v1/syncs/:id/manual_run" do
       status 204
       body false
     end
@@ -102,7 +102,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/syncs/:id/manual_run" do
+    post "/api/rest/v1/syncs/:id/dry_run" do
       status 204
       body false
     end

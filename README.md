@@ -222,7 +222,7 @@ Everything below applies only when `FILES_MOCK_MODE=simulation`.
 | Area | Simulated | Refused (`501`) or not simulated |
 | ---- | --------- | -------------------------------- |
 | Records | List, create, find, update and delete of every resource with the regular `/{name}` and `/{name}/{id}` shape, records without an `id` kept under the parent they were created for, group memberships found by their own fields, lists scoped by path or owner, Style records keyed by path, log lists and delete-only resources filled by fixtures, configuration-dependent answers and a key lookup from fixtures, and the site singleton (`GET`/`PATCH /site`). Increasing IDs per resource, exact types, write-only secrets never returned, file parameters decoded, checked and reported. | Actions (such as `/users/{id}/unlock`), each with the decision or real owner it needs, filtering, sorting, search, uniqueness, foreign keys. `GET /__files_mock/v1/inventory` lists every operation and why. |
-| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, file previews (`with_previews` lists a page of folders only), `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
+| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, file previews other than text (a file read with `with_previews` answers a text file's preview; a listing with it lists a page of folders only), `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
 | Locks | Advisory locks on paths, found as the model finds them (by byte prefix): created when both public flags are true, listed with the locks above that apply to subfolders and, on request, the path's range one level deep, as one sorted array, released with their token, exclusive conflicts with the model's message, expiry on a lock clock the tests move, and a separate cleanup of expired locks. | Refreshing a lock or anything else its internal parameters do, shared or owner-only locks, who may act on another user's lock, the real removal job's timing. |
 | Transfer profiles | Legacy (default), serial and parallel part rules, retries forbidden, advertised part sizes (hints) or variable part limits, scheduled part size changes for parts not yet issued, part offsets, target class, a shared part concurrency limit with `503` throttling, presigned URLs, the download identity contract, the historical download request status protocol (an ID on each successful storage response and a chosen status at the download URL joined with it), withheld download sizes, cursors with special characters. | Provider-specific limits beyond the profile, adaptive tuning or throughput claims. |
 | Faults | Deterministic and seeded random rules per operation, record, path, part, session and attempt: Files.com errors with chosen types and `data`, unstructured and web-tier answers, redirects, expired URLs, frontend HTML, empty pages, delays before or after a request is applied, dropped connections before or after a commit, truncated, short, padded and stalled bodies. | Faults outside the local HTTP server's reach, such as TLS handshake failures. |
@@ -545,6 +545,13 @@ Filtering, sorting and search parameters (`sort_by`, `filter`,
 `filter_gt`, `filter_prefix`, `ids`, `search`, and the like) return
 `501` rather than an unfiltered list.
 
+The API key list's `user_id` may be `0`, which the schema documents as
+"the current session's user". The simulator models no sessions or
+owners: the requester's own keys are the ones created without a
+`user_id`, so `GET /api/rest/v1/api_keys?user_id=0` lists those, with
+cursors of their own. Any other `user_id` selects keys by owner, which
+is filtering, and gets `501`.
+
 ### Files
 
 Simulation mode keeps files and their bytes in memory, so a test can
@@ -830,7 +837,13 @@ folders it would have needed.
 
 Creating a folder is exclusive: a name that a file or folder already
 holds gets `422` with the type `processing-failure/destination-exists`,
-and the existing entry is never adopted. A file cannot be a folder's
+and the existing entry is never adopted. The root always exists, so
+creating it gets that `422` with the message `The destination exists.`,
+as the Files.com API answered the PHP SDK's `Folder::create('.')`. The
+root may be named `%2F`, `.`, or, while the reset's profile chooses
+`api_scenarios`, an empty path with the body's `path` `.` or left out,
+which is how `.` arrives from a client that removes dot segments from
+URLs (libcurl). A file cannot be a folder's
 parent (`422`, `bad-request/folder-must-not-be-a-file`).
 
 `GET /api/rest/v1/folders/{path}` lists a folder's files and folders in
@@ -863,16 +876,29 @@ deleted (`422` without `recursive`, `501` with it). Look the path up
 afterwards to see that it is gone. The boolean
 parameters of this operation, `GET /files/{path}`,
 `GET /file_actions/metadata/{path}` and `GET /folders/{path}` may also be
-`True` or `False`, as .NET writes booleans; this applies to those
-operations' parameters wherever the request carries them, and to no
-other operation.
+`True` or `False`, as .NET writes booleans, or `1` or `0`, as PHP writes
+them in a query string; this applies to those operations' parameters
+wherever the request carries them, and to no other operation.
 
 #### File metadata
 
 `PATCH /api/rest/v1/files/{path}` sets a file's or folder's
 `custom_metadata`, `priority_color` and `provided_mtime`, and the file or
-folder is returned with them. They stay with the path when it is moved
-and are dropped when a new version replaces the file or the path is
+folder is returned with them, `priority_color` only when the update
+sends one, as Files.com answers it. `GET /api/rest/v1/files/{path}` and
+`GET /api/rest/v1/file_actions/metadata/{path}` return `priority_color`
+only with `with_priority_color`, and then `null` until an update sets
+one; without it, or with it `false`, the key is left out, a color set
+or not. With `with_previews`, a file Files.com previews as text (`csv`,
+`txt`, `xml`, `md`, `markdown`, `mdown`, `mkdn`) gets its text preview
+as the API answers it, made by the version's first such read and the
+same on every later one: `preview_id` and `preview` with that `id`,
+`status` `complete`, `type` `text`, `download_uri` `null` and `size`
+`small`. Nothing is rendered for text. A folder gets no preview keys, as
+a folder listing with `with_previews` answers it. Any other file gets
+`501`: other preview types and which files have none are outside this
+model. `preview_size` is not simulated either (`501`). File metadata stays with the path when it is moved
+and is dropped when a new version replaces the file or the path is
 deleted. A folder moved or copied onto an existing folder (a merge) leaves
 the destination's own metadata; a move still ends the source's, so a new
 entry at the old path starts without it, and a copy keeps it on the
@@ -1245,8 +1271,8 @@ curl -s -r 7-11 "$(curl -s $API/files/hello.txt | jq -r .download_uri)"; echo   
   `copy_behaviors`, `structure`, `with_rename` or `buffered_upload`;
   `GET /api/rest/v1/files/{path}` or
   `GET /api/rest/v1/file_actions/metadata/{path}` with `preview_size`,
-  `with_previews` or `with_priority_color`, or with an `action` other
-  than `stat`; `GET /api/rest/v1/folders/{path}` with any parameter
+  with `with_previews` for a file not previewed as text, or with an
+  `action` other than `stat`; `GET /api/rest/v1/folders/{path}` with any parameter
   other than `cursor` and `per_page` (such as `sort_by`, `search` or
   `type`), or for a file's path; and a recursive delete of the root.
 * Files and folders do not report who created them, permissions or

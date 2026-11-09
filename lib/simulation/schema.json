@@ -964,6 +964,10 @@
     "folders.list": {
       "operation_id": "FolderListForPath",
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -972,10 +976,6 @@
           "type": "int64",
           "format": "int32",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         },
         "preview_size": {
           "type": "string",
@@ -1150,6 +1150,10 @@
     "locks.list_for": {
       "operation_id": "LockListForPath",
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -1158,10 +1162,6 @@
           "type": "int64",
           "format": "int32",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         },
         "include_children": {
           "type": "boolean",
@@ -21133,6 +21133,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -21150,10 +21154,6 @@
           "type": "object",
           "required": false
         },
-        "path": {
-          "type": "string",
-          "required": true
-        },
         "ancestor_behaviors": {
           "type": "boolean",
           "required": false
@@ -21168,6 +21168,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -21176,10 +21180,6 @@
           "type": "int64",
           "format": "int32",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         }
       }
     },
@@ -21191,6 +21191,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -21207,10 +21211,6 @@
         "mine": {
           "type": "boolean",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         }
       }
     },
@@ -21222,6 +21222,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "start_at": {
           "type": "string",
           "format": "date-time",
@@ -21248,10 +21252,6 @@
         "sort_by": {
           "type": "object",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         }
       }
     },
@@ -21263,6 +21263,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "start_at": {
           "type": "string",
           "format": "date-time",
@@ -21289,10 +21293,6 @@
         "sort_by": {
           "type": "object",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         }
       }
     },
@@ -21305,6 +21305,11 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "user_id": {
+          "type": "int64",
+          "format": "int32",
+          "required": true
+        },
         "start_at": {
           "type": "string",
           "format": "date-time",
@@ -21331,11 +21336,6 @@
         "sort_by": {
           "type": "object",
           "required": false
-        },
-        "user_id": {
-          "type": "int64",
-          "format": "int32",
-          "required": true
         }
       }
     },
@@ -21388,6 +21388,10 @@
       "method": "GET",
       "status": 200,
       "params": {
+        "path": {
+          "type": "string",
+          "required": true
+        },
         "cursor": {
           "type": "string",
           "required": false
@@ -21396,10 +21400,6 @@
           "type": "int64",
           "format": "int32",
           "required": false
-        },
-        "path": {
-          "type": "string",
-          "required": true
         }
       }
     }

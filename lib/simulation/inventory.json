@@ -1,7 +1,7 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "f040333f9327973a6b3cbb054a8b647fce135783563f2445dcf46bfdeac9e344",
+  "swagger_sha256": "abd072f3f58f4c65b3e2d640ff27fdb8a9fa8d561159e2b86fd5058ca0415b72",
   "models": 145,
   "operations": 400,
   "dispositions": {
@@ -531,17 +531,6 @@
     },
     {
       "model": "AutomationRun",
-      "method": "cancel",
-      "operation_id": "PostAutomationRunsIdCancel",
-      "verb": "POST",
-      "path": "/automation_runs/{id}/cancel",
-      "shape": "action",
-      "disposition": "gap",
-      "gap_kind": "action-semantics",
-      "reason": "Cancels an automation run: needs the automation run state machine (automation owner)"
-    },
-    {
-      "model": "AutomationRun",
       "method": "rerun",
       "operation_id": "PostAutomationRunsIdRerun",
       "verb": "POST",
@@ -550,6 +539,17 @@
       "disposition": "gap",
       "gap_kind": "action-semantics",
       "reason": "Reruns an automation run: needs the automation run state machine (automation owner)"
+    },
+    {
+      "model": "AutomationRun",
+      "method": "cancel",
+      "operation_id": "PostAutomationRunsIdCancel",
+      "verb": "POST",
+      "path": "/automation_runs/{id}/cancel",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "action-semantics",
+      "reason": "Cancels an automation run: needs the automation run state machine (automation owner)"
     },
     {
       "model": "BandwidthSnapshot",
@@ -573,16 +573,6 @@
     },
     {
       "model": "Behavior",
-      "method": "find",
-      "operation_id": "GetBehaviorsId",
-      "verb": "GET",
-      "path": "/behaviors/{id}",
-      "shape": "member",
-      "disposition": "record",
-      "simulator_operation": "behaviors.find"
-    },
-    {
-      "model": "Behavior",
       "method": "list_for",
       "operation_id": "BehaviorListForPath",
       "verb": "GET",
@@ -590,6 +580,16 @@
       "shape": "path-keyed",
       "disposition": "scoped-list",
       "simulator_operation": "behaviors.list_for"
+    },
+    {
+      "model": "Behavior",
+      "method": "find",
+      "operation_id": "GetBehaviorsId",
+      "verb": "GET",
+      "path": "/behaviors/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "behaviors.find"
     },
     {
       "model": "Behavior",
@@ -935,6 +935,16 @@
     },
     {
       "model": "CustomDomain",
+      "method": "create",
+      "operation_id": "PostCustomDomains",
+      "verb": "POST",
+      "path": "/custom_domains",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "custom_domains.create"
+    },
+    {
+      "model": "CustomDomain",
       "method": "create_allocate_ip",
       "operation_id": "PostCustomDomainsIdAllocateIps",
       "verb": "POST",
@@ -943,16 +953,6 @@
       "disposition": "gap",
       "gap_kind": "real-or-provider",
       "reason": "Allocates infrastructure IPs: provider behavior, real lane only"
-    },
-    {
-      "model": "CustomDomain",
-      "method": "create",
-      "operation_id": "PostCustomDomains",
-      "verb": "POST",
-      "path": "/custom_domains",
-      "shape": "collection",
-      "disposition": "record",
-      "simulator_operation": "custom_domains.create"
     },
     {
       "model": "CustomDomain",
@@ -1357,14 +1357,14 @@
     },
     {
       "model": "ExpectationIncident",
-      "method": "resolve",
-      "operation_id": "PostExpectationIncidentsIdResolve",
+      "method": "acknowledge",
+      "operation_id": "PostExpectationIncidentsIdAcknowledge",
       "verb": "POST",
-      "path": "/expectation_incidents/{id}/resolve",
+      "path": "/expectation_incidents/{id}/acknowledge",
       "shape": "action",
       "disposition": "gap",
       "gap_kind": "action-semantics",
-      "reason": "Resolves an incident: needs the incident state machine (monitoring owner)"
+      "reason": "Acknowledges an incident: needs the incident state machine (monitoring owner)"
     },
     {
       "model": "ExpectationIncident",
@@ -1379,14 +1379,14 @@
     },
     {
       "model": "ExpectationIncident",
-      "method": "acknowledge",
-      "operation_id": "PostExpectationIncidentsIdAcknowledge",
+      "method": "resolve",
+      "operation_id": "PostExpectationIncidentsIdResolve",
       "verb": "POST",
-      "path": "/expectation_incidents/{id}/acknowledge",
+      "path": "/expectation_incidents/{id}/resolve",
       "shape": "action",
       "disposition": "gap",
       "gap_kind": "action-semantics",
-      "reason": "Acknowledges an incident: needs the incident state machine (monitoring owner)"
+      "reason": "Resolves an incident: needs the incident state machine (monitoring owner)"
     },
     {
       "model": "ExternalEvent",
@@ -1460,16 +1460,6 @@
     },
     {
       "model": "File",
-      "method": "find",
-      "operation_id": "FileActionFind",
-      "verb": "GET",
-      "path": "/file_actions/metadata/{path}",
-      "shape": "path-keyed",
-      "disposition": "specialized",
-      "simulator_operation": "files.metadata"
-    },
-    {
-      "model": "File",
       "method": "zip_list_contents",
       "operation_id": "FileActionZipListContents",
       "verb": "GET",
@@ -1480,56 +1470,33 @@
     },
     {
       "model": "File",
-      "method": "begin_delete",
-      "operation_id": "FileActionBeginDelete",
-      "verb": "POST",
-      "path": "/file_actions/delete/{path}",
-      "shape": "path-keyed",
-      "disposition": "gap",
-      "gap_kind": "shape",
-      "reason": "A path-keyed resource other than files and folders, which the simulator does not model"
-    },
-    {
-      "model": "File",
-      "method": "copy",
-      "operation_id": "FileActionCopy",
-      "verb": "POST",
-      "path": "/file_actions/copy/{path}",
+      "method": "find",
+      "operation_id": "FileActionFind",
+      "verb": "GET",
+      "path": "/file_actions/metadata/{path}",
       "shape": "path-keyed",
       "disposition": "specialized",
-      "simulator_operation": "files.copy"
+      "simulator_operation": "files.metadata"
     },
     {
       "model": "File",
-      "method": "move",
-      "operation_id": "FileActionMove",
+      "method": "zip",
+      "operation_id": "FileActionZip",
       "verb": "POST",
-      "path": "/file_actions/move/{path}",
-      "shape": "path-keyed",
+      "path": "/file_actions/zip",
+      "shape": "action",
       "disposition": "specialized",
-      "simulator_operation": "files.move"
+      "simulator_operation": "files.zip"
     },
     {
       "model": "File",
-      "method": "transform",
-      "operation_id": "FileActionTransform",
+      "method": "unzip",
+      "operation_id": "FileActionUnzip",
       "verb": "POST",
-      "path": "/file_actions/transform/{path}",
-      "shape": "path-keyed",
-      "disposition": "gap",
-      "gap_kind": "action-semantics",
-      "reason": "Transforms file content: needs the transform contract and its FileMigration results (file actions owner)"
-    },
-    {
-      "model": "File",
-      "method": "gpg_decrypt",
-      "operation_id": "FileActionGpgDecrypt",
-      "verb": "POST",
-      "path": "/file_actions/gpg_decrypt/{path}",
-      "shape": "path-keyed",
-      "disposition": "gap",
-      "gap_kind": "action-semantics",
-      "reason": "Decrypts with GPG keys: needs key handling and FileMigration results (file actions owner); real keys are real lane only"
+      "path": "/file_actions/unzip",
+      "shape": "action",
+      "disposition": "specialized",
+      "simulator_operation": "files.unzip"
     },
     {
       "model": "File",
@@ -1544,23 +1511,56 @@
     },
     {
       "model": "File",
-      "method": "unzip",
-      "operation_id": "FileActionUnzip",
+      "method": "gpg_decrypt",
+      "operation_id": "FileActionGpgDecrypt",
       "verb": "POST",
-      "path": "/file_actions/unzip",
-      "shape": "action",
-      "disposition": "specialized",
-      "simulator_operation": "files.unzip"
+      "path": "/file_actions/gpg_decrypt/{path}",
+      "shape": "path-keyed",
+      "disposition": "gap",
+      "gap_kind": "action-semantics",
+      "reason": "Decrypts with GPG keys: needs key handling and FileMigration results (file actions owner); real keys are real lane only"
     },
     {
       "model": "File",
-      "method": "zip",
-      "operation_id": "FileActionZip",
+      "method": "transform",
+      "operation_id": "FileActionTransform",
       "verb": "POST",
-      "path": "/file_actions/zip",
-      "shape": "action",
+      "path": "/file_actions/transform/{path}",
+      "shape": "path-keyed",
+      "disposition": "gap",
+      "gap_kind": "action-semantics",
+      "reason": "Transforms file content: needs the transform contract and its FileMigration results (file actions owner)"
+    },
+    {
+      "model": "File",
+      "method": "move",
+      "operation_id": "FileActionMove",
+      "verb": "POST",
+      "path": "/file_actions/move/{path}",
+      "shape": "path-keyed",
       "disposition": "specialized",
-      "simulator_operation": "files.zip"
+      "simulator_operation": "files.move"
+    },
+    {
+      "model": "File",
+      "method": "copy",
+      "operation_id": "FileActionCopy",
+      "verb": "POST",
+      "path": "/file_actions/copy/{path}",
+      "shape": "path-keyed",
+      "disposition": "specialized",
+      "simulator_operation": "files.copy"
+    },
+    {
+      "model": "File",
+      "method": "begin_delete",
+      "operation_id": "FileActionBeginDelete",
+      "verb": "POST",
+      "path": "/file_actions/delete/{path}",
+      "shape": "path-keyed",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "A path-keyed resource other than files and folders, which the simulator does not model"
     },
     {
       "model": "File",
@@ -1874,33 +1874,13 @@
     },
     {
       "model": "History",
-      "method": "list_for_file",
-      "operation_id": "HistoryListForFile",
+      "method": "list",
+      "operation_id": "HistoryList",
       "verb": "GET",
-      "path": "/history/files/{path}",
-      "shape": "path-keyed",
-      "disposition": "scoped-list",
-      "simulator_operation": "history.list_for_file"
-    },
-    {
-      "model": "History",
-      "method": "list_for_folder",
-      "operation_id": "HistoryListForFolder",
-      "verb": "GET",
-      "path": "/history/folders/{path}",
-      "shape": "path-keyed",
-      "disposition": "scoped-list",
-      "simulator_operation": "history.list_for_folder"
-    },
-    {
-      "model": "History",
-      "method": "list_for_user",
-      "operation_id": "HistoryListForUser",
-      "verb": "GET",
-      "path": "/history/users/{user_id}",
-      "shape": "action",
-      "disposition": "scoped-list",
-      "simulator_operation": "history.list_for_user"
+      "path": "/history",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "history.list"
     },
     {
       "model": "History",
@@ -1914,13 +1894,33 @@
     },
     {
       "model": "History",
-      "method": "list",
-      "operation_id": "HistoryList",
+      "method": "list_for_user",
+      "operation_id": "HistoryListForUser",
       "verb": "GET",
-      "path": "/history",
-      "shape": "collection",
-      "disposition": "record",
-      "simulator_operation": "history.list"
+      "path": "/history/users/{user_id}",
+      "shape": "action",
+      "disposition": "scoped-list",
+      "simulator_operation": "history.list_for_user"
+    },
+    {
+      "model": "History",
+      "method": "list_for_folder",
+      "operation_id": "HistoryListForFolder",
+      "verb": "GET",
+      "path": "/history/folders/{path}",
+      "shape": "path-keyed",
+      "disposition": "scoped-list",
+      "simulator_operation": "history.list_for_folder"
+    },
+    {
+      "model": "History",
+      "method": "list_for_file",
+      "operation_id": "HistoryListForFile",
+      "verb": "GET",
+      "path": "/history/files/{path}",
+      "shape": "path-keyed",
+      "disposition": "scoped-list",
+      "simulator_operation": "history.list_for_file"
     },
     {
       "model": "HistoryExport",
@@ -2144,13 +2144,13 @@
     },
     {
       "model": "IpAddress",
-      "method": "get_smartfile_reserved",
-      "operation_id": "GetIpAddressesSmartfileReserved",
+      "method": "get_reserved",
+      "operation_id": "GetIpAddressesReserved",
       "verb": "GET",
-      "path": "/ip_addresses/smartfile-reserved",
+      "path": "/ip_addresses/reserved",
       "shape": "action",
       "disposition": "fixture-response",
-      "simulator_operation": "ip_addresses.get_smartfile_reserved"
+      "simulator_operation": "ip_addresses.get_reserved"
     },
     {
       "model": "IpAddress",
@@ -2164,13 +2164,13 @@
     },
     {
       "model": "IpAddress",
-      "method": "get_reserved",
-      "operation_id": "GetIpAddressesReserved",
+      "method": "get_smartfile_reserved",
+      "operation_id": "GetIpAddressesSmartfileReserved",
       "verb": "GET",
-      "path": "/ip_addresses/reserved",
+      "path": "/ip_addresses/smartfile-reserved",
       "shape": "action",
       "disposition": "fixture-response",
-      "simulator_operation": "ip_addresses.get_reserved"
+      "simulator_operation": "ip_addresses.get_smartfile_reserved"
     },
     {
       "model": "KeyLifecycleRule",
@@ -2264,16 +2264,6 @@
     },
     {
       "model": "MetadataCategory",
-      "method": "find",
-      "operation_id": "GetMetadataCategoriesId",
-      "verb": "GET",
-      "path": "/metadata_categories/{id}",
-      "shape": "member",
-      "disposition": "record",
-      "simulator_operation": "metadata_categories.find"
-    },
-    {
-      "model": "MetadataCategory",
       "method": "list_for",
       "operation_id": "MetadataCategoryListForPath",
       "verb": "GET",
@@ -2281,6 +2271,16 @@
       "shape": "path-keyed",
       "disposition": "scoped-list",
       "simulator_operation": "metadata_categories.list_for"
+    },
+    {
+      "model": "MetadataCategory",
+      "method": "find",
+      "operation_id": "GetMetadataCategoriesId",
+      "verb": "GET",
+      "path": "/metadata_categories/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "metadata_categories.find"
     },
     {
       "model": "MetadataCategory",
@@ -2564,17 +2564,6 @@
     },
     {
       "model": "PartnerSiteRequest",
-      "method": "reject",
-      "operation_id": "PostPartnerSiteRequestsReject",
-      "verb": "POST",
-      "path": "/partner_site_requests/reject",
-      "shape": "action",
-      "disposition": "gap",
-      "gap_kind": "action-semantics",
-      "reason": "Rejects a cross-site pairing: needs the partner pairing contract (partner site owner)"
-    },
-    {
-      "model": "PartnerSiteRequest",
       "method": "approve",
       "operation_id": "PostPartnerSiteRequestsApprove",
       "verb": "POST",
@@ -2583,6 +2572,17 @@
       "disposition": "gap",
       "gap_kind": "action-semantics",
       "reason": "Approves a cross-site pairing: needs the partner pairing contract (partner site owner)"
+    },
+    {
+      "model": "PartnerSiteRequest",
+      "method": "reject",
+      "operation_id": "PostPartnerSiteRequestsReject",
+      "verb": "POST",
+      "path": "/partner_site_requests/reject",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "action-semantics",
+      "reason": "Rejects a cross-site pairing: needs the partner pairing contract (partner site owner)"
     },
     {
       "model": "PartnerSiteRequest",
@@ -3622,17 +3622,6 @@
     },
     {
       "model": "Sync",
-      "method": "dry_run",
-      "operation_id": "SyncDryRun",
-      "verb": "POST",
-      "path": "/syncs/{id}/dry_run",
-      "shape": "action",
-      "disposition": "gap",
-      "gap_kind": "action-semantics",
-      "reason": "Plans a sync: needs the sync engine contract (sync owner)"
-    },
-    {
-      "model": "Sync",
       "method": "manual_run",
       "operation_id": "SyncManualRun",
       "verb": "POST",
@@ -3641,6 +3630,17 @@
       "disposition": "gap",
       "gap_kind": "action-semantics",
       "reason": "Runs a sync: needs the sync engine contract (sync owner)"
+    },
+    {
+      "model": "Sync",
+      "method": "dry_run",
+      "operation_id": "SyncDryRun",
+      "verb": "POST",
+      "path": "/syncs/{id}/dry_run",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "action-semantics",
+      "reason": "Plans a sync: needs the sync engine contract (sync owner)"
     },
     {
       "model": "Sync",
@@ -3744,14 +3744,14 @@
     },
     {
       "model": "User",
-      "method": "unlock",
-      "operation_id": "PostUsersIdUnlock",
+      "method": "user_2fa_reset",
+      "operation_id": "PostUsersId2faReset",
       "verb": "POST",
-      "path": "/users/{id}/unlock",
-      "shape": "action",
+      "path": "/users/{id}/2fa/reset",
+      "shape": "nested",
       "disposition": "gap",
       "gap_kind": "excluded-auth",
-      "reason": "Unlocks a user's login: authentication state, excluded from simulation (#3753); real lane"
+      "reason": "Resets two-factor authentication: authentication state, excluded from simulation (#3753); real lane"
     },
     {
       "model": "User",
@@ -3766,14 +3766,14 @@
     },
     {
       "model": "User",
-      "method": "user_2fa_reset",
-      "operation_id": "PostUsersId2faReset",
+      "method": "unlock",
+      "operation_id": "PostUsersIdUnlock",
       "verb": "POST",
-      "path": "/users/{id}/2fa/reset",
-      "shape": "nested",
+      "path": "/users/{id}/unlock",
+      "shape": "action",
       "disposition": "gap",
       "gap_kind": "excluded-auth",
-      "reason": "Resets two-factor authentication: authentication state, excluded from simulation (#3753); real lane"
+      "reason": "Unlocks a user's login: authentication state, excluded from simulation (#3753); real lane"
     },
     {
       "model": "User",

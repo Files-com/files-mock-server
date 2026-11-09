@@ -47,9 +47,9 @@ module FilesMockServer
     TRANSFER_PREFIX = "/__files_mock/transfer".freeze
     # Operations with dedicated owners. "fault_match" names the request values a fault rule may match
     # on. Record resources generated into schema.json add their own operations (see App#record_operations).
-    # "empty_path" marks the two reads that answer for the root with an empty {path} while the reset's profile
-    # chooses api_scenarios (GET /file_actions/metadata/ refuses it, GET /folders/ lists it); otherwise, and
-    # for every other operation, an empty {path} is not routed, as before (App#route).
+    # "empty_path" marks the operations that answer for the root with an empty {path} while the reset's profile
+    # chooses api_scenarios (GET /file_actions/metadata/ refuses it, GET /folders/ lists it, POST /folders/ finds it
+    # exists); otherwise, and for every other operation, an empty {path} is not routed, as before (App#route).
     OPERATIONS = [
       { "id" => "users.create", "method" => "POST", "path" => "/users", "fault_match" => "username" },
       { "id" => "users.list", "method" => "GET", "path" => "/users", "fault_match" => "continuation" },
@@ -61,7 +61,7 @@ module FilesMockServer
       { "id" => "files.download", "method" => "GET", "path" => "/files/{path}", "fault_match" => "path" },
       { "id" => "files.metadata", "method" => "GET", "path" => "/file_actions/metadata/{path}", "fault_match" => "path", "empty_path" => true },
       { "id" => "files.delete", "method" => "DELETE", "path" => "/files/{path}", "fault_match" => "path" },
-      { "id" => "folders.create", "method" => "POST", "path" => "/folders/{path}", "fault_match" => "path" },
+      { "id" => "folders.create", "method" => "POST", "path" => "/folders/{path}", "fault_match" => "path", "empty_path" => true },
       { "id" => "folders.list", "method" => "GET", "path" => "/folders/{path}", "fault_match" => %w[path continuation], "empty_path" => true },
       { "id" => "files.copy", "method" => "POST", "path" => "/file_actions/copy/{path}", "fault_match" => "path" },
       { "id" => "files.move", "method" => "POST", "path" => "/file_actions/move/{path}", "fault_match" => "path" },
@@ -518,18 +518,20 @@ module FilesMockServer
           end
         when "files.download"
           entry, download_uri, identity = @files.download(state, target["path"], input, transfer_origin(request))
-          body = @files.present(entry, download_uri, state:)
+          body = @files.present(entry, download_uri, state:).merge(@files.read_fields(operation, entry, input, state))
           body["download_identity"] = identity if identity
           [ json(200, body), described(entry).merge(identity ? { "identity" => true } : {}) ]
         when "files.metadata"
           entry = @files.metadata(state, target["path"], input, accept_language: request.get_header("HTTP_ACCEPT_LANGUAGE"))
-          [ json(200, @files.present(entry, state:)), described(entry) ]
+          [ json(200, @files.present(entry, state:).merge(@files.read_fields(operation, entry, input, state))), described(entry) ]
         when "files.delete"
           entry, removed = @files.delete(state, target["path"], input)
           [ [ 204, {}, [] ], described(entry).merge(removed) ]
         when "files.update"
           entry = @files.update_file(state, target["path"], input)
-          [ json(200, @files.present(entry, state:)), described(entry) ]
+          # As Files.com answers an update: priority_color only when the update sent one.
+          sent_color = !input["priority_color"].nil? && input["priority_color"] != false
+          [ json(200, @files.present(entry, state:, priority_color: sent_color)), described(entry) ]
         when "files.copy", "files.move"
           action, fields = @files.public_send(operation.delete_prefix("files."), state, target["path"], input, state.profile)
           [ json(201, action.slice(*@file_action_fields)), fields ]

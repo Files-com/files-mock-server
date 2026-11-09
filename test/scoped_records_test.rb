@@ -228,10 +228,47 @@ class ScopedRecordsTest < Minitest::Test
     folder = api("PATCH", "/files/docs/sub", { "provided_mtime" => "2032-01-01T00:00:00Z" })
     assert_equal [ "directory", "2032-01-01T00:00:00Z" ], folder.json.values_at("type", "provided_mtime")
     api("POST", "/file_actions/move/docs/a.txt", { "destination" => "docs/b.txt" })
-    assert_equal "red", stat("docs/b.txt").json["priority_color"]
+    assert_equal "red", color("docs/b.txt")
     upload("docs/b.txt", [ "new" ])
-    refute stat("docs/b.txt").json.key?("priority_color")
+    assert_nil color("docs/b.txt")
     assert_equal 404, api("PATCH", "/files/missing.txt", { "priority_color" => "red" }).status
+
+    # As Files.com answers them: a read that asks for the priority color gets it, null until an update sets one, and
+    # a read that does not ask (or asks with false, or PHP's query-string 0) never gets the key, a color set or not.
+    # An update answers the color only when it sent one. A text file's read with_previews gets its text preview, the
+    # same one on every read of that version.
+    reads = { "download" => "/files/docs/b.txt", "metadata" => "/file_actions/metadata/docs/b.txt" }
+    plain_reads = lambda do
+      reads.each do |name, path|
+        [ {}, { "with_priority_color" => "0", "with_previews" => false } ].each do |params|
+          plain = api("GET", path, params)
+          refute plain.json.key?("priority_color") || plain.json.key?("preview") || plain.json.key?("preview_id"), "#{name} #{params}"
+        end
+      end
+    end
+    plain_reads.call
+    previews = reads.map do |name, path|
+      asked = api("GET", path, { "with_priority_color" => "1", "with_previews" => true })
+      assert_equal [ 200, nil ], [ asked.status, asked.json.fetch("priority_color") ], name
+      assert_equal [ 422, "with_priority_color is invalid" ], api("GET", path, { "with_priority_color" => "maybe" }).then { |response| [ response.status, response.json["error"] ] }, name
+      asked.json.values_at("preview_id", "preview")
+    end
+    id = previews.first.first
+    assert_kind_of Integer, id
+    assert_equal [ [ id, { "id" => id, "status" => "complete", "download_uri" => nil, "type" => "text", "size" => "small" } ] ] * 2, previews
+    updated = api("PATCH", "/files/docs/b.txt", { "priority_color" => "yellow" })
+    assert_equal [ 200, "yellow" ], [ updated.status, updated.json["priority_color"] ]
+    refute api("PATCH", "/files/docs/b.txt", { "provided_mtime" => "2031-01-01T00:00:00Z" }).json.key?("priority_color"), "an update without a color answers none"
+    assert_equal(%w[yellow yellow], reads.values.map { |path| api("GET", path, { "with_priority_color" => true }).json["priority_color"] })
+    plain_reads.call
+
+    # Other preview types are not simulated, so a read with_previews of another file
+    # is refused before anything is issued; a folder gets none, as a folder listing with_previews answers it.
+    upload("docs/photo.jpg", [ "jpg" ])
+    assert_equal([ 501, "simulation/not-supported" ], api("GET", "/file_actions/metadata/docs/photo.jpg", { "with_previews" => true }).then { |response| [ response.status, response.json["type"] ] })
+    assert_equal 501, api("GET", "/files/docs/photo.jpg", { "with_previews" => true }).status
+    folder_read = api("GET", "/file_actions/metadata/docs", { "with_previews" => true })
+    assert_equal [ 200, false ], [ folder_read.status, folder_read.json.key?("preview") ]
 
     # Merging into an existing folder keeps the destination's metadata. A copy keeps the source's;
     # a move ends it, so a new folder at the old path starts without it.
@@ -239,11 +276,11 @@ class ScopedRecordsTest < Minitest::Test
     api("PATCH", "/files/src", { "priority_color" => "red" })
     api("PATCH", "/files/dst", { "priority_color" => "blue" })
     assert_equal 201, api("POST", "/file_actions/copy/src", { "destination" => "dst", "overwrite" => true }).status
-    assert_equal(%w[red blue], %w[src dst].map { |name| stat(name).json["priority_color"] })
+    assert_equal(%w[red blue], %w[src dst].map { |name| color(name) })
     assert_equal 201, api("POST", "/file_actions/move/src", { "destination" => "dst", "overwrite" => true }).status
-    assert_equal [ 404, "blue" ], [ stat("src").status, stat("dst").json["priority_color"] ]
+    assert_equal [ 404, "blue" ], [ stat("src").status, color("dst") ]
     api("POST", "/folders/src", {})
-    refute stat("src").json.key?("priority_color"), "a new folder at a moved folder's path starts without its metadata"
+    assert_nil color("src"), "a new folder at a moved folder's path starts without its metadata"
   end
 
   # The API's model saves at most 32 custom_metadata keys, keys of at most 256 characters and values
@@ -293,7 +330,8 @@ class ScopedRecordsTest < Minitest::Test
     invalid = api("PATCH", "/files/docs/a.txt", { "custom_metadata" => keys.call(33), "provided_mtime" => "not a time" })
     assert_equal [ 422, "bad-request", "provided_mtime is invalid" ], [ invalid.status, *invalid.json.values_at("type", "error") ]
     replaced = api("PATCH", "/files/docs/a.txt", { "custom_metadata" => { "owner" => "legal" } })
-    assert_equal [ 200, { "owner" => "legal" }, "red" ], [ replaced.status, *replaced.json.values_at("custom_metadata", "priority_color") ]
+    assert_equal [ 200, { "owner" => "legal" }, false ], [ replaced.status, replaced.json["custom_metadata"], replaced.json.key?("priority_color") ]
+    assert_equal "red", color("docs/a.txt"), "replacing custom_metadata keeps the priority color"
   end
 
   # custom_metadata values are strings or null, as the API's parameter coercion admits them: a
@@ -325,7 +363,8 @@ class ScopedRecordsTest < Minitest::Test
     assert_equal({}, api("PATCH", "/files/docs/a.txt", { "custom_metadata" => {} }).json["custom_metadata"])
     api("PATCH", "/files/docs/a.txt", { "custom_metadata" => { "owner" => "legal" } })
     cleared = api("PATCH", "/files/docs/a.txt", { "custom_metadata" => nil })
-    assert_equal [ 200, {}, "red" ], [ cleared.status, *cleared.json.values_at("custom_metadata", "priority_color") ]
+    assert_equal [ 200, {}, false ], [ cleared.status, cleared.json["custom_metadata"], cleared.json.key?("priority_color") ]
+    assert_equal "red", color("docs/a.txt"), "clearing custom_metadata keeps the priority color"
   end
 
   # A file parameter arrives as a JSON file object or a multipart part in the same request as its
@@ -390,5 +429,12 @@ class ScopedRecordsTest < Minitest::Test
 
   def stat(path)
     api("GET", "/files/#{route(path)}", { "action" => "stat" })
+  end
+
+  # The priority color a stat with_priority_color answers, which must name it, null included.
+  def color(path)
+    answer = api("GET", "/files/#{route(path)}", { "action" => "stat", "with_priority_color" => true }).json
+    assert answer.key?("priority_color"), "#{path} was read with_priority_color"
+    answer["priority_color"]
   end
 end

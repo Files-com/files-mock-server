@@ -197,7 +197,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/users/:id/unlock" do
+    post "/api/rest/v1/users/:id/resend_welcome_email" do
       status 204
       body false
     end
@@ -205,7 +205,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/users/:id/resend_welcome_email" do
+    post "/api/rest/v1/users/:id/unlock" do
       status 204
       body false
     end

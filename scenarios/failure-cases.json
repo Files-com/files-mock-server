@@ -1,0 +1,214 @@
+{
+  "name": "failure-cases",
+  "description": "The shared failure-case matrix every core SDK runs through its own public calls (see failure_cases). Five users, one for each case. The launcher adds the fault rules after the reset, outside the SDK. The transient failure is a connection dropped before any response (drop_before) on a read-only find, which every SDK recovers from; the simulator closes every connection after its response, so no client reuses one. How many requests a dropped find costs is the client's established policy, so each runner declares its wire variant (failure_cases.variants) before the cases run, and the launcher checks exactly that variant. The seeded random faults are a 422 that no SDK retries, so each find is one request in every SDK, and the same seed gives the same decisions on every run.",
+  "reset": {
+    "fixtures": {
+      "users": [
+        {
+          "username": "enum-case",
+          "ssl_required": "use_system_setting"
+        },
+        {
+          "username": "format-case",
+          "authenticate_until": "2030-01-02T03:04:05Z"
+        },
+        {
+          "username": "recovered-case"
+        },
+        {
+          "username": "exhausted-case"
+        },
+        {
+          "username": "random-case"
+        }
+      ]
+    }
+  },
+  "faults": [
+    {
+      "operation": "users.find",
+      "match": {
+        "id": 3
+      },
+      "kind": "drop_before"
+    },
+    {
+      "operation": "users.find",
+      "match": {
+        "id": 4
+      },
+      "kind": "drop_before",
+      "random": {
+        "seed": "issue-3753-exhausted",
+        "rate": 1,
+        "key": [
+          "id"
+        ]
+      }
+    },
+    {
+      "operation": "users.find",
+      "match": {
+        "id": 5
+      },
+      "status": 422,
+      "type": "bad-request",
+      "message": "Seeded failure-case fault",
+      "random": {
+        "seed": "issue-3753-seeded",
+        "rate": 0.5,
+        "key": [
+          "id"
+        ]
+      }
+    }
+  ],
+  "journal_checks": [
+    "failure cases"
+  ],
+  "failure_cases": {
+    "max_network_retries": 2,
+    "cases": [
+      {
+        "id": "enum-validation",
+        "call": "users.update",
+        "user_id": 1,
+        "params": {
+          "ssl_required": "sometimes"
+        },
+        "expect": [
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "ssl_required does not have a valid value"
+            }
+          }
+        ],
+        "wire": [
+          422
+        ]
+      },
+      {
+        "id": "format-validation",
+        "call": "users.update",
+        "user_id": 2,
+        "params": {
+          "authenticate_until": "2030-02-30T00:00:00Z"
+        },
+        "expect": [
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "authenticate_until is invalid"
+            }
+          }
+        ],
+        "wire": [
+          422
+        ]
+      },
+      {
+        "id": "transient-recovered",
+        "call": "users.find",
+        "user_id": 3,
+        "expect": [
+          {
+            "user": {
+              "id": 3,
+              "username": "recovered-case"
+            }
+          }
+        ],
+        "wire": [
+          "drop_before",
+          200
+        ]
+      },
+      {
+        "id": "transient-exhausted",
+        "call": "users.find",
+        "user_id": 4,
+        "expect": [
+          {
+            "error": {
+              "network": true
+            }
+          }
+        ],
+        "wire": {
+          "sdk-network-retries": [
+            "drop_before",
+            "drop_before",
+            "drop_before"
+          ],
+          "automatic-get-resend": {
+            "each": "drop_before",
+            "min": 1,
+            "max": 12
+          }
+        }
+      },
+      {
+        "id": "seeded-random",
+        "call": "users.find",
+        "user_id": 5,
+        "expect": [
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "Seeded failure-case fault"
+            }
+          },
+          {
+            "user": {
+              "id": 5,
+              "username": "random-case"
+            }
+          },
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "Seeded failure-case fault"
+            }
+          },
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "Seeded failure-case fault"
+            }
+          },
+          {
+            "error": {
+              "status": 422,
+              "type": "bad-request",
+              "message": "Seeded failure-case fault"
+            }
+          },
+          {
+            "user": {
+              "id": 5,
+              "username": "random-case"
+            }
+          }
+        ],
+        "wire": [
+          422,
+          200,
+          422,
+          422,
+          422,
+          200
+        ]
+      }
+    ],
+    "variants": {
+      "sdk-network-retries": "The SDK's own retries resend a dropped find: each call makes exactly max_network_retries + 1 attempts before it fails.",
+      "automatic-get-resend": "The HTTP client itself resends a read-only request whose connection closed before any response, before the SDK sees a failure, and the SDK then retries too. .NET's SocketsHttpHandler does this (its connection-failure resends are bounded, 3 per request), so a call that fails makes at least one and at most (max_network_retries + 1) * 4 attempts; the actual count is recorded, not promised."
+    }
+  }
+}

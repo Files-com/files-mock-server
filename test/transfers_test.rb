@@ -579,7 +579,7 @@ class TransfersTest < Minitest::Test
       "another upload action" => api("POST", "/files/c.bin", { "action" => "append" }),
       "custom metadata" => finalize.call({ "custom_metadata" => { "k" => "v" } }),
       "a redirect download" => api("GET", "/files/folder/file.bin", { "action" => "redirect" }),
-      "previews" => api("GET", "/file_actions/metadata/folder/file.bin", { "with_previews" => true }),
+      "a preview size" => api("GET", "/file_actions/metadata/folder/file.bin", { "preview_size" => "large" }),
       "a leading slash" => api("POST", "/file_actions/begin_upload//c.bin", {}),
       "a dot segment" => api("POST", "/file_actions/begin_upload/folder/../c.bin", {}),
       "another spelling of a file" => api("POST", "/file_actions/begin_upload/Folder/File.bin", {}),

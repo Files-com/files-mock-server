@@ -3,9 +3,9 @@ module FilesMockServer
     format :json
 
     params do
+      requires :path, type: String
       optional :cursor, type: String
       optional :per_page, type: Integer
-      requires :path, type: String
       optional :preview_size, type: String
       optional :sort_by, type: Hash
       optional :search, type: String

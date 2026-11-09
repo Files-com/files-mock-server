@@ -7,13 +7,25 @@
 #
 #   ruby with-scenario.rb --scenario NAME_OR_PATH --out DIR [--run-id ID]
 #     [--schema-sha256 HEX] [--startup-timeout S] [--consumer-timeout S]
-#     [--settle-timeout S] -- COMMAND [ARGS...]
+#     [--settle-timeout S] [--failure-variant NAME] -- COMMAND [ARGS...]
 #
 # NAME means scenarios/NAME.json beside this script; an argument containing
 # "/" or ".json" is a path. A scenario is a JSON object with a string "name",
 # an object "reset" (the body sent to POST /__files_mock/v1/reset) and,
-# optionally, "journal_checks": ["folders.list cursor chain"], which also
-# needs a string "parent" (the listed folder's path).
+# optionally, "faults", fault rules each sent to POST /__files_mock/v1/faults
+# in order after the reset, before the consumer runs, and "journal_checks",
+# drawn from:
+#
+#   "folders.list cursor chain"  needs a string "parent" (the listed folder's
+#                                path); see #cursor_chain_problems
+#   "failure cases"              needs "failure_cases" (see
+#                                #failure_case_problems) and
+#                                --failure-variant, the wire variant the
+#                                runner declares for its client: the consumer
+#                                must write DIR/failure-cases.json with a
+#                                passed result for each case, and the journal
+#                                and the fault rules' decisions must show each
+#                                case's expected wire outcome
 #
 # The server binds 127.0.0.1 only, on a free port, and must report the
 # expected schema SHA-256 (--schema-sha256, else FILES_MOCK_SCHEMA_SHA256,
@@ -44,14 +56,15 @@
 # FILES_MOCK_API_KEY, and only to FILES_MOCK_SERVER_URL.
 #
 # DIR must not already hold a journal.json. It receives server.log,
-# ready.json, reset.json, journal.json and run.json.
+# ready.json, reset.json, journal.json, faults.json (the fault rules' state,
+# when the scenario adds any) and run.json.
 #
 # Exit status:
 #   0  the consumer passed, the journal is complete and requested checks passed
 #   2  usage error
 #   3  the server did not start, was not the expected one (such as another
-#      service answering its port) or refused the reset; the consumer did
-#      not run
+#      service answering its port) or refused the reset or a fault rule; the
+#      consumer did not run
 #   4  the consumer passed, but the journal is missing evidence or a
 #      requested journal check failed
 #   5  everything else passed, but the server's or the consumer's process
@@ -80,7 +93,11 @@ class ScenarioRun
   HOST = "127.0.0.1"
   CONTRACT_VERSION = 3
   CURSOR_CHAIN = "folders.list cursor chain"
-  KNOWN_CHECKS = [ CURSOR_CHAIN ].freeze
+  FAILURE_CASES = "failure cases"
+  KNOWN_CHECKS = [ CURSOR_CHAIN, FAILURE_CASES ].freeze
+  # What the consumer of a "failure cases" scenario writes to its output directory.
+  FAILURE_RESULTS = "failure-cases.json"
+  FAILURE_RESULTS_FORMAT = "files-failure-cases/1"
   RUN_ID = /\A[A-Za-z0-9._-]{1,64}\z/
   SHA256 = /\A[0-9a-f]{64}\z/
   SIGNALS = %w[INT TERM HUP].freeze
@@ -88,7 +105,7 @@ class ScenarioRun
     "FILES_MOCK_MODE" => "simulation", "BUNDLE_GEMFILE" => File.join(MOCK_DIR, "Gemfile")
   }.freeze
   USAGE = "usage: ruby with-scenario.rb --scenario NAME_OR_PATH --out DIR [--run-id ID] [--schema-sha256 HEX]\n         " \
-          "[--startup-timeout S] [--consumer-timeout S] [--settle-timeout S] -- COMMAND [ARGS...]"
+          "[--startup-timeout S] [--consumer-timeout S] [--settle-timeout S] [--failure-variant NAME] -- COMMAND [ARGS...]"
 
   class UsageError < StandardError; end
   class SetupError < StandardError; end
@@ -106,6 +123,7 @@ class ScenarioRun
       o.on("--startup-timeout S", Integer) { |v| opts[:startup] = v }
       o.on("--consumer-timeout S", Integer) { |v| opts[:consumer] = v }
       o.on("--settle-timeout S", Integer) { |v| opts[:settle] = v }
+      o.on("--failure-variant NAME") { |v| opts[:failure_variant] = v }
     end
     rest = parser.parse(argv[0...split])
     raise UsageError, "unexpected arguments before --: #{rest.join(' ')}" unless rest.empty?
@@ -126,6 +144,7 @@ class ScenarioRun
     @scenario_file = scenario_path(opts[:scenario])
     @scenario = load_scenario(@scenario_file)
     @requested = requested_checks(@scenario)
+    @variant = failure_variant(opts[:failure_variant])
     # A requested check fails unless it runs and passes.
     @checks = KNOWN_CHECKS.to_h { |name| [ name, @requested.include?(name) ? "failed" : "not requested" ] }
     @run_id = opts[:run_id] || "#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}-#{SecureRandom.hex(4)}"
@@ -146,6 +165,7 @@ class ScenarioRun
       start_server
       @ready = wait_ready
       reset
+      add_faults
       run_consumer
     rescue SetupError => e
       @setup_error = e.message
@@ -182,8 +202,44 @@ class ScenarioRun
     checks = scenario.fetch("journal_checks", [])
     raise UsageError, "journal_checks must be a list drawn from #{KNOWN_CHECKS.inspect}" unless checks.is_a?(Array) && (checks - KNOWN_CHECKS).empty?
     raise UsageError, "the #{CURSOR_CHAIN} check needs a string \"parent\"" if checks.include?(CURSOR_CHAIN) && !(scenario["parent"].is_a?(String) && !scenario["parent"].empty?)
+    raise UsageError, "faults must be a list of fault rule objects" unless scenario.fetch("faults", []).then { |faults| faults.is_a?(Array) && faults.all?(Hash) }
 
+    check_failure_cases(scenario["failure_cases"]) if checks.include?(FAILURE_CASES)
     checks
+  end
+
+  # A "failure cases" definition: named wire variants, and cases with distinct string ids, each naming the user its
+  # calls use, one expectation per call (at least one) and the wire outcomes the journal must show for that user, in
+  # order: a list of statuses and connection fault kinds for every variant, or an object giving one per variant, a
+  # list or {"each", "min", "max"} (that many requests, between min and max, each ending as each).
+  def check_failure_cases(definition)
+    cases = definition.is_a?(Hash) ? definition["cases"] : nil
+    variants = definition.is_a?(Hash) ? definition["variants"] : nil
+    valid = variants.is_a?(Hash) && !variants.empty? && cases.is_a?(Array) && !cases.empty? && cases.all? do |entry|
+      entry.is_a?(Hash) && entry["id"].is_a?(String) && entry["user_id"].is_a?(Integer) &&
+        entry["expect"].is_a?(Array) && !entry["expect"].empty? &&
+        (wire_list?(entry["wire"]) || (entry["wire"].is_a?(Hash) && entry["wire"].keys.sort == variants.keys.sort &&
+                                       entry["wire"].values.all? { |wire| wire_list?(wire) || wire_range?(wire) }))
+    end
+    raise UsageError, "the #{FAILURE_CASES} check needs \"failure_cases\" with variants and cases, each with an id, a user_id, expect and wire" unless valid
+    raise UsageError, "failure case ids must be distinct" unless cases.map { |entry| entry["id"] }.uniq.size == cases.size
+  end
+
+  def wire_list?(wire) = wire.is_a?(Array) && !wire.empty? && wire.all? { |outcome| outcome.is_a?(Integer) || outcome.is_a?(String) }
+
+  def wire_range?(wire)
+    wire.is_a?(Hash) && wire.keys.sort == %w[each max min] && wire["min"].is_a?(Integer) && wire["max"].is_a?(Integer) &&
+      wire["min"].between?(1, wire["max"]) && (wire["each"].is_a?(Integer) || wire["each"].is_a?(String))
+  end
+
+  # The runner's declared wire variant, required exactly when the scenario asks for the failure cases check.
+  def failure_variant(name)
+    return nil unless @requested.include?(FAILURE_CASES) || name
+
+    variants = @scenario.dig("failure_cases", "variants") || {}
+    raise UsageError, "--failure-variant must be one of #{variants.keys.inspect}, not #{name.inspect}" unless variants.key?(name)
+
+    name
   end
 
   def expected_schema(flag)
@@ -294,6 +350,16 @@ class ScenarioRun
     say("scenario #{@scenario['name']} loaded (epoch #{parse_object(response.body)&.fetch('epoch', nil).inspect})")
   end
 
+  # Adds the scenario's fault rules, in order, through the control API; any refusal is a setup error.
+  def add_faults
+    @scenario.fetch("faults", []).each_with_index do |rule, index|
+      response = request("/__files_mock/v1/faults", body: JSON.generate(rule))
+      raise SetupError, "fault rule #{index} got no response: #{@request_error}" unless response
+      raise SetupError, "fault rule #{index} answered #{response.code}: #{response.body.to_s[0, 500]}" unless response.code.start_with?("2")
+    end
+    say("added #{@scenario['faults'].size} fault rules") if @scenario.key?("faults")
+  end
+
   # Runs the consumer in a process group of its own. Its outcome is its leader's: the exit status, or
   # 124 when it is still running at the deadline. Whatever is left of the group afterwards, descendants
   # included, is stopped in #finish.
@@ -320,6 +386,7 @@ class ScenarioRun
   # step that fails is recorded without changing the run's own outcome.
   def finish
     settle("consumer", @consumer_pgid) if @consumer_pgid
+    best_effort("the fault rules") { export_faults } if @ready && @scenario.key?("faults")
     best_effort("the journal") { export_journal } if @ready
     settle("server", @server_pgid) if @server_pgid
     best_effort("run.json") { write_run_record }
@@ -411,13 +478,88 @@ class ScenarioRun
     run_checks(entries)
   end
 
-  def run_checks(entries)
-    return unless @requested.include?(CURSOR_CHAIN)
+  # Saves the fault rules' state exactly as served, for the failure cases check and for the record.
+  def export_faults
+    response = request("/__files_mock/v1/faults")
+    return missing("could not read the fault rules: #{@request_error}") unless response
+    return missing("the fault rules answered #{response.code}") unless response.code == "200"
 
-    problems = cursor_chain_problems(entries)
-    problems.each { |problem| say("#{CURSOR_CHAIN}: #{problem}") }
-    @checks[CURSOR_CHAIN] = problems.empty? ? "passed" : "failed"
-    missing("the #{CURSOR_CHAIN} check failed") unless problems.empty?
+    write("faults.json", response.body)
+    @faults = parse_object(response.body) || missing("the fault rules are not a JSON object")
+  end
+
+  def run_checks(entries)
+    { CURSOR_CHAIN => -> { cursor_chain_problems(entries) },
+      FAILURE_CASES => -> { failure_case_problems(entries) } }.each do |name, problems_of|
+      next unless @requested.include?(name)
+
+      problems = problems_of.call
+      problems.each { |problem| say("#{name}: #{problem}") }
+      @checks[name] = problems.empty? ? "passed" : "failed"
+      missing("the #{name} check failed") unless problems.empty?
+    end
+  end
+
+  # Checks a failure-case run against the scenario's definition and the runner's declared variant: the consumer
+  # reported every case once, in the definition's order, as passed; each case's user saw exactly the case's wire
+  # outcomes for that variant in the journal (a status, or the kind of connection fault that ended the request), or,
+  # for a bounded variant, between its min and max requests that all ended so; every explicit fault rule was used;
+  # and each random rule decided its user's requests as the journal shows (fault for each request a fault rule
+  # answered, pass otherwise). A case left out, repeated, skipped or failed, a missing, extra or out-of-bounds attempt,
+  # or another seed's decisions fail it.
+  def failure_case_problems(entries)
+    cases = @scenario["failure_cases"]["cases"]
+    problems = failure_result_problems(cases)
+    @faulted = {}
+    cases.each do |entry|
+      seen = entries.select { |journaled| journaled.is_a?(Hash) && journaled["id"] == entry["user_id"] && journaled["operation"].to_s.start_with?("users.") }
+      wire = seen.map { |journaled| journaled["fault_kind"] || journaled["status"] }
+      @faulted[entry["user_id"]] = seen.map { |journaled| journaled["fault_id"].nil? ? "pass" : "fault" }
+      expected = entry["wire"].is_a?(Hash) ? entry["wire"].fetch(@variant) : entry["wire"]
+      matched = if expected.is_a?(Hash)
+                  wire.size.between?(expected["min"], expected["max"]) && wire.all?(expected["each"])
+                else
+                  wire == expected
+                end
+      problems << "#{entry['id']}: user #{entry['user_id']} saw #{wire.inspect}, not #{expected.inspect} (variant #{@variant})" unless matched
+      say("#{entry['id']}: #{wire.size} requests under #{@variant}") if expected.is_a?(Hash)
+    end
+    problems + fault_rule_problems(cases)
+  end
+
+  def failure_result_problems(cases)
+    file = File.join(@out, FAILURE_RESULTS)
+    results = File.file?(file) ? parse_object(File.read(file)) : nil
+    return [ "the consumer wrote no #{FAILURE_RESULTS} holding a JSON object" ] unless results
+    return [ "#{FAILURE_RESULTS} has format #{results['format'].inspect}, not #{FAILURE_RESULTS_FORMAT}" ] unless results["format"] == FAILURE_RESULTS_FORMAT
+
+    reported = results["cases"].is_a?(Array) ? results["cases"] : []
+    ids = reported.map { |result| result.is_a?(Hash) ? result["id"] : nil }
+    expected = cases.map { |entry| entry["id"] }
+    problems = ids == expected ? [] : [ "#{FAILURE_RESULTS} reports #{ids.inspect}, not #{expected.inspect}, each once and in order" ]
+    reported.each do |result|
+      next if result.is_a?(Hash) && result["outcome"] == "passed"
+
+      problems << "#{FAILURE_RESULTS}: #{(result.is_a?(Hash) ? result['id'] : result).inspect} did not pass: #{(result.is_a?(Hash) ? result.values_at('outcome', 'failure').compact.join(': ') : 'not a result').inspect}"
+    end
+    problems
+  end
+
+  def fault_rule_problems(cases)
+    return [ "the fault rules' state was not saved" ] unless @faults.is_a?(Hash)
+
+    problems = @faults["pending"] == 0 ? [] : [ "#{@faults['pending'].inspect} explicit fault rules were never used" ]
+    rules = @faults["faults"].is_a?(Array) ? @faults["faults"] : []
+    rules.select { |rule| rule.is_a?(Hash) && rule["random"].is_a?(Hash) }.each do |rule|
+      user = rule.dig("match", "id")
+      entry = cases.find { |candidate| candidate["user_id"] == user }
+      next problems << "a random fault rule matches user #{user.inspect}, which no case uses" unless entry
+
+      decided = Array(rule.dig("random", "schedule")).map { |decision| decision.is_a?(Hash) ? decision["outcome"] : nil }
+      expected = @faulted.fetch(user, [])
+      problems << "#{entry['id']}: its random rule decided #{decided.inspect}, not #{expected.inspect} as journaled" unless decided == expected
+    end
+    problems
   end
 
   # Checks only what the server saw of the parent's listings, in order: each traversal starts without
@@ -503,7 +645,7 @@ class ScenarioRun
       "consumer" => { "argv" => @command, "status" => @consumer_status, "timed_out" => @timed_out,
                       "process_group" => @consumer_pgid },
       "journal" => @journal || { "file" => nil, "complete" => nil, "dropped" => nil, "entries" => nil },
-      "journal_checks" => @checks,
+      "journal_checks" => @checks, "failure_variant" => @variant,
       "setup_error" => @setup_error, "interrupted" => @interrupted, "missing_evidence" => @missing,
       "unsettled_process_groups" => @unsettled,
       "started_at" => @started_at, "ended_at" => utc_now

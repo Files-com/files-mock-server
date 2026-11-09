@@ -200,6 +200,8 @@ class SimulationTest < Minitest::Test
 
     rejected_update = api("PATCH", "/users/1", { "name" => "changed", "require_2fa" => "sometimes" })
     assert_equal 422, rejected_update.status
+    rejected_date = api("PATCH", "/users/1", { "name" => "changed", "authenticate_until" => "2030-02-30T00:00:00Z" })
+    assert_equal [ 422, "bad-request", "authenticate_until is invalid" ], [ rejected_date.status, *rejected_date.json.values_at("type", "error") ]
     assert_equal valid.json, api("GET", "/users/1").json
   end
 

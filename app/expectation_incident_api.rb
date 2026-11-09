@@ -24,7 +24,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/expectation_incidents/:id/resolve" do
+    post "/api/rest/v1/expectation_incidents/:id/acknowledge" do
       status 200
       { "id" => 1, "workspace_id" => 1, "expectation_id" => 1, "status" => "open", "opened_at" => "2000-01-01T01:00:00Z", "last_failed_at" => "2000-01-01T01:00:00Z", "acknowledged_at" => "2000-01-01T01:00:00Z", "snoozed_until" => "2000-01-01T01:00:00Z", "resolved_at" => "2000-01-01T01:00:00Z", "opened_by_evaluation_id" => 1, "last_evaluation_id" => 2, "resolved_by_evaluation_id" => 3, "summary" => {}, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
@@ -41,7 +41,7 @@ module FilesMockServer
     params do
       requires :id, type: Integer
     end
-    post "/api/rest/v1/expectation_incidents/:id/acknowledge" do
+    post "/api/rest/v1/expectation_incidents/:id/resolve" do
       status 200
       { "id" => 1, "workspace_id" => 1, "expectation_id" => 1, "status" => "open", "opened_at" => "2000-01-01T01:00:00Z", "last_failed_at" => "2000-01-01T01:00:00Z", "acknowledged_at" => "2000-01-01T01:00:00Z", "snoozed_until" => "2000-01-01T01:00:00Z", "resolved_at" => "2000-01-01T01:00:00Z", "opened_by_evaluation_id" => 1, "last_evaluation_id" => 2, "resolved_by_evaluation_id" => 3, "summary" => {}, "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end

@@ -106,7 +106,9 @@ module FilesMockServer
       # Creates exactly this folder and its missing parents. Whatever already holds the name, file or
       # folder, is refused and never adopted.
       def create_folder(state, path, provided_mtime)
-        raise Error.destination_exists if path == ROOT || find(state, path)
+        # The root always exists; the API answers creating it as it answers a copy onto an existing path.
+        raise Error.destination_exists("The destination exists.") if path == ROOT
+        raise Error.destination_exists if find(state, path)
 
         parents = missing_parents(state, path)
         reserve(state, parents.size + 1)

@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '~> 7.2', '>= 7.2.3.1'
+gem 'activesupport', '~> 8.1', '>= 8.1.4.1'
 gem 'grape', '~> 3.1.1'
 # The locked json 2.6.3, which RuboCop brings in and the server loads, requires ostruct, and Ruby 4.0
 # no longer ships ostruct as a default gem.
 gem 'ostruct', '~> 0.6'
 gem 'puma', '~> 8.0', '>= 8.0.2'
 gem 'puma-daemon', '~> 0.5', require: false
-gem 'rack', '~> 3.2', '>= 3.2.7'
+gem 'rack', '~> 3.2', '>= 3.2.8'
 # Exact, and the same in the gemspec: setup.sh, build.sh and lint.sh format and check the generated code
 # with this version, and the image installs it.
 gem 'rubocop', '= 1.91.0'

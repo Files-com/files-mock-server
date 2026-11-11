@@ -8135,6 +8135,10 @@
               "type": "string",
               "required": false
             },
+            "schedule_time_exceptions": {
+              "type": "array(object)",
+              "required": false
+            },
             "lookback_interval": {
               "type": "int64",
               "format": "int32",
@@ -8242,6 +8246,10 @@
             },
             "holiday_region": {
               "type": "string",
+              "required": false
+            },
+            "schedule_time_exceptions": {
+              "type": "array(object)",
               "required": false
             },
             "lookback_interval": {
@@ -8357,6 +8365,9 @@
         "lookback_interval": {
           "type": "int64",
           "format": "int64"
+        },
+        "schedule_time_exceptions": {
+          "type": "array(object)"
         },
         "late_acceptance_interval": {
           "type": "int64",

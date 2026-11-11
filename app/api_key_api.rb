@@ -41,7 +41,6 @@ module FilesMockServer
     params do
       optional :expires_at, type: String
       optional :name, type: String
-      optional :permission_set, type: String
     end
     patch "/api/rest/v1/api_key" do
       status 200

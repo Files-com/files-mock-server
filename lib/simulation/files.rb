@@ -30,8 +30,10 @@ module FilesMockServer
       # Parameters modeled when the schema declares them and absent from schemas that predate them:
       # begin_upload's parts, the download identity parameters (local export b8129459; not in the
       # production pin), and a folder listing's with_previews (see #list_folder).
+      # A finalize's async_finalize (files-rails draft MR 8639, not in the production pin) is read whether
+      # or not the schema declares it (see #async_finalize?).
       OPTIONAL_PARAMS = { "files.begin_upload" => %w[parts], "files.download" => %w[with_download_identity expected_download_identity],
-                          "folders.list" => %w[with_previews] }.freeze
+                          "files.finalize_upload" => %w[async_finalize], "folders.list" => %w[with_previews] }.freeze
       # Modeled byte counts, which take the int64 range even where the schema documents them as int32:
       # the API reads an upload's size as a Ruby Integer, so the production schema's int32 format is
       # provenance, not a limit. Every other parameter converts at its schema's width, part numbers
@@ -98,6 +100,14 @@ module FilesMockServer
       # A copy or move answered as pending, applied when its FileMigration is polled to completion.
       Migration = Struct.new(:id, :operation, :path, :dest_path, :params, :status, :failure_message, :files)
       Part = Data.define(:bytes, :etag, :offset)
+      # A finalize async_finalize asked for under the remote upload_finalization profile: its upload and
+      # path, the checked values of the request that started it, the pending replies it has left, and
+      # once it has completed, its outcome: [ status, the File as presented then, version ] or the Error
+      # it ended with.
+      Finalization = Struct.new(:upload, :path, :inputs, :pending, :outcome)
+      # What files.finalize_upload answers: the status, the upload, and the new version with the body to
+      # present it with (nil: present the version as it is now), or the pending reply's body.
+      Finalized = Data.define(:status, :upload, :version, :body)
       # A part body, counted against the transfer byte limit, and against its upload's parts in
       # flight, from before it is read until it is stored or released.
       Received = Struct.new(:reserved, :bytes, :sha256, :stored, :upload, :part, :offset)
@@ -319,13 +329,84 @@ module FilesMockServer
       # Checks the upload's parts, then makes them, in part number order, the file's new version in one
       # step, creating any parent folder deleted since the upload began. Returns [ status, upload,
       # version ]. A failure leaves the upload open and the file's current version in place.
+      #
+      # A finalize that sends async_finalize true under the remote upload_finalization profile is
+      # answered as Files.com answers one for a remote server mount or an Agent (#finalize_in_background).
       def finalize_upload(state, path, params)
         _, values = accepted("files.finalize_upload", path, params)
         raise Error.bad_request("action is missing") unless values.key?("action")
         raise Error.not_supported("Only action=end, which finalizes an upload, is simulated for POST /files/{path}") unless values["action"] == "end"
         raise Error.request_params_required("ref") if values["ref"].to_s.empty?
         raise Error.not_supported("etags: null is not simulated; list every part in etags, or leave etags out of a sequential upload of known size") if params.key?("etags") && params["etags"].nil?
+        return finalize_in_background(state, path, values) if state.profile.upload_finalization.remote? && async_finalize?(params)
 
+        raise Error.resource_locked("#{path} is being completed by another upload; try again once it has finished") if state.finalizations.each_value.any? { |finalization| finalization.path == path && finalization.outcome.nil? }
+
+        status, upload, version = publish_upload(state, path, values)
+        Finalized.new(status, upload, version, nil)
+      end
+
+      # Whether a finalize asks for async_finalize: true or "true" (false, "false" or no value do not).
+      # The raw parameter is read, so a server generated from a schema without it (the production pin)
+      # simulates the remote profile too, and any other value is refused as the API's Boolean coercion does.
+      def async_finalize?(params)
+        return false unless params.key?("async_finalize") && !params["async_finalize"].nil?
+
+        value = Coercion.boolean(params["async_finalize"])
+        raise Error.bad_request("async_finalize is invalid") if value.equal?(Coercion::INVALID)
+
+        value
+      end
+
+      # A finalize for a remote server mount or an Agent, completed in the background: see
+      # Profile::UploadFinalization. The first request for a ref only checks that the ref names an open
+      # upload at this path; its parts are checked when the finalization completes, as the API's
+      # background job checks them, so a failed check is the retained outcome.
+      def finalize_in_background(state, path, values)
+        number = upload_number(values["ref"], state.epoch)
+        finalization = state.finalizations[number] if number
+        raise Error.file_upload_not_found(values["ref"]) if finalization && finalization.path != path
+
+        unless finalization
+          upload = open_upload(state, values["ref"], path)
+          finalization = state.finalizations[upload.id] = Finalization.new(upload, path, values, state.profile.upload_finalization.pending.dup, nil)
+        end
+        unless finalization.outcome || finalization.pending.empty?
+          progress = finalization.pending.shift
+          return Finalized.new(202, finalization.upload, nil, { "status" => "pending", "ref" => values["ref"], "progress" => progress }.compact)
+        end
+
+        finalization.outcome ||= complete_finalization(state, finalization)
+        raise finalization.outcome if finalization.outcome.is_a?(Error)
+
+        status, body, version = finalization.outcome
+        Finalized.new(status, finalization.upload, version, body)
+      end
+
+      # Publishes a background finalization's upload with the inputs of the request that started it,
+      # or fails it with the profile's failure. Either way the upload is gone afterwards, so its ref
+      # cannot be finalized again, and the outcome is kept for every later request. A failed upload's
+      # stored parts are released when it is dropped, once: they stop counting toward the transfer limit
+      # and their bytes are let go, while the finalization keeps the upload's id and its error for repeated
+      # requests. The outcome is kept, so this runs once per finalization, and a reset no longer finds the
+      # upload to discard.
+      def complete_finalization(state, finalization)
+        failure = state.profile.upload_finalization.failure
+        raise Error.finalization_failed(failure) if failure
+
+        status, _, version = publish_upload(state, finalization.path, finalization.inputs)
+        [ status, present(version, state:).freeze, version ]
+      rescue Error => e
+        dropped = state.uploads.delete(finalization.upload.id)
+        if dropped
+          @bytes_in_use -= dropped.parts.each_value.sum { |part| part.bytes.bytesize }
+          dropped.parts.clear
+        end
+        e
+      end
+
+      # Checks the upload's parts and publishes them; see #finalize_upload. Returns [ status, upload, version ].
+      def publish_upload(state, path, values)
         upload = open_upload(state, values["ref"], path)
         profile = state.profile.upload
         unsized = profile.variable_part_limits && upload.declared_size.nil? && !(values.key?("size") && values.key?("etags"))

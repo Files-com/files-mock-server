@@ -1,0 +1,28 @@
+{
+  "name": "api-scenarios-remote-finalize",
+  "description": "The api-scenarios-canonical simulator (the same api_scenarios definition and serial, fixed_part_length upload profile; see that preset) for a site whose uploads go to a remote server mount or a Files.com Agent: a finalize that sends async_finalize true is completed in the background, as the files-rails background finalization of draft MR 8639 answers one. Each upload's first three finalize requests are answered 202 {\"status\": \"pending\", \"ref\"} without progress, then with progress 42, then with progress 100 (pending at 100 is not complete); the next one completes it and that and every later one get the retained File. Its check, files.finalize_upload background, follows each finalized upload in the journal: answered pending at least once, then completed, every request with the same identity headers. A client that does not send async_finalize, or stops waiting while the upload is pending, fails the check. The pending answers and their progress are simulation policy, not what any remote server or Agent reports.",
+  "reset": {
+    "profile": {
+      "api_scenarios": {
+        "format": "files-api-scenarios",
+        "format_version": 1,
+        "definition_sha256": "5d9b8eff0ef0724a68a458db77dc85784bb7d24436f104b98c2a2fe67086bbe0"
+      },
+      "upload": {
+        "mode": "serial",
+        "fixed_part_length": true
+      },
+      "upload_finalization": {
+        "destination": "remote",
+        "pending": [
+          null,
+          42,
+          100
+        ]
+      }
+    }
+  },
+  "journal_checks": [
+    "files.finalize_upload background"
+  ]
+}

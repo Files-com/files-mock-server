@@ -222,7 +222,7 @@ Everything below applies only when `FILES_MOCK_MODE=simulation`.
 | Area | Simulated | Refused (`501`) or not simulated |
 | ---- | --------- | -------------------------------- |
 | Records | List, create, find, update and delete of every resource with the regular `/{name}` and `/{name}/{id}` shape, records without an `id` kept under the parent they were created for, group memberships found by their own fields, lists scoped by path or owner, Style records keyed by path, log lists and delete-only resources filled by fixtures, configuration-dependent answers and a key lookup from fixtures, and the site singleton (`GET`/`PATCH /site`). Increasing IDs per resource, exact types, write-only secrets never returned, file parameters decoded, checked and reported. | Actions (such as `/users/{id}/unlock`), each with the decision or real owner it needs, filtering, sorting, search, uniqueness, foreign keys. `GET /__files_mock/v1/inventory` lists every operation and why. |
-| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, file previews other than text (a file read with `with_previews` answers a text file's preview; a listing with it lists a page of folders only), `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
+| Files and folders | Uploads (known size, parts in order or not, per the upload profile), finalize with or without `etags`, completed in the request or, under the `upload_finalization` profile, in the background as for a remote server mount or Agent (`202` pending with progress, the outcome retained), whole and ranged downloads, stat, metadata, `PATCH /files/{path}` metadata, folders, listing, delete, recursive delete, copy and move with `FileAction` results, pending actions with `FileMigration` polling, ZIP listing, extraction and saving (`file_actions/zip`), file and folder fixtures, underscore destinations with their scope journaled. | Remote server mounts, lock enforcement (locks are advisory), permissions, file previews other than text (a file read with `with_previews` answers a text file's preview; a listing with it lists a page of folders only), `copy_behaviors`, other spellings of existing paths, the stores underscore destinations name. |
 | Locks | Advisory locks on paths, found as the model finds them (by byte prefix): created when both public flags are true, listed with the locks above that apply to subfolders and, on request, the path's range one level deep, as one sorted array, released with their token, exclusive conflicts with the model's message, expiry on a lock clock the tests move, and a separate cleanup of expired locks. | Refreshing a lock or anything else its internal parameters do, shared or owner-only locks, who may act on another user's lock, the real removal job's timing. |
 | Transfer profiles | Legacy (default), serial and parallel part rules, retries forbidden, advertised part sizes (hints) or variable part limits, scheduled part size changes for parts not yet issued, part offsets, target class, a shared part concurrency limit with `503` throttling, presigned URLs, the download identity contract, the historical download request status protocol (an ID on each successful storage response and a chosen status at the download URL joined with it), withheld download sizes, cursors with special characters. | Provider-specific limits beyond the profile, adaptive tuning or throughput claims. |
 | Faults | Deterministic and seeded random rules per operation, record, path, part, session and attempt: Files.com errors with chosen types and `data`, unstructured and web-tier answers, redirects, expired URLs, frontend HTML, empty pages, delays before or after a request is applied, dropped connections before or after a commit, truncated, short, padded and stalled bodies. | Faults outside the local HTTP server's reach, such as TLS handshake failures. |
@@ -667,6 +667,39 @@ in the received parts, finalizing gets `501`, and with no part received
 it gets `422` `processing-failure/file-not-uploaded`. Sent `etags` are
 always checked as above and never replaced by the received parts:
 `etags: []` gets `422` and `etags: null` gets `501`.
+
+A finalize may send `async_finalize` (true, false, `"true"` or
+`"false"`; any other value gets `422`), whether or not the server's schema
+declares it; the production pin does not, and the files-rails background
+finalization of draft MR 8639 does. By default the simulator acts as
+Files.com native storage, which ignores the flag: the finalize is answered
+in its request as above. The reset profile's `upload_finalization` (see
+[Transfer profiles](#transfer-profiles)) can instead act as a remote
+server mount or a Files.com Agent, which completes it in the background:
+
+1. The first finalize with `async_finalize` true for a `ref` checks only
+   that the `ref` names an open upload at that path (`404`
+   `not-found/file-upload-not-found` otherwise) and starts its
+   finalization.
+2. That request and each later one with the same `ref` and path take the
+   next of the profile's `pending` entries and get `202` with
+   `{"status": "pending", "ref": ..., "progress": N}`, `progress` left out
+   for an entry of `null`. A `progress` of 100 is still pending. The same
+   `ref` at another path gets `404`.
+3. Once the `pending` entries are used up, the next request completes the
+   finalization with the values of the request that started it: the parts
+   are checked and published as above, or, when the profile sets a
+   `failure`, nothing is published. That request and every later one for
+   the `ref` get the outcome: the file as it was at completion (`201`, or
+   `200` when it replaced a file), or the error, whether the failed check
+   or the profile's failure. The upload is gone either way, so a finalize
+   of the `ref` without `async_finalize` gets `404`.
+
+While a finalization is pending, a finalize of its path without
+`async_finalize` gets `422` `processing-failure/resource-locked`. The
+journal marks each background answer with `finalization` (`pending` or
+`completed`). A finalization lives until the next reset; Files.com keeps
+outcomes for 3 days.
 
 An empty file is an upload of one empty part. `provided_mtime` accepts a
 time with a UTC offset, a time without one (as the Python SDK sends it,
@@ -1139,6 +1172,9 @@ real site or provider:
 | `download.request_status` | `{"status": "completed"`, `"started"`, `"failed"` or `"error"`, `"header_on_failure": false` or `true}` | The historical Files Sync Worker protocol: each successful storage download response carries `X-Files-Download-Request-Id` and `X-Files-Download-Id` (a failed one too with `header_on_failure`, which the captured producer source does not do for a response that fails before it streams), and the download URL joined with the ID answers the chosen status in the producer's envelope; see [Download request status](#download-request-status). Absent by default. |
 | `download.size` | `sent` (default), `withheld` | With `withheld`, a whole-file `200` has no `Content-Length` (Puma sends it chunked to an HTTP/1.1 client), as the historical producer answered for a remote whose size cannot be trusted, and a `206` has `Content-Range: bytes a-b/*` (the simulator's choice; the producer's range header for that case was not captured). Clients such as the Go SDK then treat the size as untrusted. |
 | `download.identity` | `absent` (default), `contract_v1` | With `contract_v1`, `GET /api/rest/v1/files/{path}` also takes `with_download_identity` (which may be `True` or `False`, as the Python SDK sends it) and `expected_download_identity` and returns `download_identity` (`version`, `token`, `size`, `required_headers` with a strong `If-Match`), following the adopted download identity contract. The URL then requires that `If-Match`; a changed file, even one of the same size, gets `412` `download_source_changed`, and renewing with the token returns the same identity while the file is unchanged. A token that is not `fdi1.` followed by URL-safe Base64 of at most 4096 bytes gets `400`; one that names no current version (a changed file, or one from before a reset) gets `422` `processing-failure/download-identity-unavailable`. The local Rails export (b8129459) declares both parameters and the production pin does not: from a schema that declares them, `absent` acts as a site with the setting off (`with_download_identity` gets an ordinary download, and an expected token gets `422`). |
+| `upload_finalization.destination` | `native` (default), `remote` | How a finalize that sends `async_finalize` true is answered (see [Uploading](#uploading)): `native` in its request, as Files.com native storage ignores the flag; `remote` in the background, as for a remote server mount or a Files.com Agent. |
+| `upload_finalization.pending` | a list of at most 50 entries, each a whole number from 0 to 100 or `null` | `remote` only (default `[]`): the `202` answers each background finalization gives, in order, with that `progress` (`null` leaves it out), before it completes. Simulation policy, not what a remote server or Agent reports. |
+| `upload_finalization.failure` | `{"status": 400-599, "type": "...", "message": "..."}` | `remote` only: the error every background finalization completes with instead of publishing its parts, as a remote server's failure is retained for repeated requests. |
 
 `variable_part_limits`, `part_offset_query` and `upload_target_class` are
 FileUploadPart fields of the combined adaptive schema; a server generated
@@ -1991,6 +2027,19 @@ continues with exactly the cursor its previous page returned, a new
 traversal starts only after the one before it reached its last page, and
 the last traversal must reach its last page. Several complete traversals
 pass, so a test should finish every traversal it starts.
+
+`api-scenarios-remote-finalize` is the `api-scenarios-canonical` simulator
+(the same shared API scenarios definition and upload profile) for a site
+whose uploads go to a remote server mount or an Agent: its
+`upload_finalization` profile is `remote`, and each upload's finalizes
+that send `async_finalize` are answered pending three times, without
+`progress`, then with 42 and with 100, before the next one gets the file.
+Its check, `files.finalize_upload background`, follows each upload's
+finalizes in the journal: every upload finalized at all must have been
+answered pending at least once and then completed, by requests that all
+carried the same identity headers. A client that finalizes without
+`async_finalize`, or stops waiting while an upload is pending, fails it.
+The check needs a scenario whose reset chooses the `remote` profile.
 
 `users-find` holds one user, `docker-fixture-user` named `Docker
 Fixture`. It is the only record, so its ID is 1. `expected_user` is that

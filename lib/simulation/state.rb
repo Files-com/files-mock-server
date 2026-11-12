@@ -31,12 +31,12 @@ module FilesMockServer
       end
     end
 
-    # Everything a reset replaces: the profile, records, uploads, files, folders, list cursors, file
+    # Everything a reset replaces: the profile, records, uploads, background finalizations, files, folders, list cursors, file
     # migrations, locks and the lock clock, download request IDs and the download URLs they may be
     # looked up at, counters, request sequence, journal and fault rules.
     class State
       attr_reader :epoch, :started, :records, :last_ids, :singletons, :path_records, :responses, :uploads, :files, :folders, :cursors, :cursor_aliases,
-                  :migrations, :file_metadata, :previews, :locks, :download_requests, :download_transfers, :journal, :faults, :most_parts_in_flight
+                  :migrations, :file_metadata, :previews, :locks, :download_requests, :download_transfers, :journal, :faults, :most_parts_in_flight, :finalizations
       attr_accessor :profile, :last_upload_id, :last_preview_id, :commits, :last_cursor_id, :last_migration_id, :last_lock_id, :lock_clock, :last_download_request_id,
                     :request_count
 
@@ -53,6 +53,7 @@ module FilesMockServer
         @previews = {} # file version number => the id of its text preview, made by its first read with_previews
         @last_preview_id = 0
         @uploads = {} # upload number => Files::Upload not yet finalized
+        @finalizations = {} # upload number => Files::Finalization, for finalizes completed in the background
         @most_parts_in_flight = 0 # the most parts holding a place at once in this state (Files#admit)
         @last_upload_id = 0
         @files = {} # path => the file's current Files::Version

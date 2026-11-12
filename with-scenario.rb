@@ -26,6 +26,8 @@
 #                                passed result for each case, and the journal
 #                                and the fault rules' decisions must show each
 #                                case's expected wire outcome
+#   "files.finalize_upload background" needs a remote upload_finalization
+#                                profile; see #background_finalize_problems
 #
 # The server binds 127.0.0.1 only, on a free port, and must report the
 # expected schema SHA-256 (--schema-sha256, else FILES_MOCK_SCHEMA_SHA256,
@@ -93,8 +95,9 @@ class ScenarioRun
   HOST = "127.0.0.1"
   CONTRACT_VERSION = 3
   CURSOR_CHAIN = "folders.list cursor chain"
+  BACKGROUND_FINALIZE = "files.finalize_upload background"
   FAILURE_CASES = "failure cases"
-  KNOWN_CHECKS = [ CURSOR_CHAIN, FAILURE_CASES ].freeze
+  KNOWN_CHECKS = [ CURSOR_CHAIN, BACKGROUND_FINALIZE, FAILURE_CASES ].freeze
   # What the consumer of a "failure cases" scenario writes to its output directory.
   FAILURE_RESULTS = "failure-cases.json"
   FAILURE_RESULTS_FORMAT = "files-failure-cases/1"
@@ -202,6 +205,7 @@ class ScenarioRun
     checks = scenario.fetch("journal_checks", [])
     raise UsageError, "journal_checks must be a list drawn from #{KNOWN_CHECKS.inspect}" unless checks.is_a?(Array) && (checks - KNOWN_CHECKS).empty?
     raise UsageError, "the #{CURSOR_CHAIN} check needs a string \"parent\"" if checks.include?(CURSOR_CHAIN) && !(scenario["parent"].is_a?(String) && !scenario["parent"].empty?)
+    raise UsageError, "the #{BACKGROUND_FINALIZE} check needs a reset whose profile's upload_finalization destination is remote" if checks.include?(BACKGROUND_FINALIZE) && scenario.dig("reset", "profile", "upload_finalization", "destination") != "remote"
     raise UsageError, "faults must be a list of fault rule objects" unless scenario.fetch("faults", []).then { |faults| faults.is_a?(Array) && faults.all?(Hash) }
 
     check_failure_cases(scenario["failure_cases"]) if checks.include?(FAILURE_CASES)
@@ -478,6 +482,27 @@ class ScenarioRun
     run_checks(entries)
   end
 
+  # Checks only what the server saw of each upload's finalizes, under a reset whose upload_finalization
+  # profile is remote: every upload finalized at all was answered pending (202) at least once, then
+  # completed (200 or 201), each answer only to requests that repeated the same identity headers, with
+  # nothing after its completion but the retained file. An upload finalized in its request (without
+  # async_finalize) or given up while pending fails the check. The consumer checks its own results.
+  def background_finalize_problems(entries)
+    finalizes = entries.select { |e| e.is_a?(Hash) && e["operation"] == "files.finalize_upload" && e["upload"] }
+    return [ "no files.finalize_upload requests named an upload" ] if finalizes.empty?
+
+    finalizes.group_by { |e| e["upload"] }.flat_map do |upload, answers|
+      states = answers.map { |e| [ e["status"], e["finalization"] ] }
+      pending = states.take_while { |state| state == [ 202, "pending" ] }.size
+      rest = states.drop(pending)
+      problems = []
+      problems << "upload #{upload} was never answered pending" if pending.zero?
+      problems << "upload #{upload} was not completed after #{pending} pending answers (then #{rest.inspect})" unless rest.any? && rest.all? { |status, state| [ 200, 201 ].include?(status) && state == "completed" }
+      problems << "upload #{upload}'s finalizes carried different identity headers" if answers.map { |e| e["credentials"] }.uniq.size > 1
+      problems
+    end
+  end
+
   # Saves the fault rules' state exactly as served, for the failure cases check and for the record.
   def export_faults
     response = request("/__files_mock/v1/faults")
@@ -490,6 +515,7 @@ class ScenarioRun
 
   def run_checks(entries)
     { CURSOR_CHAIN => -> { cursor_chain_problems(entries) },
+      BACKGROUND_FINALIZE => -> { background_finalize_problems(entries) },
       FAILURE_CASES => -> { failure_case_problems(entries) } }.each do |name, problems_of|
       next unless @requested.include?(name)
 

@@ -513,8 +513,13 @@ module FilesMockServer
             upload, descriptor = @files.begin_legacy_upload(state, target["path"], input, transfer_origin(request))
             [ json(200, descriptor), { "upload" => upload.id } ]
           else
-            status, upload, version = @files.finalize_upload(state, target["path"], input)
-            [ json(status, @files.present(version, state:)), { "upload" => upload.id, "version" => version.number, "bytes" => version.size, "sha256" => version.sha256 } ]
+            finalized = @files.finalize_upload(state, target["path"], input)
+            return [ json(202, finalized.body), { "upload" => finalized.upload.id, "finalization" => "pending" } ] if finalized.status == 202
+
+            version = finalized.version
+            fields = { "upload" => finalized.upload.id, "version" => version.number, "bytes" => version.size, "sha256" => version.sha256 }
+            fields["finalization"] = "completed" if finalized.body
+            [ json(finalized.status, finalized.body || @files.present(version, state:)), fields ]
           end
         when "files.download"
           entry, download_uri, identity = @files.download(state, target["path"], input, transfer_origin(request))

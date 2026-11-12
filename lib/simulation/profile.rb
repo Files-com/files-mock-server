@@ -9,7 +9,7 @@ module FilesMockServer
       # {"status": "pending", "file_migration_id"} and is applied only when its FileMigration is
       # polled to completion (see Files#migration).
       FILE_ACTIONS = %w[completed pending].freeze
-      FIELDS = %w[file_actions upload download signed_urls list_cursors site_policy api_scenarios].freeze
+      FIELDS = %w[file_actions upload download signed_urls list_cursors site_policy api_scenarios upload_finalization].freeze
       # list_cursors: "opaque" cursors are hexadecimal; "special-characters" cursors start with
       # SPECIAL_CURSOR, which holds a space, +, &, =, a percent escape and #, so a client that
       # re-encodes or decodes a cursor more than once sends one the list refuses (422 invalid-cursor).
@@ -32,6 +32,9 @@ module FilesMockServer
         "download.size" => "withheld: the historical producer's answer for a remote whose size cannot be trusted (a whole-file 200 without Content-Length); a range's \"*\" total " \
                            "is simulation policy, since the producer's range header for that case was not captured",
         "site_policy.always_mkdir_parents" => "true: simulation policy, as older simulators behaved; false: the Files.com site setting's default, with the API's find_folder rule for a missing parent folder",
+        "upload_finalization" => "native: Files.com native storage, which completes a finalize in its request whether or not it sends async_finalize; remote: the files-rails background " \
+                                 "finalization of draft MR 8639 (c15aeb93) for remote server mounts and Agents, not deployed: 202 pending with the upload ref and an optional progress, the same " \
+                                 "request repeated for the outcome, and the File or error retained; how many replies are pending, their progress and any failure are simulation policy",
       }.freeze
       # signed_urls: upload and download URLs carry a synthetic AWS SigV4-style presigned query (a
       # sentinel credential, X-Amz-Date, X-Amz-Expires and a signature over the exact query bytes), and
@@ -254,6 +257,71 @@ module FilesMockServer
         end
       end
 
+      # How a finalize (files.finalize_upload) that sends async_finalize true is answered.
+      #
+      # destination "native" (the default) answers it in its request, as every other finalize, as
+      # Files.com native storage does: the flag is accepted and changes nothing.
+      #
+      # "remote" answers it as an upload to a remote server mount or a Files.com Agent that Files.com
+      # completes in the background. The first such request for a ref starts a finalization for it,
+      # checking only that the ref names an open upload at the request's path. That request and each
+      # later one for the same ref and path take the next entry of pending, in order, and answer 202
+      # {"status": "pending", "ref", "progress"}, an entry of null leaving progress out. Once pending
+      # is used up, the next request completes the finalization with the inputs of the request that
+      # started it: the parts become the file as a finalize in its request makes it, or, when failure
+      # is set, nothing is published and that error is the outcome. That request and every later one
+      # for the ref answer the outcome: the File as it was at completion (201, or 200 when it replaced
+      # a file), or the error, which leaves the ref unusable. While a finalization is pending, a
+      # finalize of its path in a request (without async_finalize) is 423 locked; afterwards a
+      # finalize of the ref in a request is 404, since the upload is gone.
+      class UploadFinalization
+        DESTINATIONS = %w[native remote].freeze
+        FIELDS = %w[destination pending failure].freeze
+        FAILURE_FIELDS = %w[status type message].freeze
+        MAX_PENDING = 50
+
+        attr_reader :destination, :pending, :failure
+
+        def initialize(spec)
+          raise Error.invalid_control("profile.upload_finalization must be a JSON object") unless spec.is_a?(Hash)
+
+          unknown = spec.keys - FIELDS
+          raise Error.invalid_control("Unknown profile.upload_finalization fields: #{unknown.join(", ")}") if unknown.any?
+
+          @destination = spec.fetch("destination", "native")
+          raise Error.invalid_control("profile.upload_finalization.destination must be one of: #{DESTINATIONS.join(", ")}") unless DESTINATIONS.include?(@destination)
+          raise Error.invalid_control("profile.upload_finalization.pending and failure apply to destination remote") if !remote? && (spec.key?("pending") || spec.key?("failure"))
+
+          @pending = checked_pending(spec.fetch("pending", []))
+          @failure = checked_failure(spec["failure"]) if spec.key?("failure")
+        end
+
+        def remote?
+          @destination == "remote"
+        end
+
+        def as_json
+          { "destination" => @destination, "pending" => (@pending if remote?), "failure" => @failure }.compact
+        end
+
+        private
+
+        def checked_pending(spec)
+          valid = spec.is_a?(Array) && spec.size <= MAX_PENDING && spec.all? { |progress| progress.nil? || (progress.is_a?(Integer) && progress.between?(0, 100)) }
+          raise Error.invalid_control("profile.upload_finalization.pending must be a list of at most #{MAX_PENDING} progress values, each a whole number from 0 to 100 or null") unless valid
+
+          spec.dup.freeze
+        end
+
+        def checked_failure(spec)
+          valid = spec.is_a?(Hash) && (spec.keys - FAILURE_FIELDS).empty? && spec["status"].is_a?(Integer) && spec["status"].between?(400, 599) &&
+                  spec["type"].is_a?(String) && !spec["type"].empty? && spec.fetch("message", "").is_a?(String)
+          raise Error.invalid_control("profile.upload_finalization.failure must be a JSON object with a status from 400 to 599, a Files.com error type and, optionally, a message") unless valid
+
+          { "status" => spec["status"], "type" => spec["type"], "message" => spec.fetch("message", "The upload could not be completed") }.freeze
+        end
+      end
+
       # The site's "always create parent folders" setting (Site always_mkdir_parents). true, the
       # default: every write creates the parent folders it is missing. false, the setting's default
       # on a Files.com site: an upload (begin_upload and finalize) or a folder creation whose parent
@@ -280,7 +348,7 @@ module FilesMockServer
         end
       end
 
-      attr_reader :file_actions, :upload, :download, :url_lifetime, :list_cursors, :site_policy, :api_scenarios
+      attr_reader :file_actions, :upload, :download, :url_lifetime, :list_cursors, :site_policy, :api_scenarios, :upload_finalization
 
       # context: { part_fields:, default_partsize:, max_body_bytes: } from the server's schema and limits.
       def self.default(**)
@@ -299,6 +367,7 @@ module FilesMockServer
         @upload = Upload.new(spec.fetch("upload", {}), part_fields:, default_partsize:, max_body_bytes:)
         @download = Download.new(spec.fetch("download", {}))
         @site_policy = SitePolicy.new(spec.fetch("site_policy", {}))
+        @upload_finalization = UploadFinalization.new(spec.fetch("upload_finalization", {}))
         @url_lifetime = signed_urls(spec["signed_urls"]) if spec.key?("signed_urls")
         @api_scenarios = validated_api_scenarios(spec["api_scenarios"]) if spec.key?("api_scenarios")
         @list_cursors = spec.fetch("list_cursors", "opaque")
@@ -334,7 +403,8 @@ module FilesMockServer
 
       def as_json
         { "file_actions" => @file_actions, "upload" => @upload.as_json, "download" => @download.as_json, "signed_urls" => ({ "lifetime" => @url_lifetime } if signed_urls?),
-          "list_cursors" => @list_cursors, "site_policy" => @site_policy.as_json, "api_scenarios" => @api_scenarios }.compact
+          "list_cursors" => @list_cursors, "site_policy" => @site_policy.as_json, "api_scenarios" => @api_scenarios,
+          "upload_finalization" => (@upload_finalization.as_json if @upload_finalization.remote?) }.compact
       end
 
       private

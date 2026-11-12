@@ -197,6 +197,12 @@ module FilesMockServer
         new(rule.status, rule.type || "simulation/injected-fault", title, rule.message || "Simulated #{rule.status} response from fault rule #{rule.id}", headers:, data: rule.data)
       end
 
+      # The failure a reset's remote upload_finalization profile chose for background finalizations.
+      def self.finalization_failed(failure)
+        title = failure["type"].split("/").last.split("-").map(&:capitalize).join(" ")
+        new(failure["status"], failure["type"], title, failure["message"])
+      end
+
       # A fault rule that closes or cuts the connection on a server that cannot.
       def self.fault_unavailable(rule)
         not_supported("Fault rule #{rule.id} (#{rule.kind}) closes or cuts the connection, which this server cannot do; run the simulator with bundle exec puma. The request was not applied.")

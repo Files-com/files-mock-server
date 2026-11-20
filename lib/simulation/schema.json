@@ -6760,6 +6760,10 @@
           "type": "int64",
           "format": "int64"
         },
+        "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
         "sender": {
           "type": "string"
         },

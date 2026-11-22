@@ -3,10 +3,10 @@
   "format_version": 1,
   "swagger": {
     "name": "swagger_doc-production.json",
-    "sha256": "d13853a4aafea4dd8287bf2945d4defcd0835d8a5dbf1d6d577281bae56e7b63"
+    "sha256": "12e14e012b2690a9ac1f12cbb0c182b2da38ff8f7c5d86da0ed93372cd30c23a"
   },
   "schema_sha256": "3635f32db7f597fbca3ba45d746fec148e16f2eb8787f48c80e5bb1e43c4b07f",
-  "simulator_version": "1.0.760",
+  "simulator_version": "1.0.761",
   "generator": {
     "commit": "2fd68e31065cbc9fc3674e7190c7453a30e11593",
     "tree": "7025ced0f6807d36544097a0943b788bec4012d9",

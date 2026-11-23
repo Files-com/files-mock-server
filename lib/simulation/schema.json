@@ -5802,6 +5802,10 @@
           "type": "int64",
           "format": "int64"
         },
+        "effective_max_uses": {
+          "type": "int64",
+          "format": "int64"
+        },
         "internal_name": {
           "type": "string"
         },
@@ -19766,6 +19770,11 @@
               "format": "int32",
               "required": false
             },
+            "bundle_max_uses": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
             "welcome_email_enabled": {
               "type": "boolean",
               "required": false
@@ -20559,6 +20568,10 @@
           ]
         },
         "bundle_expiration": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "bundle_max_uses": {
           "type": "int64",
           "format": "int64"
         },

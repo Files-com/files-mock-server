@@ -5874,6 +5874,206 @@
         }
       }
     },
+    "certificates": {
+      "model": "Certificate",
+      "entity": "Certificate",
+      "path": "/certificates",
+      "key": "id",
+      "scope": [
+
+      ],
+      "operations": {
+        "list": {
+          "operation_id": "GetCertificates",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "cursor": {
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            }
+          }
+        },
+        "find": {
+          "operation_id": "GetCertificatesId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        },
+        "create": {
+          "operation_id": "PostCertificates",
+          "method": "POST",
+          "status": 201,
+          "params": {
+            "name": {
+              "type": "string",
+              "required": true
+            },
+            "certificate_domain": {
+              "type": "string",
+              "required": false
+            },
+            "certificate_extra_domains": {
+              "type": "array(string)",
+              "required": false
+            },
+            "certificate_country": {
+              "type": "string",
+              "required": false
+            },
+            "certificate_state_or_province": {
+              "type": "string",
+              "required": false
+            },
+            "certificate_city_or_locale": {
+              "type": "string",
+              "required": false
+            },
+            "certificate_company_name": {
+              "type": "string",
+              "required": false
+            },
+            "csr_ou1": {
+              "type": "string",
+              "required": false
+            },
+            "csr_ou2": {
+              "type": "string",
+              "required": false
+            },
+            "csr_ou3": {
+              "type": "string",
+              "required": false
+            },
+            "certificate_email_address": {
+              "type": "string",
+              "required": false
+            },
+            "key_type": {
+              "type": "string",
+              "required": false
+            },
+            "certificate": {
+              "type": "string",
+              "required": false
+            },
+            "private_key": {
+              "type": "string",
+              "required": false
+            },
+            "password": {
+              "type": "string",
+              "required": false
+            },
+            "intermediates": {
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        "update": {
+          "operation_id": "PatchCertificatesId",
+          "method": "PATCH",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            },
+            "name": {
+              "type": "string",
+              "required": false
+            },
+            "intermediates": {
+              "type": "string",
+              "required": false
+            },
+            "certificate": {
+              "type": "string",
+              "required": false
+            }
+          }
+        },
+        "delete": {
+          "operation_id": "DeleteCertificatesId",
+          "method": "DELETE",
+          "status": 204,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "custom_domain_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "certificate": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "display_status": {
+          "type": "string"
+        },
+        "domains": {
+          "type": "array(string)"
+        },
+        "expires_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "brick_managed": {
+          "type": "boolean"
+        },
+        "intermediates": {
+          "type": "string"
+        },
+        "ip_addresses": {
+          "type": "array(string)"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "key_type": {
+          "type": "string"
+        },
+        "request": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        }
+      }
+    },
     "chat_sessions": {
       "model": "ChatSession",
       "entity": "ChatSession",
@@ -19775,6 +19975,10 @@
               "format": "int32",
               "required": false
             },
+            "dangerously_use_custom_domain_for_transfer_urls": {
+              "type": "boolean",
+              "required": false
+            },
             "welcome_email_enabled": {
               "type": "boolean",
               "required": false
@@ -20748,6 +20952,9 @@
         },
         "domain": {
           "type": "string"
+        },
+        "dangerously_use_custom_domain_for_transfer_urls": {
+          "type": "boolean"
         },
         "domain_hsts_header": {
           "type": "boolean"

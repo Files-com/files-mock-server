@@ -1,15 +1,15 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "ee774b2c0e674fa6e66e6715ed431f901f2b42109b2f9dd819938054dfcc5c09",
-  "models": 145,
-  "operations": 400,
+  "swagger_sha256": "875efe9c40f059280a2d2c04aa427ce5beb2f6a09f9450513a325c5647ff4c7a",
+  "models": 146,
+  "operations": 408,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 31,
+    "gap": 34,
     "path-record": 3,
     "real-only": 5,
-    "record": 319,
+    "record": 324,
     "scoped-list": 8,
     "singleton": 2,
     "specialized": 22
@@ -792,6 +792,89 @@
       "shape": "collection",
       "disposition": "record",
       "simulator_operation": "bundle_registrations.list"
+    },
+    {
+      "model": "Certificate",
+      "method": "list",
+      "operation_id": "GetCertificates",
+      "verb": "GET",
+      "path": "/certificates",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "certificates.list"
+    },
+    {
+      "model": "Certificate",
+      "method": "find",
+      "operation_id": "GetCertificatesId",
+      "verb": "GET",
+      "path": "/certificates/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "certificates.find"
+    },
+    {
+      "model": "Certificate",
+      "method": "create",
+      "operation_id": "PostCertificates",
+      "verb": "POST",
+      "path": "/certificates",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "certificates.create"
+    },
+    {
+      "model": "Certificate",
+      "method": "activate",
+      "operation_id": "PostCertificatesIdActivate",
+      "verb": "POST",
+      "path": "/certificates/{id}/activate",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
+    },
+    {
+      "model": "Certificate",
+      "method": "deactivate",
+      "operation_id": "PostCertificatesIdDeactivate",
+      "verb": "POST",
+      "path": "/certificates/{id}/deactivate",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
+    },
+    {
+      "model": "Certificate",
+      "method": "replace_with_files",
+      "operation_id": "PostCertificatesIdReplaceWithFilesCertificate",
+      "verb": "POST",
+      "path": "/certificates/{id}/replace_with_files_certificate",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
+    },
+    {
+      "model": "Certificate",
+      "method": "update",
+      "operation_id": "PatchCertificatesId",
+      "verb": "PATCH",
+      "path": "/certificates/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "certificates.update"
+    },
+    {
+      "model": "Certificate",
+      "method": "delete",
+      "operation_id": "DeleteCertificatesId",
+      "verb": "DELETE",
+      "path": "/certificates/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "certificates.delete"
     },
     {
       "model": "ChatSession",

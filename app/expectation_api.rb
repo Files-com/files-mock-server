@@ -10,7 +10,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/expectations" do
       status 200
-      [ { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
+      [ { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_interval_minutes" => 15, "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" } ]
     end
 
     params do
@@ -26,6 +26,7 @@ module FilesMockServer
       optional :recurring_days, type: [ Integer ]
       optional :schedule_id, type: Integer
       optional :schedule_days_of_week, type: [ Integer ]
+      optional :schedule_interval_minutes, type: Integer
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String
       optional :holiday_region, type: String
@@ -39,7 +40,7 @@ module FilesMockServer
     end
     post "/api/rest/v1/expectations" do
       status 201
-      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_interval_minutes" => 15, "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -47,7 +48,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/expectations/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_interval_minutes" => 15, "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do
@@ -64,6 +65,7 @@ module FilesMockServer
       optional :recurring_days, type: [ Integer ]
       optional :schedule_id, type: Integer
       optional :schedule_days_of_week, type: [ Integer ]
+      optional :schedule_interval_minutes, type: Integer
       optional :schedule_times_of_day, type: [ String ]
       optional :schedule_time_zone, type: String
       optional :holiday_region, type: String
@@ -77,7 +79,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/expectations/:id" do
       status 200
-      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
+      { "id" => 1, "workspace_id" => 1, "name" => "Daily Vendor Feed", "description" => "Wait for the vendor CSV every morning.", "path" => "incoming/vendor_a", "source" => "*.csv", "exclude_pattern" => "*.tmp", "disabled" => true, "expectations_version" => 2, "trigger" => "manual", "interval" => "day", "recurring_day" => 3, "recurring_days" => [ 1, 15 ], "schedule_id" => 1, "schedule_days_of_week" => [ 1, 3, 5 ], "schedule_interval_minutes" => 15, "schedule_times_of_day" => [ "06:00" ], "schedule_time_zone" => "UTC", "holiday_region" => "us", "lookback_interval" => 3600, "schedule_time_exceptions" => [ { "holiday_region" => "nyse_early_close", "times_of_day" => [ "13:00" ] } ], "late_acceptance_interval" => 900, "inactivity_interval" => 300, "max_open_interval" => 43200, "criteria" => { "count" => { "exact" => 1 }, "extensions" => [ "csv" ] }, "last_evaluated_at" => "2000-01-01T01:00:00Z", "last_success_at" => "2000-01-01T01:00:00Z", "last_failure_at" => "2000-01-01T01:00:00Z", "last_result" => "success", "created_at" => "2000-01-01T01:00:00Z", "updated_at" => "2000-01-01T01:00:00Z" }
     end
 
     params do

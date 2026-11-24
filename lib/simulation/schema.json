@@ -10126,6 +10126,11 @@
             "name": {
               "type": "string",
               "required": false
+            },
+            "preferred_workspace_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
             }
           }
         },
@@ -10189,6 +10194,10 @@
           "format": "int64"
         },
         "integration_centric_profile_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "preferred_workspace_id": {
           "type": "int64",
           "format": "int64"
         },

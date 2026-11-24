@@ -17997,9 +17997,6 @@
         "public_sso_domain": {
           "type": "string"
         },
-        "public_sso_domain_dns_value": {
-          "type": "string"
-        },
         "ldap_host": {
           "type": "string"
         },

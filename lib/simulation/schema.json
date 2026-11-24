@@ -3783,6 +3783,26 @@
           "type": "int64",
           "format": "int64"
         },
+        "completed_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "created_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "running",
+            "success",
+            "partial_failure",
+            "failure",
+            "skipped",
+            "queued",
+            "canceled"
+          ]
+        },
         "automation_id": {
           "type": "int64",
           "format": "int64"
@@ -3799,15 +3819,14 @@
           "type": "int64",
           "format": "int64"
         },
+        "initiating_user_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "initiating_interface": {
+          "type": "string"
+        },
         "cancel_requested_at": {
-          "type": "date-time",
-          "format": "date-time"
-        },
-        "completed_at": {
-          "type": "date-time",
-          "format": "date-time"
-        },
-        "created_at": {
           "type": "date-time",
           "format": "date-time"
         },
@@ -3837,18 +3856,6 @@
         "runtime": {
           "type": "double",
           "format": "double"
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "running",
-            "success",
-            "partial_failure",
-            "failure",
-            "skipped",
-            "queued",
-            "canceled"
-          ]
         },
         "successful_operations": {
           "type": "int64",
@@ -4069,6 +4076,18 @@
               "format": "int32",
               "required": false
             },
+            "shared_trigger_user_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
+            "shared_trigger_group_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
+            "shared_trigger_partner_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
             "schedule_days_of_week": {
               "type": "array(int64)",
               "required": false
@@ -4160,7 +4179,8 @@
                 "custom_schedule",
                 "webhook",
                 "email",
-                "action"
+                "action",
+                "shared"
               ],
               "required": false
             },
@@ -4253,6 +4273,18 @@
               "format": "int32",
               "required": false
             },
+            "shared_trigger_user_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
+            "shared_trigger_group_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
+            "shared_trigger_partner_ids": {
+              "type": "array(int64)",
+              "required": false
+            },
             "schedule_days_of_week": {
               "type": "array(int64)",
               "required": false
@@ -4344,7 +4376,8 @@
                 "custom_schedule",
                 "webhook",
                 "email",
-                "action"
+                "action",
+                "shared"
               ],
               "required": false
             },
@@ -4536,6 +4569,15 @@
         "source": {
           "type": "string"
         },
+        "shared_trigger_user_ids": {
+          "type": "array(int64)"
+        },
+        "shared_trigger_group_ids": {
+          "type": "array(int64)"
+        },
+        "shared_trigger_partner_ids": {
+          "type": "array(int64)"
+        },
         "sync_ids": {
           "type": "array(int64)"
         },
@@ -4550,7 +4592,8 @@
             "custom_schedule",
             "webhook",
             "email",
-            "action"
+            "action",
+            "shared"
           ]
         },
         "user_id": {
@@ -6822,6 +6865,168 @@
         },
         "ip_addresses": {
           "type": "array(string)"
+        },
+        "created_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "date-time",
+          "format": "date-time"
+        }
+      }
+    },
+    "database_destinations": {
+      "model": "DatabaseDestination",
+      "entity": "DatabaseDestination",
+      "path": "/database_destinations",
+      "key": "id",
+      "scope": [
+
+      ],
+      "operations": {
+        "list": {
+          "operation_id": "GetDatabaseDestinations",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "cursor": {
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "sort_by": {
+              "type": "object",
+              "required": false
+            },
+            "filter": {
+              "type": "object",
+              "required": false
+            },
+            "filter_prefix": {
+              "type": "object",
+              "required": false
+            }
+          }
+        },
+        "find": {
+          "operation_id": "GetDatabaseDestinationsId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        },
+        "create": {
+          "operation_id": "PostDatabaseDestinations",
+          "method": "POST",
+          "status": 201,
+          "params": {
+            "name": {
+              "type": "string",
+              "required": true
+            },
+            "provider": {
+              "type": "string",
+              "enum": [
+                "snowflake",
+                "bigquery",
+                "supabase",
+                "postgresql",
+                "mysql"
+              ],
+              "required": true
+            },
+            "config": {
+              "type": "object",
+              "required": true
+            },
+            "secret_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            },
+            "workspace_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            }
+          }
+        },
+        "update": {
+          "operation_id": "PatchDatabaseDestinationsId",
+          "method": "PATCH",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            },
+            "name": {
+              "type": "string",
+              "required": false
+            },
+            "secret_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "config": {
+              "type": "object",
+              "required": false
+            }
+          }
+        },
+        "delete": {
+          "operation_id": "DeleteDatabaseDestinationsId",
+          "method": "DELETE",
+          "status": 204,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string",
+          "enum": [
+            "snowflake",
+            "bigquery",
+            "supabase",
+            "postgresql",
+            "mysql"
+          ]
+        },
+        "config": {
+          "type": "object"
+        },
+        "secret_id": {
+          "type": "int64",
+          "format": "int64"
         },
         "created_at": {
           "type": "date-time",
@@ -16926,6 +17131,67 @@
         }
       }
     },
+    "shared_workflows": {
+      "model": "SharedWorkflow",
+      "entity": "SharedWorkflow",
+      "path": "/shared_workflows",
+      "key": "id",
+      "scope": [
+
+      ],
+      "operations": {
+        "list": {
+          "operation_id": "GetSharedWorkflows",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "cursor": {
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "sort_by": {
+              "type": "object",
+              "required": false
+            }
+          }
+        },
+        "find": {
+          "operation_id": "GetSharedWorkflowsId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "submission_revision": {
+          "type": "string"
+        },
+        "form_fields": {
+          "type": "array(object)"
+        }
+      }
+    },
     "siem_http_destination_events": {
       "model": "SiemHttpDestinationEvent",
       "entity": "SiemHttpDestinationEvent",
@@ -17749,6 +18015,11 @@
               "type": "int64",
               "format": "int32",
               "required": false
+            },
+            "shared_workflow_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
             }
           }
         },
@@ -17815,6 +18086,10 @@
           "format": "int64"
         },
         "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "shared_workflow_id": {
           "type": "int64",
           "format": "int64"
         }

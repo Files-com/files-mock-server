@@ -47,6 +47,7 @@ require "app/chat_session_api"
 require "app/child_site_management_policy_api"
 require "app/clickwrap_api"
 require "app/custom_domain_api"
+require "app/database_destination_api"
 require "app/desktop_configuration_profile_api"
 require "app/dns_record_api"
 require "app/email_incoming_message_api"
@@ -114,6 +115,7 @@ require "app/settings_change_api"
 require "app/sftp_action_log_api"
 require "app/sftp_host_key_api"
 require "app/share_group_api"
+require "app/shared_workflow_api"
 require "app/siem_http_destination_api"
 require "app/siem_http_destination_event_api"
 require "app/site_api"
@@ -168,6 +170,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ChildSiteManagementPolicyAPI
   mount FilesMockServer::ClickwrapAPI
   mount FilesMockServer::CustomDomainAPI
+  mount FilesMockServer::DatabaseDestinationAPI
   mount FilesMockServer::DesktopConfigurationProfileAPI
   mount FilesMockServer::DnsRecordAPI
   mount FilesMockServer::EmailIncomingMessageAPI
@@ -235,6 +238,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::SftpActionLogAPI
   mount FilesMockServer::SftpHostKeyAPI
   mount FilesMockServer::ShareGroupAPI
+  mount FilesMockServer::SharedWorkflowAPI
   mount FilesMockServer::SiemHttpDestinationAPI
   mount FilesMockServer::SiemHttpDestinationEventAPI
   mount FilesMockServer::SiteAPI

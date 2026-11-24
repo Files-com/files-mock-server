@@ -1,15 +1,15 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "05051b266ef548459cf89c1806be49f771ac86b5036273c10b843eecce0ab7db",
-  "models": 148,
-  "operations": 411,
+  "swagger_sha256": "96c50a844f7a00e54c75f131f45c3e8ce0be0cba2ec53d82509fa3c186808390",
+  "models": 150,
+  "operations": 420,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 35,
+    "gap": 37,
     "path-record": 3,
     "real-only": 5,
-    "record": 326,
+    "record": 333,
     "scoped-list": 8,
     "singleton": 2,
     "specialized": 22
@@ -1087,6 +1087,56 @@
       "shape": "member",
       "disposition": "record",
       "simulator_operation": "custom_domains.delete"
+    },
+    {
+      "model": "DatabaseDestination",
+      "method": "list",
+      "operation_id": "GetDatabaseDestinations",
+      "verb": "GET",
+      "path": "/database_destinations",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "database_destinations.list"
+    },
+    {
+      "model": "DatabaseDestination",
+      "method": "find",
+      "operation_id": "GetDatabaseDestinationsId",
+      "verb": "GET",
+      "path": "/database_destinations/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "database_destinations.find"
+    },
+    {
+      "model": "DatabaseDestination",
+      "method": "create",
+      "operation_id": "PostDatabaseDestinations",
+      "verb": "POST",
+      "path": "/database_destinations",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "database_destinations.create"
+    },
+    {
+      "model": "DatabaseDestination",
+      "method": "update",
+      "operation_id": "PatchDatabaseDestinationsId",
+      "verb": "PATCH",
+      "path": "/database_destinations/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "database_destinations.update"
+    },
+    {
+      "model": "DatabaseDestination",
+      "method": "delete",
+      "operation_id": "DeleteDatabaseDestinationsId",
+      "verb": "DELETE",
+      "path": "/database_destinations/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "database_destinations.delete"
     },
     {
       "model": "DesktopConfigurationProfile",
@@ -3409,6 +3459,48 @@
       "shape": "member",
       "disposition": "record",
       "simulator_operation": "share_groups.delete"
+    },
+    {
+      "model": "SharedWorkflow",
+      "method": "list",
+      "operation_id": "GetSharedWorkflows",
+      "verb": "GET",
+      "path": "/shared_workflows",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "shared_workflows.list"
+    },
+    {
+      "model": "SharedWorkflow",
+      "method": "find",
+      "operation_id": "GetSharedWorkflowsId",
+      "verb": "GET",
+      "path": "/shared_workflows/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "shared_workflows.find"
+    },
+    {
+      "model": "SharedWorkflow",
+      "method": "find_run",
+      "operation_id": "GetSharedWorkflowsIdRunsRunId",
+      "verb": "GET",
+      "path": "/shared_workflows/{id}/runs/{run_id}",
+      "shape": "nested",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "A nested resource shape, which the simulator does not model"
+    },
+    {
+      "model": "SharedWorkflow",
+      "method": "run_workflow",
+      "operation_id": "PostSharedWorkflowsIdRunWorkflow",
+      "verb": "POST",
+      "path": "/shared_workflows/{id}/run_workflow",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
     },
     {
       "model": "SiemHttpDestination",

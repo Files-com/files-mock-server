@@ -8,7 +8,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/snapshots" do
       status 200
-      [ { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1 } ]
+      [ { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1, "shared_workflow_id" => 1 } ]
     end
 
     params do
@@ -16,10 +16,11 @@ module FilesMockServer
       optional :name, type: String
       optional :paths, type: [ String ]
       optional :workspace_id, type: Integer
+      optional :shared_workflow_id, type: Integer
     end
     post "/api/rest/v1/snapshots" do
       status 201
-      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1, "shared_workflow_id" => 1 }
     end
 
     params do
@@ -27,7 +28,7 @@ module FilesMockServer
     end
     get "/api/rest/v1/snapshots/:id" do
       status 200
-      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1, "shared_workflow_id" => 1 }
     end
 
     params do
@@ -38,7 +39,7 @@ module FilesMockServer
     end
     patch "/api/rest/v1/snapshots/:id" do
       status 200
-      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1 }
+      { "id" => 1, "expires_at" => "2000-01-01T01:00:00Z", "finalized_at" => "2000-01-01T01:00:00Z", "name" => "My Snapshot", "user_id" => 1, "bundle_id" => 1, "workspace_id" => 1, "shared_workflow_id" => 1 }
     end
 
     params do

@@ -3875,6 +3875,93 @@
         }
       }
     },
+    "automation_versions": {
+      "model": "AutomationVersion",
+      "entity": "AutomationVersion",
+      "path": "/automation_versions",
+      "key": "id",
+      "scope": [
+
+      ],
+      "parent_fields": [
+        "automation_id"
+      ],
+      "operations": {
+        "list": {
+          "operation_id": "GetAutomationVersions",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "cursor": {
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "sort_by": {
+              "type": "object",
+              "required": false
+            },
+            "automation_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        },
+        "find": {
+          "operation_id": "GetAutomationVersionsId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "automation_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "version": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "created_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "user_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "api_key_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "definition": {
+          "type": "object"
+        }
+      }
+    },
     "automations": {
       "model": "Automation",
       "entity": "Automation",
@@ -7817,7 +7904,9 @@
                 "teams_webhook",
                 "amazon_sns",
                 "google_pubsub",
-                "folder"
+                "folder",
+                "amazon_sqs",
+                "azure_service_bus"
               ],
               "required": true
             }
@@ -7890,7 +7979,9 @@
             "teams_webhook",
             "amazon_sns",
             "google_pubsub",
-            "folder"
+            "folder",
+            "amazon_sqs",
+            "azure_service_bus"
           ]
         },
         "workspace_id": {

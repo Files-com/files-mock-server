@@ -33,6 +33,7 @@ require "app/as2_station_api"
 require "app/automation_api"
 require "app/automation_log_api"
 require "app/automation_run_api"
+require "app/automation_version_api"
 require "app/bandwidth_snapshot_api"
 require "app/behavior_api"
 require "app/bundle_api"
@@ -153,6 +154,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::AutomationAPI
   mount FilesMockServer::AutomationLogAPI
   mount FilesMockServer::AutomationRunAPI
+  mount FilesMockServer::AutomationVersionAPI
   mount FilesMockServer::BandwidthSnapshotAPI
   mount FilesMockServer::BehaviorAPI
   mount FilesMockServer::BundleAPI

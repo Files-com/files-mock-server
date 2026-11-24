@@ -1,15 +1,15 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "e2606650f2b1ea8de8df33087b173346ed451757e042fc0838682d6bfc256610",
-  "models": 146,
-  "operations": 408,
+  "swagger_sha256": "c1da9256fdc3452fe4ee353b18e6fba5c942c947ff4ee2cc480189cfdad74422",
+  "models": 147,
+  "operations": 411,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 34,
+    "gap": 35,
     "path-record": 3,
     "real-only": 5,
-    "record": 324,
+    "record": 326,
     "scoped-list": 8,
     "singleton": 2,
     "specialized": 22
@@ -550,6 +550,37 @@
       "disposition": "gap",
       "gap_kind": "action-semantics",
       "reason": "Cancels an automation run: needs the automation run state machine (automation owner)"
+    },
+    {
+      "model": "AutomationVersion",
+      "method": "list",
+      "operation_id": "GetAutomationVersions",
+      "verb": "GET",
+      "path": "/automation_versions",
+      "shape": "collection",
+      "disposition": "record",
+      "simulator_operation": "automation_versions.list"
+    },
+    {
+      "model": "AutomationVersion",
+      "method": "find",
+      "operation_id": "GetAutomationVersionsId",
+      "verb": "GET",
+      "path": "/automation_versions/{id}",
+      "shape": "member",
+      "disposition": "record",
+      "simulator_operation": "automation_versions.find"
+    },
+    {
+      "model": "AutomationVersion",
+      "method": "restore",
+      "operation_id": "PostAutomationVersionsIdRestore",
+      "verb": "POST",
+      "path": "/automation_versions/{id}/restore",
+      "shape": "action",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "An action; the simulator does not infer action semantics from an HTTP verb or example"
     },
     {
       "model": "BandwidthSnapshot",

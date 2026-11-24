@@ -103,7 +103,7 @@
           "format": "int32",
           "required": false
         },
-        "default_workspace_id": {
+        "preferred_workspace_id": {
           "type": "int64",
           "format": "int32",
           "required": false
@@ -502,7 +502,7 @@
           "format": "int32",
           "required": false
         },
-        "default_workspace_id": {
+        "preferred_workspace_id": {
           "type": "int64",
           "format": "int32",
           "required": false
@@ -1298,7 +1298,7 @@
       "workspace_admin",
       "site_id",
       "workspace_id",
-      "default_workspace_id",
+      "preferred_workspace_id",
       "skip_welcome_screen",
       "ftp_tls_session_reuse_required",
       "ssl_required",
@@ -12000,6 +12000,10 @@
               "type": "array(string)",
               "required": false
             },
+            "from_partner_upload_forms": {
+              "type": "array(object)",
+              "required": false
+            },
             "from_partner_route_path_pattern": {
               "type": "string",
               "required": false
@@ -12060,6 +12064,10 @@
             },
             "from_partner_managed_folder_paths": {
               "type": "array(string)",
+              "required": false
+            },
+            "from_partner_upload_forms": {
+              "type": "array(object)",
               "required": false
             },
             "from_partner_route_path_pattern": {
@@ -12145,6 +12153,9 @@
         "from_partner_managed_folder_paths": {
           "type": "array(string)"
         },
+        "from_partner_upload_forms": {
+          "type": "array(object)"
+        },
         "effective_to_partner_folder_name": {
           "type": "string"
         },
@@ -12224,6 +12235,10 @@
               "type": "array(string)",
               "required": false
             },
+            "from_partner_upload_forms": {
+              "type": "array(object)",
+              "required": false
+            },
             "from_partner_route_path": {
               "type": "string",
               "required": false
@@ -12285,6 +12300,10 @@
             },
             "from_partner_managed_folder_paths": {
               "type": "array(string)",
+              "required": false
+            },
+            "from_partner_upload_forms": {
+              "type": "array(object)",
               "required": false
             },
             "from_partner_route_path": {
@@ -12370,6 +12389,9 @@
         },
         "from_partner_managed_folder_paths": {
           "type": "array(string)"
+        },
+        "from_partner_upload_forms": {
+          "type": "array(object)"
         },
         "effective_to_partner_folder_name": {
           "type": "string"

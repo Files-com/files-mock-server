@@ -22351,6 +22351,12 @@
         },
         "output_items": {
           "type": "object"
+        },
+        "item_refs": {
+          "type": "array(object)"
+        },
+        "item_values": {
+          "type": "array(object)"
         }
       }
     },

@@ -26,6 +26,7 @@ require "app/ai_task_api"
 require "app/api_key_api"
 require "app/api_request_log_api"
 require "app/app_api"
+require "app/application_connection_api"
 require "app/as2_incoming_message_api"
 require "app/as2_outgoing_message_api"
 require "app/as2_partner_api"
@@ -149,6 +150,7 @@ class FilesMockServer::API < Grape::API
   mount FilesMockServer::ApiKeyAPI
   mount FilesMockServer::ApiRequestLogAPI
   mount FilesMockServer::AppAPI
+  mount FilesMockServer::ApplicationConnectionAPI
   mount FilesMockServer::As2IncomingMessageAPI
   mount FilesMockServer::As2OutgoingMessageAPI
   mount FilesMockServer::As2PartnerAPI

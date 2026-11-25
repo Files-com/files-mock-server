@@ -2559,6 +2559,153 @@
         }
       }
     },
+    "application_connections": {
+      "model": "ApplicationConnection",
+      "entity": "ApplicationConnection",
+      "path": "/application_connections",
+      "key": "id",
+      "scope": [
+
+      ],
+      "operations": {
+        "list": {
+          "operation_id": "GetApplicationConnections",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "cursor": {
+              "type": "string",
+              "required": false
+            },
+            "per_page": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "sort_by": {
+              "type": "object",
+              "required": false
+            },
+            "filter": {
+              "type": "object",
+              "required": false
+            },
+            "filter_prefix": {
+              "type": "object",
+              "required": false
+            }
+          }
+        },
+        "find": {
+          "operation_id": "GetApplicationConnectionsId",
+          "method": "GET",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        },
+        "create": {
+          "operation_id": "PostApplicationConnections",
+          "method": "POST",
+          "status": 201,
+          "params": {
+            "name": {
+              "type": "string",
+              "required": true
+            },
+            "secret_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            },
+            "application_key": {
+              "type": "string",
+              "required": true
+            },
+            "origin": {
+              "type": "string",
+              "required": true
+            },
+            "workspace_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            }
+          }
+        },
+        "update": {
+          "operation_id": "PatchApplicationConnectionsId",
+          "method": "PATCH",
+          "status": 200,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            },
+            "name": {
+              "type": "string",
+              "required": false
+            },
+            "secret_id": {
+              "type": "int64",
+              "format": "int32",
+              "required": false
+            }
+          }
+        },
+        "delete": {
+          "operation_id": "DeleteApplicationConnectionsId",
+          "method": "DELETE",
+          "status": 204,
+          "params": {
+            "id": {
+              "type": "int64",
+              "format": "int32",
+              "required": true
+            }
+          }
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "workspace_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "application_key": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "secret_id": {
+          "type": "int64",
+          "format": "int64"
+        },
+        "authentication": {
+          "type": "object"
+        },
+        "created_at": {
+          "type": "date-time",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "date-time",
+          "format": "date-time"
+        }
+      }
+    },
     "apps": {
       "model": "App",
       "entity": "App",
@@ -3868,6 +4015,9 @@
         "definition": {
           "type": "object"
         },
+        "application_actions": {
+          "type": "object"
+        },
         "node_states": {
           "type": "object"
         },
@@ -3965,6 +4115,9 @@
           "format": "int64"
         },
         "definition": {
+          "type": "object"
+        },
+        "application_actions": {
           "type": "object"
         }
       }
@@ -4466,6 +4619,9 @@
           "type": "string"
         },
         "definition": {
+          "type": "object"
+        },
+        "application_actions": {
           "type": "object"
         },
         "destination_replace_from": {
@@ -6736,7 +6892,8 @@
                 "site_alias",
                 "public_hosting",
                 "s3_endpoint",
-                "unassigned"
+                "unassigned",
+                "file_content"
               ],
               "required": false
             },
@@ -6781,7 +6938,8 @@
                 "site_alias",
                 "public_hosting",
                 "s3_endpoint",
-                "unassigned"
+                "unassigned",
+                "file_content"
               ],
               "required": false
             },
@@ -6838,7 +6996,8 @@
             "site_alias",
             "public_hosting",
             "s3_endpoint",
-            "unassigned"
+            "unassigned",
+            "file_content"
           ]
         },
         "dns_status": {

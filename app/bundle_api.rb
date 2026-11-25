@@ -126,5 +126,15 @@ module FilesMockServer
       status 204
       body false
     end
+
+    params do
+      requires :id, type: Integer
+      requires :path, type: String
+      requires :recursive, type: Boolean
+    end
+    patch "/api/rest/v1/bundles/:id/paths/:path" do
+      status 200
+      { "recursive" => true, "path" => "example" }
+    end
   end
 end

@@ -1,12 +1,12 @@
 {
   "format": "files-mock-inventory",
   "format_version": 1,
-  "swagger_sha256": "25d6553fbf0c20ce170df5524ac3f1e33b76d5ed4abb9f871d9a1e59600ba92e",
+  "swagger_sha256": "0bfdc3c7fb9a70cdb504bc37c92d9de91fdea1b423725c3ddfa5a2021fd153c9",
   "models": 150,
-  "operations": 420,
+  "operations": 421,
   "dispositions": {
     "fixture-response": 10,
-    "gap": 37,
+    "gap": 38,
     "path-record": 3,
     "real-only": 5,
     "record": 333,
@@ -713,6 +713,17 @@
       "shape": "member",
       "disposition": "record",
       "simulator_operation": "bundles.update"
+    },
+    {
+      "model": "Bundle",
+      "method": "update_bundle",
+      "operation_id": "BundleUpdateBundlePath",
+      "verb": "PATCH",
+      "path": "/bundles/{id}/paths/{path}",
+      "shape": "path-keyed",
+      "disposition": "gap",
+      "gap_kind": "shape",
+      "reason": "A path-keyed resource other than files and folders, which the simulator does not model"
     },
     {
       "model": "Bundle",
